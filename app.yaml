@@ -9,3 +9,5 @@ handlers:
   script: app.py
 - url: /images/[0-9]+/observed.png
   script: images_observed.py
+- url: /images/[0-9]+/predictive/[0-9].png
+  script: images_predictive.py

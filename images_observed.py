@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# http://localhost:8080/images/000/observed.png
+# http://localhost:8080/images/201/observed.png
+# http://localhost:8080/images/219/observed.png
+
 import os
 import re
 
