@@ -52,5 +52,9 @@ bitmap = png.BitmapFor8bitPalette.load(zlib.decompress(data_chunk.data), header.
 print data_chunk
 print len(data_chunk.data)
 print len(zlib.decompress(data_chunk.data))
-#for line in bitmap.bitmap:
-#  print ",".join(["%02X" % x for x in line])
+
+print "---"
+png = png.Png8bitPalette.load(image)
+print png
+for line in png.bitmap.bitmap:
+  print ",".join(["%02X" % x for x in line])

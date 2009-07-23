@@ -3,6 +3,7 @@
 import StringIO
 import struct
 import binascii
+import zlib
 
 class Utility:
   @staticmethod
@@ -172,3 +173,27 @@ class PngContainer:
 
     joined_data = "".join([chunk.data for chunk in chunks])
     return Chunk(type = type, data = joined_data)
+
+
+class Png8bitPalette:
+  def __init__(self, palette = None, bitmap = None):
+    self.palette = palette
+    self.bitmap  = bitmap
+
+  @staticmethod
+  def read(io):
+    container = PngContainer.read(io)
+
+    header_chunk  = container.first_chunk_by_type("IHDR")
+    header        = Header.load(header_chunk.data)
+    palette_chunk = container.first_chunk_by_type("PLTE")
+    palette       = Palette.load(palette_chunk.data)
+    bitmap_chunk  = container.joined_chunk_by_type("IDAT")
+    bitmap_data   = zlib.decompress(bitmap_chunk.data)
+    bitmap        = BitmapFor8bitPalette.load(bitmap_data, header.width, header.height)
+
+    return Png8bitPalette(palette = palette, bitmap = bitmap)
+
+  @staticmethod
+  def load(bin):
+    return Png8bitPalette.read(StringIO.StringIO(bin))
