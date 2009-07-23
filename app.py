@@ -209,8 +209,15 @@ def get_decompressed_data(chunks):
 read_signature(io)
 chunks = read_all_chunks(io)
 
+def get_chunk_data(chunks, type):
+  for (ctype, cdata) in chunks:
+    if ctype == type:
+      return cdata
+  raise Exception, "chunk not found"
+
+
 def get_header(chunks):
-  header = [data for (type, data) in chunks if type == "IHDR"][0]
+  header = get_chunk_data(chunks, "IHDR")
   io = StringIO.StringIO(header)
   return {
     "width"              : unpack_long(io.read(4)),
