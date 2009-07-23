@@ -1,0 +1,9 @@
+
+application: amayadori-opt
+version: test
+runtime: python
+api_version: 1
+
+handlers:
+- url: /.*
+  script: app.py
