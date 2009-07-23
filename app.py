@@ -162,12 +162,6 @@ def get_image(area, time, ordinal):
 print "Content-Type: text/plain"
 print ""
 
-def unpack_long(bin):
-  return struct.unpack("!L", bin)[0]
-
-def unpack_byte(bin):
-  return struct.unpack("B", bin)[0]
-
 
 
 def read_all_chunks(io):
@@ -187,18 +181,6 @@ def get_chunk_data(chunks, type):
   raise Exception, "chunk not found"
 
 
-def get_header(chunks):
-  header = get_chunk_data(chunks, "IHDR")
-  io = StringIO.StringIO(header)
-  return {
-    "width"              : unpack_long(io.read(4)),
-    "height"             : unpack_long(io.read(4)),
-    "bit_depth"          : unpack_byte(io.read(1)),
-    "colour_type"        : unpack_byte(io.read(1)),
-    "compression_method" : unpack_byte(io.read(1)),
-    "filter_method"      : unpack_byte(io.read(1)),
-    "interlace_method"   : unpack_byte(io.read(1)),
-  }
 
 
 time  = get_current_observed_time()
@@ -208,17 +190,18 @@ io = StringIO.StringIO(image)
 signature = png.Signature.read(io)
 chunks = read_all_chunks(io)
 
-header = get_header(chunks)
+header_chunk = [data for (type, data) in chunks if type == "IHDR"][0]
+header = png.Header.load(header_chunk)
 print header
 
 data = get_decompressed_data(chunks)
 print len(data)
 
-print header["width"]
-print header["height"]
+print header.width
+print header.height
 
-dx = header["width"]
-dy = header["height"]
+dx = header.width
+dy = header.height
 if len(data) != (dx + 1) * dy:
   raise Exception, "invalid data"
 
