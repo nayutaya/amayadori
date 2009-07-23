@@ -95,7 +95,7 @@ def get_current_predictive_time():
 
 def create_observed_image_url(area, time):
   url  = "http://www.jma.go.jp/jp/radnowc/imgs/radar/"
-  url += str(area)
+  url += ("%03i" % area)
   url += "/"
   url += time.strftime("%Y%m%d%H%M")
   url += "-00.png"
@@ -103,7 +103,7 @@ def create_observed_image_url(area, time):
 
 def create_predictive_image_url(area, time, no):
   url = "http://www.jma.go.jp/jp/radnowc/imgs/nowcast/"
-  url += str(area)
+  url += ("%03i" % area)
   url += "/"
   url += time.strftime("%Y%m%d%H%M")
   url += "-"

@@ -28,7 +28,6 @@ import png
 print "Content-Type: text/plain"
 print ""
 
-
 time  = nowcast.get_current_observed_time()
 image = nowcast.get_image(211, time, 0)
 

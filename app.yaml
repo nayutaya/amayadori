@@ -5,5 +5,7 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /.*
+- url: /
   script: app.py
+- url: /images/[0-9]+/observed.png
+  script: images_observed.py
