@@ -163,65 +163,8 @@ print "Content-Type: text/plain"
 print ""
 
 
-
-def read_all_chunks(io):
-  chunks = png.Chunk.read_to_end(io)
-  return [(chunk.type, chunk.data) for chunk in chunks]
-
-def get_compressed_data(chunks):
-  return "".join([data for (type, data) in chunks if type == "IDAT"])
-
-def get_decompressed_data(chunks):
-  return zlib.decompress(get_compressed_data(chunks))
-
-def get_chunk_data(chunks, type):
-  for (ctype, cdata) in chunks:
-    if ctype == type:
-      return cdata
-  raise Exception, "chunk not found"
-
-
-
-
 time  = get_current_observed_time()
 image = get_image(211, time, 0)
-
-io = StringIO.StringIO(image)
-signature = png.Signature.read(io)
-chunks = read_all_chunks(io)
-
-header_chunk = [data for (type, data) in chunks if type == "IHDR"][0]
-header = png.Header.load(header_chunk)
-print header
-
-data = get_decompressed_data(chunks)
-print len(data)
-
-print header.width
-print header.height
-
-dx = header.width
-dy = header.height
-if len(data) != (dx + 1) * dy:
-  raise Exception, "invalid data"
-
-io = StringIO.StringIO(data)
-
-lines = []
-
-for i in range(1, dy):
-  filter = struct.unpack("B", io.read(1))[0]
-  line   = struct.unpack(str(dx) + "B", io.read(dx))
-
-  if filter != 0:
-    raise Exception, "unsupported filter type"
-
-  lines.append(list(line))
-
-print lines
-
-
-
 
 
 io = StringIO.StringIO(image)
@@ -238,3 +181,12 @@ pal_chunk = [chunk for chunk in chunks if chunk.type == "PLTE"][0]
 pal = png.Palette.load(pal_chunk.data)
 print pal_chunk
 print pal
+
+data_chunks = [chunk for chunk in chunks if chunk.type == "IDAT"]
+data = "".join([chunk.data for chunk in data_chunks])
+bitmap = png.BitmapFor8bitPalette.load(zlib.decompress(data), header.width, header.height)
+print data_chunks
+print len(data)
+print len(zlib.decompress(data))
+#for line in bitmap.bitmap:
+#  print ",".join(["%02X" % x for x in line])

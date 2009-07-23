@@ -112,3 +112,29 @@ class Palette:
     for color in self.colors:
       bin += struct.pack("BBB", *color)
     return bin
+
+
+class BitmapFor8bitPalette:
+  def __init__(self, width = 0, height = 0, bitmap = []):
+    self.width  = width
+    self.height = height
+    self.bitmap = bitmap
+
+  @staticmethod
+  def read(io, width, height):
+    bitmap = []
+
+    for i in range(0, height):
+      filter = struct.unpack("B", io.read(1))[0]
+      line   = struct.unpack(str(width) + "B", io.read(width))
+      if filter != 0:
+        raise Exception, "unsupported filter type"
+      bitmap.append(list(line))
+
+    return BitmapFor8bitPalette(width, height, bitmap)
+
+  @staticmethod
+  def load(bin, width, height):
+    if len(bin) != (width + 1) * height:
+      raise Exception, "invalid bitmap"
+    return BitmapFor8bitPalette.read(StringIO.StringIO(bin), width, height)
