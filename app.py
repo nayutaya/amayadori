@@ -229,14 +229,6 @@ def get_header(chunks):
     "interlace_method"   : unpack_byte(io.read(1)),
   }
 
-def get_palette(bin):
-  if len(bin) % 3 != 0:
-    raise Exception, "invalid palette"
-  io = StringIO.StringIO(bin)
-  list = []
-  for i in range(1, len(palette) / 3):
-    list.append(struct.unpack("BBB", io.read(3)))
-  return list
 
 header = get_header(chunks)
 print header
@@ -268,12 +260,17 @@ for i in range(1, dy):
 print lines
 
 
-#print get_palette(palette)
 
 import png
 
-palette = get_chunk_data(chunks, "PLTE")
-print len(palette)
-palette = png.Palette.load(palette)
+palette_bin = get_chunk_data(chunks, "PLTE")
+print len(palette_bin)
+palette = png.Palette.load(palette_bin)
 print palette
-print palette.colors
+
+bin = palette.dump()
+print len(palette.colors)
+print len(palette_bin)
+print len(bin)
+if bin != palette_bin:
+  raise Exception, "hoge"
