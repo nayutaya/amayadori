@@ -11,6 +11,7 @@ from google.appengine.ext import db
 from google.appengine.api import urlfetch
 
 import model
+import png
 
 
 def get_jst_now():
@@ -161,11 +162,6 @@ def get_image(area, time, ordinal):
 print "Content-Type: text/plain"
 print ""
 
-time  = get_current_observed_time()
-image = get_image(211, time, 0)
-
-io = StringIO.StringIO(image)
-
 def unpack_long(bin):
   return struct.unpack("!L", bin)[0]
 
@@ -179,35 +175,16 @@ def read_signature(io):
   if (sig1 != 0x89504E47) or (sig2 != 0x0D0A1A0A):
     raise Exception, "invalid signature"
 
-def read_chunk(io):
-  length = unpack_long(io.read(4))
-  type   = io.read(4)
-  data   = io.read(length)
-  crc    = unpack_long(io.read(4))
-
-  crc2 = unpack_long(struct.pack("!l", binascii.crc32(type + data)))
-  if crc != crc2:
-    raise Exception, "CRC error"
-
-  return (type, data)
 
 def read_all_chunks(io):
-  chunks = []
-  while True:
-    chunk = read_chunk(io)
-    chunks.append(chunk)
-    if chunk[0] == "IEND":
-      break
-  return chunks
+  chunks = png.Chunk.read_to_end(io)
+  return [(chunk.type, chunk.data) for chunk in chunks]
 
 def get_compressed_data(chunks):
   return "".join([data for (type, data) in chunks if type == "IDAT"])
 
 def get_decompressed_data(chunks):
   return zlib.decompress(get_compressed_data(chunks))
-
-read_signature(io)
-chunks = read_all_chunks(io)
 
 def get_chunk_data(chunks, type):
   for (ctype, cdata) in chunks:
@@ -229,6 +206,13 @@ def get_header(chunks):
     "interlace_method"   : unpack_byte(io.read(1)),
   }
 
+
+time  = get_current_observed_time()
+image = get_image(211, time, 0)
+
+io = StringIO.StringIO(image)
+read_signature(io)
+chunks = read_all_chunks(io)
 
 header = get_header(chunks)
 print header
@@ -261,16 +245,20 @@ print lines
 
 
 
-import png
 
-palette_bin = get_chunk_data(chunks, "PLTE")
-print len(palette_bin)
-palette = png.Palette.load(palette_bin)
-print palette
+#palette_bin = get_chunk_data(chunks, "PLTE")
+#print len(palette_bin)
+#palette = png.Palette.load(palette_bin)
+#print palette
 
-bin = palette.dump()
-print len(palette.colors)
-print len(palette_bin)
-print len(bin)
-if bin != palette_bin:
-  raise Exception, "hoge"
+#bin = palette.dump()
+#print len(palette.colors)
+#print len(palette_bin)
+#print len(bin)
+#if bin != palette_bin:
+#  raise Exception, "hoge"
+
+io = StringIO.StringIO(image)
+read_signature(io)
+chunks = png.Chunk.read_to_end(io)
+print chunks
