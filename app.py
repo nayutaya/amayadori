@@ -229,7 +229,20 @@ def get_header(chunks):
     "interlace_method"   : unpack_byte(io.read(1)),
   }
 
+def get_palette(bin):
+  if len(bin) % 3 != 0:
+    raise Exception, "invalid palette"
+  io = StringIO.StringIO(bin)
+  list = []
+  for i in range(1, len(palette) / 3):
+    list.append(struct.unpack("BBB", io.read(3)))
+  return list
+
 print get_header(chunks)
 
 data = get_decompressed_data(chunks)
 print len(data)
+
+palette = get_chunk_data(chunks, "PLTE")
+print len(palette)
+print get_palette(palette)
