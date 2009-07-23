@@ -238,11 +238,36 @@ def get_palette(bin):
     list.append(struct.unpack("BBB", io.read(3)))
   return list
 
-print get_header(chunks)
+header = get_header(chunks)
+print header
 
 data = get_decompressed_data(chunks)
 print len(data)
 
-palette = get_chunk_data(chunks, "PLTE")
-print len(palette)
-print get_palette(palette)
+print header["width"]
+print header["height"]
+
+dx = header["width"]
+dy = header["height"]
+if len(data) != (dx + 1) * dy:
+  raise Exception, "invalid data"
+
+io = StringIO.StringIO(data)
+
+lines = []
+
+for i in range(1, dy):
+  filter = struct.unpack("B", io.read(1))[0]
+  line   = struct.unpack(str(dx) + "B", io.read(dx))
+
+  if filter != 0:
+    raise Exception, "unsupported filter type"
+
+  lines.append(list(line))
+
+print lines
+
+
+#palette = get_chunk_data(chunks, "PLTE")
+#print len(palette)
+#print get_palette(palette)
