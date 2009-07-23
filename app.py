@@ -268,6 +268,12 @@ for i in range(1, dy):
 print lines
 
 
-#palette = get_chunk_data(chunks, "PLTE")
-#print len(palette)
 #print get_palette(palette)
+
+import png
+
+palette = get_chunk_data(chunks, "PLTE")
+print len(palette)
+palette = png.Palette.load(palette)
+print palette
+print palette.colors
