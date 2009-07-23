@@ -53,6 +53,35 @@ class Chunk:
     return chunks
 
 
+class Header:
+  def __init__(self, width = 0, height = 0, bit_depth = 0, colour_type = 0, compression_method = 0, filter_method = 0, interlace_method = 0):
+    self.width              = width
+    self.height             = height
+    self.bit_depth          = bit_depth
+    self.colour_type        = colour_type
+    self.compression_method = compression_method
+    self.filter_method      = filter_method
+    self.interlace_method   = interlace_method
+
+  @staticmethod
+  def read(io):
+    header = Header()
+    header.width              = struct.unpack("!L", io.read(4))[0]
+    header.height             = struct.unpack("!L", io.read(4))[0]
+    header.bit_depth          = struct.unpack("B",  io.read(1))[0]
+    header.colour_type        = struct.unpack("B",  io.read(1))[0]
+    header.compression_method = struct.unpack("B",  io.read(1))[0]
+    header.filter_method      = struct.unpack("B",  io.read(1))[0]
+    header.interlace_method   = struct.unpack("B",  io.read(1))[0]
+    return header
+
+  @staticmethod
+  def load(bin):
+    if len(bin) != 13:
+      raise Exception, "invalid header"
+    return Header.read(StringIO.StringIO(bin))
+
+
 class Palette:
   def __init__(self, colors = []):
     self.colors = colors
@@ -62,11 +91,25 @@ class Palette:
     if len(bin) % 3 != 0:
       raise Exception, "invalid palette"
 
-    io = StringIO.StringIO(bin)
+    #io = StringIO.StringIO(bin)
+    #colors = []
+    #for i in range(0, len(bin) / 3):
+    #  colors.append(struct.unpack("BBB", io.read(3)))
+    #return Palette(colors)
+    return Palette.read(StringIO.StringIO(bin))
+
+  @staticmethod
+  def read(io):
     colors = []
-    for i in range(0, len(bin) / 3):
-      colors.append(struct.unpack("BBB", io.read(3)))
+    while True:
+      color = io.read(3)
+      if len(color) == 0:
+        break
+      elif len(color) < 3:
+        raise Exception, "invalid palette"
+      colors.append(struct.unpack("BBB", color))
     return Palette(colors)
+  
 
   def dump(self):
     if len(self.colors) > 256:

@@ -169,12 +169,6 @@ def unpack_byte(bin):
   return struct.unpack("B", bin)[0]
 
 
-def read_signature(io):
-  sig1 = unpack_long(io.read(4))
-  sig2 = unpack_long(io.read(4))
-  if (sig1 != 0x89504E47) or (sig2 != 0x0D0A1A0A):
-    raise Exception, "invalid signature"
-
 
 def read_all_chunks(io):
   chunks = png.Chunk.read_to_end(io)
@@ -262,3 +256,13 @@ io = StringIO.StringIO(image)
 signature = png.Signature.read(io)
 chunks    = png.Chunk.read_to_end(io)
 print chunks
+
+header_chunk = [chunk for chunk in chunks if chunk.type == "IHDR"][0]
+header = png.Header.load(header_chunk.data)
+print header_chunk
+print header
+
+pal_chunk = [chunk for chunk in chunks if chunk.type == "PLTE"][0]
+pal = png.Palette.load(pal_chunk.data)
+print pal_chunk
+print pal
