@@ -56,3 +56,6 @@ print len(data)
 print len(zlib.decompress(data))
 #for line in bitmap.bitmap:
 #  print ",".join(["%02X" % x for x in line])
+
+pngc = png.PngContainer.load(image)
+print pngc

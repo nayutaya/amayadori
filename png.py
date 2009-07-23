@@ -138,3 +138,20 @@ class BitmapFor8bitPalette:
     if len(bin) != (width + 1) * height:
       raise Exception, "invalid bitmap"
     return BitmapFor8bitPalette.read(StringIO.StringIO(bin), width, height)
+
+
+class PngContainer:
+  def __init__(self, signature = None, chunks = None):
+    self.signature = signature
+    self.chunks    = chunks
+
+  @staticmethod
+  def read(io):
+    container = PngContainer()
+    container.signature = Signature.read(io)
+    container.chunks    = Chunk.read_to_end(io)
+    return container
+
+  @staticmethod
+  def load(bin):
+    return PngContainer.read(StringIO.StringIO(bin))
