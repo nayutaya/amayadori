@@ -155,3 +155,12 @@ class PngContainer:
   @staticmethod
   def load(bin):
     return PngContainer.read(StringIO.StringIO(bin))
+
+  def chunks_by_type(self, type):
+    return [chunk for chunk in self.chunks if chunk.type == type]
+
+  def first_chunk_by_type(self, type):
+    chunks = self.chunks_by_type(type)
+    if len(chunks) == 0:
+      raise Exception, "chunk not found"
+    return chunks[0]

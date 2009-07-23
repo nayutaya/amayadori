@@ -33,22 +33,21 @@ time  = nowcast.get_current_observed_time()
 image = nowcast.get_image(211, time, 0)
 
 
-io = StringIO.StringIO(image)
-signature = png.Signature.read(io)
-chunks    = png.Chunk.read_to_end(io)
-print chunks
+pngc = png.PngContainer.load(image)
+print pngc
+print pngc.chunks
 
-header_chunk = [chunk for chunk in chunks if chunk.type == "IHDR"][0]
+header_chunk = pngc.first_chunk_by_type("IHDR")
 header = png.Header.load(header_chunk.data)
 print header_chunk
 print header
 
-pal_chunk = [chunk for chunk in chunks if chunk.type == "PLTE"][0]
+pal_chunk = pngc.first_chunk_by_type("PLTE")
 pal = png.Palette.load(pal_chunk.data)
 print pal_chunk
 print pal
 
-data_chunks = [chunk for chunk in chunks if chunk.type == "IDAT"]
+data_chunks = pngc.chunks_by_type("IDAT")
 data = "".join([chunk.data for chunk in data_chunks])
 bitmap = png.BitmapFor8bitPalette.load(zlib.decompress(data), header.width, header.height)
 print data_chunks
@@ -56,6 +55,3 @@ print len(data)
 print len(zlib.decompress(data))
 #for line in bitmap.bitmap:
 #  print ",".join(["%02X" % x for x in line])
-
-pngc = png.PngContainer.load(image)
-print pngc
