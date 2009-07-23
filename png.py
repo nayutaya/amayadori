@@ -9,6 +9,22 @@ class Utility:
   def crc32(bin):
     return struct.unpack("!L", struct.pack("!l", binascii.crc32(bin)))[0]
 
+
+class Signature:
+  Value1 = 0x89504E47
+  Value2 = 0x0D0A1A0A
+
+  @staticmethod
+  def read(io):
+    sig1 = struct.unpack("!L", io.read(4))[0]
+    sig2 = struct.unpack("!L", io.read(4))[0]
+
+    if sig1 != Signature.Value1 or sig2 != Signature.Value2:
+      raise Exception, "invalid signature"
+
+    return Signature()
+
+
 class Chunk:
   def __init__(self, type, data = None):
     self.type = type
@@ -35,6 +51,7 @@ class Chunk:
       if chunk.type == "IEND":
         break
     return chunks
+
 
 class Palette:
   def __init__(self, colors = []):

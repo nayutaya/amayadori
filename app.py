@@ -211,7 +211,7 @@ time  = get_current_observed_time()
 image = get_image(211, time, 0)
 
 io = StringIO.StringIO(image)
-read_signature(io)
+signature = png.Signature.read(io)
 chunks = read_all_chunks(io)
 
 header = get_header(chunks)
@@ -259,6 +259,6 @@ print lines
 #  raise Exception, "hoge"
 
 io = StringIO.StringIO(image)
-read_signature(io)
-chunks = png.Chunk.read_to_end(io)
+signature = png.Signature.read(io)
+chunks    = png.Chunk.read_to_end(io)
 print chunks
