@@ -164,3 +164,11 @@ class PngContainer:
     if len(chunks) == 0:
       raise Exception, "chunk not found"
     return chunks[0]
+
+  def joined_chunk_by_type(self, type):
+    chunks = self.chunks_by_type(type)
+    if len(chunks) == 0:
+      raise Exception, "chunk not found"
+
+    joined_data = "".join([chunk.data for chunk in chunks])
+    return Chunk(type = type, data = joined_data)

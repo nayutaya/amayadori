@@ -47,11 +47,10 @@ pal = png.Palette.load(pal_chunk.data)
 print pal_chunk
 print pal
 
-data_chunks = pngc.chunks_by_type("IDAT")
-data = "".join([chunk.data for chunk in data_chunks])
-bitmap = png.BitmapFor8bitPalette.load(zlib.decompress(data), header.width, header.height)
-print data_chunks
-print len(data)
-print len(zlib.decompress(data))
+data_chunk = pngc.joined_chunk_by_type("IDAT")
+bitmap = png.BitmapFor8bitPalette.load(zlib.decompress(data_chunk.data), header.width, header.height)
+print data_chunk
+print len(data_chunk.data)
+print len(zlib.decompress(data_chunk.data))
 #for line in bitmap.bitmap:
 #  print ",".join(["%02X" % x for x in line])
