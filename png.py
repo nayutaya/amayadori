@@ -87,18 +87,6 @@ class Palette:
     self.colors = colors
 
   @staticmethod
-  def load(bin):
-    if len(bin) % 3 != 0:
-      raise Exception, "invalid palette"
-
-    #io = StringIO.StringIO(bin)
-    #colors = []
-    #for i in range(0, len(bin) / 3):
-    #  colors.append(struct.unpack("BBB", io.read(3)))
-    #return Palette(colors)
-    return Palette.read(StringIO.StringIO(bin))
-
-  @staticmethod
   def read(io):
     colors = []
     while True:
@@ -109,7 +97,12 @@ class Palette:
         raise Exception, "invalid palette"
       colors.append(struct.unpack("BBB", color))
     return Palette(colors)
-  
+
+  @staticmethod
+  def load(bin):
+    if len(bin) % 3 != 0:
+      raise Exception, "invalid palette"
+    return Palette.read(StringIO.StringIO(bin))
 
   def dump(self):
     if len(self.colors) > 256:

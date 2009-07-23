@@ -240,17 +240,6 @@ print lines
 
 
 
-#palette_bin = get_chunk_data(chunks, "PLTE")
-#print len(palette_bin)
-#palette = png.Palette.load(palette_bin)
-#print palette
-
-#bin = palette.dump()
-#print len(palette.colors)
-#print len(palette_bin)
-#print len(bin)
-#if bin != palette_bin:
-#  raise Exception, "hoge"
 
 io = StringIO.StringIO(image)
 signature = png.Signature.read(io)
