@@ -7,7 +7,9 @@ api_version: 1
 handlers:
 - url: /
   script: app.py
-- url: /images/[0-9]+/observed.png
+- url: /images/\d\d\d
+  script: images.py
+- url: /images/\d\d\d/observed.png
   script: images_observed.py
-- url: /images/[0-9]+/predictive/[0-9].png
+- url: /images/\d\d\d/predictive/[0-9].png
   script: images_predictive.py
