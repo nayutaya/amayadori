@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import re
 import datetime
@@ -10,23 +10,7 @@ import zlib
 from google.appengine.ext import db
 from google.appengine.api import urlfetch
 
-
-class ObservedTimeCache(db.Model):
-  current_time  = db.DateTimeProperty(required=True)
-  observed_time = db.DateTimeProperty(required=True)
-  expire_time   = db.DateTimeProperty(required=True)
-
-class PredictiveTimeCache(db.Model):
-  current_time    = db.DateTimeProperty(required=True)
-  predictive_time = db.DateTimeProperty(required=True)
-  expire_time     = db.DateTimeProperty(required=True)
-
-class ImageCache(db.Model):
-  area        = db.IntegerProperty(required=True)
-  time        = db.DateTimeProperty(required=True)
-  ordinal     = db.IntegerProperty(required=True)
-  image       = db.BlobProperty(required=True)
-  expire_time = db.DateTimeProperty(required=True)
+import model
 
 
 def get_jst_now():
@@ -64,7 +48,7 @@ def get_current_observed_time():
         int(match.group(4)),
         int(match.group(5)))
 
-      cache = ObservedTimeCache(
+      cache = model.ObservedTimeCache(
         current_time  = current_time,
         observed_time = observed_time,
         expire_time   = current_time + datetime.timedelta(minutes = 20))
@@ -103,7 +87,7 @@ def get_current_predictive_time():
         int(match.group(4)),
         int(match.group(5)))
 
-      cache = PredictiveTimeCache(
+      cache = model.PredictiveTimeCache(
         current_time    = current_time,
         predictive_time = predictive_time,
         expire_time     = current_time + datetime.timedelta(minutes = 20))
@@ -150,7 +134,7 @@ def get_image(area, time, ordinal):
     url = create_image_url(area, time, ordinal)
     result = urlfetch.fetch(url)
     if result.status_code == 200:
-      cache = ImageCache(
+      cache = model.ImageCache(
         area        = area,
         time        = time,
         ordinal     = ordinal,
