@@ -86,9 +86,9 @@ kinki = AreaInfo(
 
 
 
-def dump77(m77):
-  for row in m77:
-    print "|" + " ".join(["%4.1f" % val for val in row]) +"|"
+def dump_matrix(matrix):
+  for row in matrix:
+    print "|" + " ".join(["%4.1f" % val for val in row]) + " |"
 
 def interpolate_rain77(src77):
   dst77 = [[float(src77[y][x]) for x in range(7)] for y in range(7)]
@@ -105,14 +105,17 @@ def interpolate_rain77(src77):
         points.append(src77[y + 1][x - 1])
         points.append(src77[y + 1][x    ])
         points.append(src77[y + 1][x + 1])
-        available_points = [val for val in points if val > 0]
+        available_points = [val for val in points if val >= 0]
         if len(available_points) > 0:
           avg = float(sum(available_points)) / len(available_points)
         else:
           avg = 0
         dst77[y][x] = avg
 
-  return dst77
+  return tuple([tuple(row) for row in dst77])
+
+def window55(src77):
+  return tuple([tuple([float(src77[y + 1][x + 1]) for x in range(5)]) for y in range(5)])
 
 m77 = (
   ( 0, 0, 0, 0, 0, 0, 0),
@@ -127,14 +130,19 @@ n = -1
 m77 = (
   ( 1, 2, 3, 0, 0, 0, 0),
   ( 4, n, n, n, 0, 0, 0),
-  ( 6, 7, 8, 0, 0, 0, 0),
-  ( 0, n, 0, 0, 0, 0, 0),
-  ( 0, 0, 0, n, 0, 0, 0),
-  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 6, 7, 8, 0, 0, 9, 0),
+  ( 0, n, 0, 0, 0, 8, 0),
+  ( 0, 1, 0, n, 0, 7, 0),
+  ( 0, 2, 3, 4, 5, 6, 0),
   ( 0, 0, 0, 0, 0, 0, 0))
 
-dump77(m77)
+dump_matrix(m77)
 
 print "---"
 x77 = interpolate_rain77(m77)
-dump77(x77)
+dump_matrix(x77)
+print x77
+
+print "---"
+x55 = window55(x77)
+dump_matrix(x55)
