@@ -66,6 +66,9 @@ class AreaInfo:
     dy = self.cy() - xy[1]
     return dx * dx + dy * dy
 
+  def include_xy(self, xy):
+    x, y = xy
+    return (x >= 0) and (y >= 0) and (x < self.dx()) and (y < self.dy())
 
 kinki = AreaInfo(
   name     = "近畿地方",
@@ -77,16 +80,6 @@ kinki = AreaInfo(
   glnglat2 = (138,  33))
 
 print kinki
-print kinki.dxy
-print kinki.gxy1
-print kinki.gxy2
-print kinki.gdx()
-print kinki.gdy()
-print kinki.glnglat1
-print kinki.glnglat2
-print kinki.gdlng()
-print kinki.gdlat()
-print kinki.lng_to_x(135.18359)
-print kinki.lat_to_y(34.67902)
-print kinki.lnglat_to_xy((135.18359, 34.67902))
-print kinki.distance_from_center((135.18359, 34.67902))
+#print kinki.lnglat_to_xy((135.18359, 34.67902))
+#print kinki.distance_from_center((135.18359, 34.67902))
+#print kinki.include_xy((0, 454))
