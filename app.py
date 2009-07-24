@@ -23,12 +23,19 @@ print ""
 import math
 
 class AreaInfo:
-  def __init__(self, code, gxy1, gxy2, glnglat1, glnglat2):
+  def __init__(self, name, code, dxy, gxy1, gxy2, glnglat1, glnglat2):
+    self.name     = name
     self.code     = code
-    self.gxy1     = gxy1
-    self.gxy2     = gxy2
-    self.glnglat1 = glnglat1
-    self.glnglat2 = glnglat2
+    self.dxy      = dxy  # px
+    self.gxy1     = gxy1 # px
+    self.gxy2     = gxy2 # px
+    self.glnglat1 = glnglat1 # deg
+    self.glnglat2 = glnglat2 # deg
+
+  def dx(self): return self.dxy[0]
+  def dy(self): return self.dxy[1]
+  def cx(self): return int(self.dx() / 2.0)
+  def cy(self): return int(self.dy() / 2.0)
 
   def gx1(self): return self.gxy1[0]
   def gy1(self): return self.gxy1[1]
@@ -53,30 +60,33 @@ class AreaInfo:
   def lnglat_to_xy(self, lnglat):
     return (self.lng_to_x(lnglat[0]), self.lat_to_y(lnglat[1]))
 
+  def distance_from_center(self, lnglat):
+    xy = self.lnglat_to_xy(lnglat)
+    dx = self.cx() - xy[0]
+    dy = self.cy() - xy[1]
+    return dx * dx + dy * dy
+
+
 kinki = AreaInfo(
+  name     = "近畿地方",
   code     = 211,
+  dxy      = (550, 455),
   gxy1     = ( 54,  93),
   gxy2     = (473, 396),
-  glnglat1 = (133, 36),
-  glnglat2 = (138, 33))
+  glnglat1 = (133,  36),
+  glnglat2 = (138,  33))
 
 print kinki
+print kinki.dxy
 print kinki.gxy1
-#print kinki.gx1()
-#print kinki.gy1()
 print kinki.gxy2
-#print kinki.gx2()
-#print kinki.gy2()
 print kinki.gdx()
 print kinki.gdy()
 print kinki.glnglat1
-#print kinki.glng1()
-#print kinki.glat1()
 print kinki.glnglat2
-#print kinki.glng2()
-#print kinki.glat2()
 print kinki.gdlng()
 print kinki.gdlat()
 print kinki.lng_to_x(135.18359)
 print kinki.lat_to_y(34.67902)
 print kinki.lnglat_to_xy((135.18359, 34.67902))
+print kinki.distance_from_center((135.18359, 34.67902))
