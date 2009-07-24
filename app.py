@@ -117,6 +117,18 @@ def interpolate_rain77(src77):
 def window55(src77):
   return tuple([tuple([float(src77[y + 1][x + 1]) for x in range(5)]) for y in range(5)])
 
+def weighted_average55(v55, w55):
+  vwsum = 0.0
+  wsum  = 0.0
+
+  for y in range(5):
+    for x in range(5):
+       vwsum += v55[y][x] * w55[y][x]
+       wsum  += w55[y][x]
+
+  if wsum == 0.0: return 0.0
+  return vwsum / wsum
+
 m77 = (
   ( 0, 0, 0, 0, 0, 0, 0),
   ( 0, 0, 0, 0, 0, 0, 0),
@@ -136,13 +148,33 @@ m77 = (
   ( 0, 2, 3, 4, 5, 6, 0),
   ( 0, 0, 0, 0, 0, 0, 0))
 
-dump_matrix(m77)
+#dump_matrix(m77)
 
-print "---"
-x77 = interpolate_rain77(m77)
-dump_matrix(x77)
-print x77
+#print "---"
+#x77 = interpolate_rain77(m77)
+#dump_matrix(x77)
+#print x77
 
+#print "---"
+#x55 = window55(x77)
+#dump_matrix(x55)
+
+v55 = (
+  (0.0, 0.0, 9.0, 0.0, 0.0),
+  (0.0, 9.0, 9.0, 9.0, 0.0),
+  (9.0, 9.0, 9.0, 9.0, 9.0),
+  (0.0, 9.0, 9.0, 9.0, 0.0),
+  (0.0, 0.0, 9.0, 0.0, 0.0))
+
+w55 = (
+  (0.6, 0.7, 0.8, 0.7, 0.6),
+  (0.7, 0.8, 0.9, 0.8, 0.7),
+  (0.8, 0.9, 1.0, 0.9, 0.8),
+  (0.7, 0.8, 0.9, 0.8, 0.7),
+  (0.6, 0.7, 0.8, 0.7, 0.6))
+
+dump_matrix(v55)
 print "---"
-x55 = window55(x77)
-dump_matrix(x55)
+dump_matrix(w55)
+
+print weighted_average55(v55, w55)
