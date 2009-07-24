@@ -14,11 +14,6 @@ import png
 print "Content-Type: text/plain"
 print ""
 
-#time  = nowcast.get_current_observed_time()
-#image = nowcast.get_image(211, time, 0)
-
-#png = png.Png8bitPalette.load(image)
-#print png
 
 import math
 
@@ -173,8 +168,74 @@ w55 = (
   (0.7, 0.8, 0.9, 0.8, 0.7),
   (0.6, 0.7, 0.8, 0.7, 0.6))
 
-dump_matrix(v55)
-print "---"
-dump_matrix(w55)
+#dump_matrix(v55)
+#print "---"
+#dump_matrix(w55)
+#print weighted_average55(v55, w55)
 
-print weighted_average55(v55, w55)
+# PNGイメージの(x,y)を中心に7x7のパレットインデックスを取得
+def pindex77(png, xy):
+  sx, sy = xy
+  return [[png.bitmap.bitmap[sy + y - 3][sx + x - 3] for x in range(7)] for y in range(7)]
+
+
+def color77(png, pi77):
+  return [[png.palette.colors[pi77[y][x]] for x in range(7)] for y in range(7)]
+
+
+def rain77(c77):
+  r77 = [[0 for x in range(7)] for y in range(7)]
+
+  table = {
+    (255, 255, 255):  -1, # 海岸境界
+    (230, 230, 230):  -1, # 都道府県境界
+    (255,   0,   0): 120,
+    (255,   0, 255):  80,
+    (255, 153,   0):  50,
+    (255, 255,   0):  30,
+    (  0, 255,   0):  20,
+    (  0,   0, 255):  10, # 5-10mm/h
+    ( 51, 102, 255):   5, # 1-5mm/h
+    (153, 204, 255):   1, # 0-1mm/h
+  }
+
+  for y in range(7):
+    for x in range(7):
+      r77[y][x] = table.get(c77[y][x], 0)
+
+  return r77
+
+area  = 201
+time  = nowcast.get_current_observed_time()
+image = nowcast.get_image(area, time, 0)
+png = png.Png8bitPalette.load(image)
+print png
+
+xy = (116,347)
+
+pi77 = pindex77(png, xy)
+print pi77
+dump_matrix(pi77)
+
+c77 = color77(png, pi77)
+print c77
+
+r77 = rain77(c77)
+print r77
+dump_matrix(r77)
+
+ir77 = interpolate_rain77(r77)
+print ir77
+dump_matrix(ir77)
+
+r55 = window55(ir77)
+print r55
+dump_matrix(r55)
+
+w55 = (
+  (0.6, 0.7, 0.8, 0.7, 0.6),
+  (0.7, 0.8, 0.9, 0.8, 0.7),
+  (0.8, 0.9, 1.0, 0.9, 0.8),
+  (0.7, 0.8, 0.9, 0.8, 0.7),
+  (0.6, 0.7, 0.8, 0.7, 0.6))
+print weighted_average55(r55, w55)
