@@ -79,7 +79,62 @@ kinki = AreaInfo(
   glnglat1 = (133,  36),
   glnglat2 = (138,  33))
 
-print kinki
+#print kinki
 #print kinki.lnglat_to_xy((135.18359, 34.67902))
 #print kinki.distance_from_center((135.18359, 34.67902))
 #print kinki.include_xy((0, 454))
+
+
+
+def dump77(m77):
+  for row in m77:
+    print "|" + " ".join(["%4.1f" % val for val in row]) +"|"
+
+def interpolate_rain77(src77):
+  dst77 = [[float(src77[y][x]) for x in range(7)] for y in range(7)]
+
+  for y in range(1, 6):
+    for x in range(1, 6):
+      if src77[y][x] < 0:
+        points = []
+        points.append(src77[y - 1][x - 1])
+        points.append(src77[y - 1][x    ])
+        points.append(src77[y - 1][x + 1])
+        points.append(src77[y    ][x - 1])
+        points.append(src77[y    ][x + 1])
+        points.append(src77[y + 1][x - 1])
+        points.append(src77[y + 1][x    ])
+        points.append(src77[y + 1][x + 1])
+        available_points = [val for val in points if val > 0]
+        if len(available_points) > 0:
+          avg = float(sum(available_points)) / len(available_points)
+        else:
+          avg = 0
+        dst77[y][x] = avg
+
+  return dst77
+
+m77 = (
+  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0))
+
+n = -1
+m77 = (
+  ( 1, 2, 3, 0, 0, 0, 0),
+  ( 4, n, n, n, 0, 0, 0),
+  ( 6, 7, 8, 0, 0, 0, 0),
+  ( 0, n, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, n, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0),
+  ( 0, 0, 0, 0, 0, 0, 0))
+
+dump77(m77)
+
+print "---"
+x77 = interpolate_rain77(m77)
+dump77(x77)
