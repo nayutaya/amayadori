@@ -4,10 +4,14 @@
 # http://localhost:8080/images/201/observed.png
 # http://localhost:8080/images/219/observed.png
 
+import logging
 import os
 import re
 
 import nowcast
+
+
+logging.getLogger().setLevel(logging.DEBUG)
 
 
 request_path = os.environ["PATH_INFO"]

@@ -11,6 +11,9 @@ import nowcast
 import png
 
 
+logging.getLogger().setLevel(logging.DEBUG)
+
+
 print "Content-Type: text/plain"
 print ""
 
