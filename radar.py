@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import png
+
 class RadarImage:
   color_table = {
     (255, 255, 255):  -1, # 海岸境界
@@ -23,6 +25,10 @@ class RadarImage:
 
   def __init__(self, image):
     self.image = image
+
+  @staticmethod
+  def from_binary(bin):
+    return RadarImage(png.Png8bitPalette.load(bin))
 
   def create_color_matrix(self, xy):
     sx, sy = xy
