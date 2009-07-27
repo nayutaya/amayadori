@@ -84,17 +84,14 @@ AreaManager.register(AreaInfo(u"北陸地方(東部)",     208, (550, 455), ( 27
 AreaManager.register(AreaInfo(u"北陸地方(西部)",     209, (550, 455), ( 17,  58), (510, 362), (134,  38), (140,  35)))
 AreaManager.register(AreaInfo(u"東海地方",           210, (550, 455), ( 74,  84), (494, 387), (136,  36), (141,  33)))
 AreaManager.register(AreaInfo(u"近畿地方",           211, (550, 455), ( 54,  93), (473, 396), (133,  36), (138,  33)))
-AreaManager.register(AreaInfo(u"中国地方",           212, (550, 455), ( 26,   8), (529, 413), (x, x), (x, x)))
-AreaManager.register(AreaInfo(u"四国地方",           213, (550, 455), ( 45, 101), (469, 404), (x, x), (x, x)))
-AreaManager.register(AreaInfo(u"九州地方(北部)",     214, (550, 455), ( 51,  67), (477, 371), (x, x), (x, x)))
-AreaManager.register(AreaInfo(u"九州地方(南部)",     215, (550, 455), ( 91,  50), (527, 354), (x, x), (x, x)))
-AreaManager.register(AreaInfo(u"奄美地方",           216, (550, 455), ( 12,  67), (459, 370), (x, x), (x, x)))
-AreaManager.register(AreaInfo(u"沖縄本島地方",       217, (550, 455), ( 53,  50), (511, 354), (x, x), (x, x)))
-AreaManager.register(AreaInfo(u"大東島地方",         218, (550, 455), (  8,  33), (465, 337), (x, x), (x, x)))
-AreaManager.register(AreaInfo(u"宮古・八重山地方",   219, (550, 455), ( 35,  84), (499, 387), (x, x), (x, x)))
-
-# http://amayadori-opt.appspot.com/images/201/observed.png
-# http://amayadori-opt.appspot.com/images/202/observed.png
+AreaManager.register(AreaInfo(u"中国地方",           212, (550, 455), ( 26,   8), (529, 413), (130,  37), (136,  33)))
+AreaManager.register(AreaInfo(u"四国地方",           213, (550, 455), ( 45, 101), (469, 404), (131,  35), (136,  32)))
+AreaManager.register(AreaInfo(u"九州地方(北部)",     214, (550, 455), ( 51,  67), (477, 371), (128,  35), (133,  32)))
+AreaManager.register(AreaInfo(u"九州地方(南部)",     215, (550, 455), ( 91,  50), (527, 354), (129,  33), (134,  30)))
+AreaManager.register(AreaInfo(u"奄美地方",           216, (550, 455), ( 12,  67), (459, 370), (127,  30), (132,  27)))
+AreaManager.register(AreaInfo(u"沖縄本島地方",       217, (550, 455), ( 53,  50), (511, 354), (126,  28), (131,  25)))
+AreaManager.register(AreaInfo(u"大東島地方",         218, (550, 455), (  8,  33), (465, 337), (127,  28), (132,  25)))
+AreaManager.register(AreaInfo(u"宮古・八重山地方",   219, (550, 455), ( 35,  84), (499, 387), (122,  26), (127,  23)))
 
 
 if __name__ == "__main__":
@@ -103,7 +100,6 @@ if __name__ == "__main__":
   print "<Folder>"
 
   for area in AreaManager.areas:
-    #print area.code, area.name
     if area.glng1() > 0:
       print "<GroundOverlay>"
       print "<name>" + str(area.code) + "</name>"
@@ -121,5 +117,3 @@ if __name__ == "__main__":
 
   print "</Folder>"
   print """</kml>"""
-
-#print AreaManager.find_by_code(211)
