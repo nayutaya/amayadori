@@ -139,49 +139,41 @@ class BitmapFor8bitPalette:
       elif filter == 1: # Sub
         cur_line = list(raw_line)
         for i in range(width - 1):
-          if i == 0:
-            cur_line[i] = cur_line[i] # no change
-          else:
-            cur_line[i] = (cur_line[i - 1] + cur_line[i]) % 256
+          left = cur_line[i - 1] if i != 0 else 0
+          cur_line[i] = (cur_line[i] + left) % 256
         #print "raw:" + ",".join([str(char) for char in raw_line])
         #print "sub:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 2: # Up
         cur_line = list(raw_line)
         for i in range(width - 1):
-          if i == 0:
-            cur_line[i] = cur_line[i] # no change
-          else:
-            cur_line[i] = (prev_line[i] + cur_line[i]) % 256
+          up = prev_line[i]
+          cur_line[i] = (cur_line[i] + up) % 256
         #print "pre:" + ",".join([str(char) for char in prev_line])
         #print "raw:" + ",".join([str(char) for char in raw_line])
         #print "up_:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 3: # Average
         cur_line = list(raw_line)
         for i in range(width - 1):
-          if i == 0:
-            cur_line[i] = cur_line[i] # no change
-          else:
-            cur_line[i] = (cur_line[i] + ((cur_line[i - 1] + prev_line[i]) / 2)) % 256
+          left = cur_line[i - 1] if i != 0 else 0
+          up   = prev_line[i]
+          cur_line[i] = (cur_line[i] + ((left + up) / 2)) % 256
         #print "pre:" + ",".join([str(char) for char in prev_line])
         #print "raw:" + ",".join([str(char) for char in raw_line])
         #print "ave:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 4: # Paeth
         cur_line = list(raw_line)
         for i in range(width - 1):
-          if i == 0:
-            cur_line[i] = cur_line[i] # no change
-          else:
-            a = cur_line[i - 1]
-            b = prev_line[i]
-            c = prev_line[i - 1]
-            p = a + b - c
-            pa = abs(p - a)
-            pb = abs(p - b)
-            pc = abs(p - c)
-            if pa <= pb and pa <= pc: x = a
-            elif pb <= pc: x = b
-            else: x = c
-            cur_line[i] = (cur_line[i] + x) % 256
+          a = cur_line[i - 1] if i != 0 else 0
+          b = prev_line[i]
+          c = prev_line[i - 1] if i != 0 else 0
+          p = a + b - c
+          pa = abs(p - a)
+          pb = abs(p - b)
+          pc = abs(p - c)
+          if pa <= pb and pa <= pc: x = a
+          elif pb <= pc: x = b
+          else: x = c
+          cur_line[i] = (cur_line[i] + x) % 256
         #print "pre:" + ",".join([str(char) for char in prev_line])
         #print "raw:" + ",".join([str(char) for char in raw_line])
         #print "pae:" + ",".join([("%02X" % char) for char in cur_line])
@@ -281,11 +273,12 @@ if __name__ == "__main__":
       for x in range(png.bitmap.width):
         pi = png.get_palette_index((x, y))
         f.write(str(pi) + " " + str(pi) + " " + str(pi) + " ")
+        #r, g, b = png.get_color((x, y))
+        #f.write(str(r) + " " + str(g) + " " + str(b) + " ")
       f.write("\n")
     f.close()
 
   image1 = open("200907280255-00.png", "rb").read()
-  #png1 = png.Png8bitPalette.load(image)
   png_to_ppm(png.Png8bitPalette.load(image1), "image1.ppm")
 
   image2 = open("200907280240-02.png", "rb").read()
