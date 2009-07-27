@@ -138,14 +138,14 @@ class BitmapFor8bitPalette:
         #print "raw:" + ",".join([("%02X" % char) for char in raw_line])
       elif filter == 1: # Sub
         cur_line = list(raw_line)
-        for i in range(width - 1):
+        for i in range(width):
           left = cur_line[i - 1] if i != 0 else 0
           cur_line[i] = (cur_line[i] + left) % 256
         #print "raw:" + ",".join([str(char) for char in raw_line])
         #print "sub:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 2: # Up
         cur_line = list(raw_line)
-        for i in range(width - 1):
+        for i in range(width):
           up = prev_line[i]
           cur_line[i] = (cur_line[i] + up) % 256
         #print "pre:" + ",".join([str(char) for char in prev_line])
@@ -153,7 +153,7 @@ class BitmapFor8bitPalette:
         #print "up_:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 3: # Average
         cur_line = list(raw_line)
-        for i in range(width - 1):
+        for i in range(width):
           left = cur_line[i - 1] if i != 0 else 0
           up   = prev_line[i]
           cur_line[i] = (cur_line[i] + ((left + up) / 2)) % 256
@@ -162,7 +162,7 @@ class BitmapFor8bitPalette:
         #print "ave:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 4: # Paeth
         cur_line = list(raw_line)
-        for i in range(width - 1):
+        for i in range(width):
           a = cur_line[i - 1] if i != 0 else 0
           b = prev_line[i]
           c = prev_line[i - 1] if i != 0 else 0
@@ -271,10 +271,10 @@ if __name__ == "__main__":
     f.write("255\n")
     for y in range(png.bitmap.height):
       for x in range(png.bitmap.width):
-        pi = png.get_palette_index((x, y))
-        f.write(str(pi) + " " + str(pi) + " " + str(pi) + " ")
-        #r, g, b = png.get_color((x, y))
-        #f.write(str(r) + " " + str(g) + " " + str(b) + " ")
+        #pi = png.get_palette_index((x, y))
+        #f.write(str(pi) + " " + str(pi) + " " + str(pi) + " ")
+        r, g, b = png.get_color((x, y))
+        f.write(str(r) + " " + str(g) + " " + str(b) + " ")
       f.write("\n")
     f.close()
 
