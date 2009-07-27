@@ -24,27 +24,17 @@ class RadarImage:
   def __init__(self, image):
     self.image = image
 
-  @staticmethod
-  def dump(matrix, format = "%4.1f"):
-    for row in matrix:
-      print "| " + " ".join([format % val for val in row]) + " |"
-
-  @staticmethod
-  def color77(png, xy):
+  def create_color_matrix(self, xy):
     sx, sy = xy
-    return [[png.get_color((sx + x - 3, sy + y - 3)) for x in range(7)] for y in range(7)]
+    return [[self.image.get_color((sx + x - 3, sy + y - 3)) for x in range(7)] for y in range(7)]
 
-
-  @staticmethod
-  def color_to_rain(color):
+  def get_rainfall_from(self, color):
     return RadarImage.color_table.get(color, 0)
 
-  @staticmethod
-  def rain77(color77):
-    return [[RadarImage.color_to_rain(color77[y][x]) for x in range(7)] for y in range(7)]
+  def create_rainfall_matrix(self, color77):
+    return [[self.get_rainfall_from(color77[y][x]) for x in range(7)] for y in range(7)]
 
-  @staticmethod
-  def interpolate_by_around(src77):
+  def interpolate_rainfall_matrix(self, src77):
     dst77 = [[float(src77[y][x]) for x in range(7)] for y in range(7)]
 
     for y in range(1, 6):
@@ -68,12 +58,10 @@ class RadarImage:
 
     return dst77
 
-  @staticmethod
-  def crop(src77):
+  def crop_matrix(self, src77):
     return tuple([tuple([float(src77[y + 1][x + 1]) for x in range(5)]) for y in range(5)])
 
-  @staticmethod
-  def weighted_average55(value55, weight55):
+  def get_weighted_average(self, value55, weight55):
     vwsum = 0.0
     wsum  = 0.0
 
@@ -86,12 +74,12 @@ class RadarImage:
     return vwsum / wsum
 
   def get_average_rainfall(self, xy):
-    color_matrix                 = RadarImage.color77(self.image, xy)
-    raw_rainfall_matrix          = RadarImage.rain77(color_matrix)
-    interpolated_rainfall_matrix = RadarImage.interpolate_by_around(raw_rainfall_matrix)
-    cropped_rainfall_matrix      = RadarImage.crop(interpolated_rainfall_matrix)
+    color_matrix                 = self.create_color_matrix(xy)
+    raw_rainfall_matrix          = self.create_rainfall_matrix(color_matrix)
+    interpolated_rainfall_matrix = self.interpolate_rainfall_matrix(raw_rainfall_matrix)
+    cropped_rainfall_matrix      = self.crop_matrix(interpolated_rainfall_matrix)
 
-    return RadarImage.weighted_average55(cropped_rainfall_matrix, RadarImage.weight_matrix)
+    return self.get_weighted_average(cropped_rainfall_matrix, RadarImage.weight_matrix)
 
   def ballpark_rainfall(self, rainfall):
     if rainfall < 0: return 0
