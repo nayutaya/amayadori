@@ -126,7 +126,7 @@ class BitmapFor8bitPalette:
     bitmap = []
     prev_line = [0 for x in range(width)]
 
-    print "---"
+    #print "---"
     for i in range(0, height):
       filter   = struct.unpack("B", io.read(1))[0]
       raw_line = struct.unpack(str(width) + "B", io.read(width))
@@ -135,7 +135,7 @@ class BitmapFor8bitPalette:
       #  raise Exception, "unsupported filter type: " + str(filter)
       if filter == 0: # None
         cur_line = list(raw_line)
-        print "raw:" + ",".join([("%02X" % char) for char in raw_line])
+        #print "raw:" + ",".join([("%02X" % char) for char in raw_line])
       elif filter == 1: # Sub
         cur_line = list(raw_line)
         for i in range(width - 1):
@@ -144,7 +144,7 @@ class BitmapFor8bitPalette:
           else:
             cur_line[i] = (cur_line[i - 1] + cur_line[i]) % 256
         #print "raw:" + ",".join([str(char) for char in raw_line])
-        print "sub:" + ",".join([("%02X" % char) for char in cur_line])
+        #print "sub:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 2: # Up
         cur_line = list(raw_line)
         for i in range(width - 1):
@@ -154,7 +154,7 @@ class BitmapFor8bitPalette:
             cur_line[i] = (prev_line[i] + cur_line[i]) % 256
         #print "pre:" + ",".join([str(char) for char in prev_line])
         #print "raw:" + ",".join([str(char) for char in raw_line])
-        print "up_:" + ",".join([("%02X" % char) for char in cur_line])
+        #print "up_:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 3: # Average
         cur_line = list(raw_line)
         for i in range(width - 1):
@@ -164,7 +164,7 @@ class BitmapFor8bitPalette:
             cur_line[i] = (cur_line[i] + ((cur_line[i - 1] + prev_line[i]) / 2)) % 256
         #print "pre:" + ",".join([str(char) for char in prev_line])
         #print "raw:" + ",".join([str(char) for char in raw_line])
-        print "ave:" + ",".join([("%02X" % char) for char in cur_line])
+        #print "ave:" + ",".join([("%02X" % char) for char in cur_line])
       elif filter == 4: # Paeth
         cur_line = list(raw_line)
         for i in range(width - 1):
@@ -184,7 +184,7 @@ class BitmapFor8bitPalette:
             cur_line[i] = (cur_line[i] + x) % 256
         #print "pre:" + ",".join([str(char) for char in prev_line])
         #print "raw:" + ",".join([str(char) for char in raw_line])
-        print "pae:" + ",".join([("%02X" % char) for char in cur_line])
+        #print "pae:" + ",".join([("%02X" % char) for char in cur_line])
       else:
         raise Exception, "unsupported filter type: " + str(filter)
       bitmap.append(list(cur_line))
@@ -268,3 +268,25 @@ class Png8bitPalette:
 
   def get_color(self, xy):
     return self.palette.colors[self.get_palette_index(xy)]
+
+
+if __name__ == "__main__":
+  import png
+  def png_to_ppm(png, filename):
+    f = open(filename, "w")
+    f.write("P3\n")
+    f.write(str(png.bitmap.width) + " " + str(png.bitmap.height) + "\n")
+    f.write("255\n")
+    for y in range(png.bitmap.height):
+      for x in range(png.bitmap.width):
+        pi = png.get_palette_index((x, y))
+        f.write(str(pi) + " " + str(pi) + " " + str(pi) + " ")
+      f.write("\n")
+    f.close()
+
+  image1 = open("200907280255-00.png", "rb").read()
+  #png1 = png.Png8bitPalette.load(image)
+  png_to_ppm(png.Png8bitPalette.load(image1), "image1.ppm")
+
+  image2 = open("200907280240-02.png", "rb").read()
+  png_to_ppm(png.Png8bitPalette.load(image2), "image2.ppm")
