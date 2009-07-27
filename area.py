@@ -59,6 +59,7 @@ class AreaInfo:
 
 class AreaManager:
   areas = []
+
   def __init__(self):
     pass
 
@@ -73,14 +74,34 @@ class AreaManager:
         return area
     return None
 
+  @classmethod
+  def get_nearest_area(cls, lnglat):
+    all_areas        = cls.areas
+    available_areas  = cls.get_available_areas_from(all_areas, lnglat)
+    area_distances   = cls.get_distances_from(available_areas, lnglat)
+    sorted_distances = cls.sort_by_distance(area_distances)
+    if len(sorted_distances) > 0:
+      return sorted_distances[0][0]
+    else:
+      return None
+
   @staticmethod
-  def get_available_areas(areas, lnglat):
+  def get_available_areas_from(areas, lnglat):
     return [area for area in areas if area.include_lnglat(lnglat)]
 
   @staticmethod
-  def get_distances(areas, lnglat):
+  def get_distances_from(areas, lnglat):
     return [(area, area.distance_from_center(lnglat)) for area in areas]
 
+  @staticmethod
+  def sort_by_distance(distances):
+    def compare(a, b):
+      (area1, distance1) = a
+      (area2, distance2) = b
+      return distance1 - distance2
+    a = [x for x in distances]
+    a.sort(compare)
+    return a
 
 #                             name                   code dxy         gxy1        gxy2        glnglat1    glnglat2
 AreaManager.register(AreaInfo(u"北海道地方(北西部)", 201, (550, 455), ( 32,  97), (474, 400), (139,  45), (145,  42)))
@@ -132,8 +153,5 @@ def dump_kml():
 if __name__ == "__main__":
   #dump_kml()
   lnglat = (135.0, 35.0)
-  all_areas       = AreaManager.areas
-  available_areas = AreaManager.get_available_areas(all_areas, lnglat)
-  area_distances  = AreaManager.get_distances(available_areas, lnglat)
-  for area, distance in area_distances:
-    print (area.code, distance)
+  area = AreaManager.get_nearest_area(lnglat)
+  print area
