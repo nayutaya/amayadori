@@ -17,19 +17,16 @@ def get_per_minute_time(time):
 
 def get_current_observed_time():
   current_time = get_per_minute_time(get_jst_now())
-  logging.info("current time: %s", current_time)
 
   caches = db.GqlQuery("SELECT * FROM ObservedTimeCache WHERE current_time = :1", current_time)
 
   if caches.count() > 0:
-    logging.info("cache hit")
-
     return caches[0].observed_time
 
   else:
-    logging.info("cache miss")
-
-    result = urlfetch.fetch("http://www.jma.go.jp/jp/radnowc/hisjs/radar.js")
+    url = "http://www.jma.go.jp/jp/radnowc/hisjs/radar.js"
+    logging.info("fetch " + url)
+    result = urlfetch.fetch(url)
     if result.status_code == 200:
       list = re.compile(r"\d{12}-\d{2}\.png").findall(result.content)
       list.sort()
@@ -56,19 +53,16 @@ def get_current_observed_time():
 
 def get_current_predictive_time():
   current_time = get_per_minute_time(get_jst_now())
-  logging.info("current time: %s", current_time)
 
   caches = db.GqlQuery("SELECT * FROM PredictiveTimeCache WHERE current_time = :1", current_time)
 
   if caches.count() > 0:
-    logging.info("cache hit")
-
     return caches[0].predictive_time
 
   else:
-    logging.info("cache miss")
-
-    result = urlfetch.fetch("http://www.jma.go.jp/jp/radnowc/hisjs/nowcast.js")
+    url = "http://www.jma.go.jp/jp/radnowc/hisjs/nowcast.js"
+    logging.info("fetch " + url)
+    result = urlfetch.fetch(url)
     if result.status_code == 200:
       list = re.compile(r"\d{12}-\d{2}\.png").findall(result.content)
       list.sort()
@@ -118,16 +112,13 @@ def create_image_url(area, time, no):
     return create_predictive_image_url(area, time, no)
 
 def get_image(area, time, ordinal):
-  logging.info("get_image")
-
   caches = db.GqlQuery("SELECT * FROM ImageCache WHERE area = :1 AND time = :2 AND ordinal = :3", area, time, ordinal)
 
   if caches.count() > 0:
-    logging.info("cache hit")
     cache = caches[0]
   else:
-    logging.info("cache miss")
     url = create_image_url(area, time, ordinal)
+    logging.info("fetch " + url)
     result = urlfetch.fetch(url)
     if result.status_code == 200:
       cache = model.ImageCache(
