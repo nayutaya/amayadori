@@ -11,18 +11,13 @@ class RadarImage:
       print "| " + " ".join([format % val for val in row]) + " |"
 
   @staticmethod
-  def pindex77(png, xy):
+  def color77(png, xy):
     sx, sy = xy
-    return [[png.bitmap.bitmap[sy + y - 3][sx + x - 3] for x in range(7)] for y in range(7)]
+    return [[png.get_color((sx + x - 3, sy + y - 3)) for x in range(7)] for y in range(7)]
+
 
   @staticmethod
-  def color77(png, pi77):
-    return [[png.palette.colors[pi77[y][x]] for x in range(7)] for y in range(7)]
-
-  @staticmethod
-  def rain77(c77):
-    r77 = [[0 for x in range(7)] for y in range(7)]
-
+  def color_to_rain(color):
     table = {
       (255, 255, 255):  -1, # 海岸境界
       (230, 230, 230):  -1, # 都道府県境界
@@ -35,12 +30,11 @@ class RadarImage:
       ( 51, 102, 255):   5, # 1-5mm/h
       (153, 204, 255):   1, # 0-1mm/h
     }
+    return table.get(color, 0)
 
-    for y in range(7):
-      for x in range(7):
-        r77[y][x] = table.get(c77[y][x], 0)
-
-    return r77
+  @staticmethod
+  def rain77(color77):
+    return [[RadarImage.color_to_rain(color77[y][x]) for x in range(7)] for y in range(7)]
 
   @staticmethod
   def interpolate_by_around(src77):
@@ -65,7 +59,7 @@ class RadarImage:
             avg = 0
           dst77[y][x] = avg
 
-    return tuple([tuple(row) for row in dst77])
+    return dst77
 
   @staticmethod
   def crop(src77):

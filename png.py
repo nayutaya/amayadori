@@ -197,3 +197,10 @@ class Png8bitPalette:
   @staticmethod
   def load(bin):
     return Png8bitPalette.read(StringIO.StringIO(bin))
+
+  def get_palette_index(self, xy):
+    x, y = xy
+    return self.bitmap.bitmap[y][x]
+
+  def get_color(self, xy):
+    return self.palette.colors[self.get_palette_index(xy)]
