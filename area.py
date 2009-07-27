@@ -29,6 +29,11 @@ class AreaInfo:
   def gdlng(self): return self.glng2() - self.glng1()
   def gdlat(self): return self.glat1() - self.glat2()
 
+  def north(self): return self.glat1() + (self.gy1()               * float(self.gdlat()) / self.gdy())
+  def south(self): return self.glat2() - ((self.dy() - self.gy2()) * float(self.gdlat()) / self.gdy())
+  def west(self):  return self.glng1() - (self.gx1()               * float(self.gdlng()) / self.gdx())
+  def east(self):  return self.glng2() + ((self.dx() - self.gx2()) * float(self.gdlng()) / self.gdx())
+
   def lng_to_x(self, lng):
     return int((lng - self.glng1()) / (float(+self.gdlng()) / self.gdx()) + self.gx1())
 
@@ -96,9 +101,9 @@ if __name__ == "__main__":
   for area in AreaManager.areas:
     print area.code, area.name
     if area.glng1() > 0:
-      print "N: " + str(area.glat1() + (area.gy1() * float(area.gdlat()) / area.gdy()))
-      print "S: " + str(area.glat2() - ((area.dy() - area.gy2()) * float(area.gdlat()) / area.gdy()))
-      print "W: " + str(area.glng1() - (area.gx1()               * float(area.gdlng()) / area.gdx()))
-      print "E: " + str(area.glng2() + ((area.dx() - area.gx2()) * float(area.gdlng()) / area.gdx()))
+      print "N: " + str(area.north())
+      print "S: " + str(area.south())
+      print "W: " + str(area.west())
+      print "E: " + str(area.east())
 
 #print AreaManager.find_by_code(211)
