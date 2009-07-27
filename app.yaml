@@ -16,3 +16,6 @@ handlers:
 - url: /(.*\.html)
   static_files: public/\1
   upload: public/(.*\.html)
+
+- url: /.*
+  script: view.py
