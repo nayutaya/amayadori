@@ -35,12 +35,12 @@ for i in range(6):
 for x in list: print x
 
 #lnglat = (35.0, 135.0)
-xy = (370,85)
+xy = (200,300)
 area_code = 211
 
-for (image_time, image_ordinal), time in list[0:2]:
+for (image_time, image_ordinal), time in list:
   image = nowcast.get_image(area_code, image_time, image_ordinal)
   rimage = radar.RadarImage.from_binary(image)
-  #rainfall = rimage.get_ballpark_rainfall(xy)
+  rainfall = rimage.get_ballpark_rainfall(xy)
 
-  #print time, rainfall
+  print time, rainfall
