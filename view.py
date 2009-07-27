@@ -6,6 +6,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
 import area
+import radar
 
 class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
@@ -13,6 +14,7 @@ class ViewPage(webapp.RequestHandler):
     nearest_area = area.AreaManager.get_nearest_area(lnglat)
     if nearest_area == None:
       self.error_message("範囲外です。")
+      return
 
     xy = nearest_area.lnglat_to_xy(lnglat)
 
@@ -30,14 +32,8 @@ class ViewPage(webapp.RequestHandler):
     self.response.out.write(html)
 
   def error_message(self, message):
-    html = """<html><head>"""
-    html += """<meta http-equiv="content-type" content="text/html; charset=utf-8">"""
-    html += """<title></title>"""
-    html += """</head><body>"""
-    html += "<div>" + message + "</div>"
-    html += """</body></html>"""
-
-    self.response.headers["Content-Type"] = "text/html"
+    path = os.path.join(os.path.dirname(__file__), "error.html")
+    html = template.render(path, {"message": message})
     self.response.out.write(html)
 
 
