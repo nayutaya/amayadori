@@ -53,6 +53,9 @@ class AreaInfo:
     x, y = xy
     return (x >= 0) and (y >= 0) and (x < self.dx()) and (y < self.dy())
 
+  def include_lnglat(self, lnglat):
+    return self.include_xy(self.lnglat_to_xy(lnglat))
+
 
 class AreaManager:
   areas = []
@@ -70,8 +73,15 @@ class AreaManager:
         return area
     return None
 
+  @staticmethod
+  def get_available_areas(areas, lnglat):
+    return [area for area in areas if area.include_lnglat(lnglat)]
 
-x = -1
+  @staticmethod
+  def get_distances(areas, lnglat):
+    return [(area, area.distance_from_center(lnglat)) for area in areas]
+
+
 #                             name                   code dxy         gxy1        gxy2        glnglat1    glnglat2
 AreaManager.register(AreaInfo(u"北海道地方(北西部)", 201, (550, 455), ( 32,  97), (474, 400), (139,  45), (145,  42)))
 AreaManager.register(AreaInfo(u"北海道地方(東部)",   202, (550, 455), ( 13,  75), (457, 379), (141,  45), (147,  42)))
@@ -94,7 +104,7 @@ AreaManager.register(AreaInfo(u"大東島地方",         218, (550, 455), (  8,
 AreaManager.register(AreaInfo(u"宮古・八重山地方",   219, (550, 455), ( 35,  84), (499, 387), (122,  26), (127,  23)))
 
 
-if __name__ == "__main__":
+def dump_kml():
   print """<?xml version="1.0" encoding="UTF-8"?>"""
   print """<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">"""
   print "<Folder>"
@@ -117,3 +127,13 @@ if __name__ == "__main__":
 
   print "</Folder>"
   print """</kml>"""
+
+
+if __name__ == "__main__":
+  #dump_kml()
+  lnglat = (135.0, 35.0)
+  all_areas       = AreaManager.areas
+  available_areas = AreaManager.get_available_areas(all_areas, lnglat)
+  area_distances  = AreaManager.get_distances(available_areas, lnglat)
+  for area, distance in area_distances:
+    print (area.code, distance)
