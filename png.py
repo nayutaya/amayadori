@@ -124,14 +124,71 @@ class BitmapFor8bitPalette:
   @staticmethod
   def read(io, width, height):
     bitmap = []
+    prev_line = [0 for x in range(width)]
 
+    print "---"
     for i in range(0, height):
-      filter = struct.unpack("B", io.read(1))[0]
-      line   = struct.unpack(str(width) + "B", io.read(width))
+      filter   = struct.unpack("B", io.read(1))[0]
+      raw_line = struct.unpack(str(width) + "B", io.read(width))
       #if filter != 0: print ("filter", filter)
-      if filter != 0:
+      #if filter != 0:
+      #  raise Exception, "unsupported filter type: " + str(filter)
+      if filter == 0: # None
+        cur_line = list(raw_line)
+        print "raw:" + ",".join([("%02X" % char) for char in raw_line])
+      elif filter == 1: # Sub
+        cur_line = list(raw_line)
+        for i in range(width - 1):
+          if i == 0:
+            cur_line[i] = cur_line[i] # no change
+          else:
+            cur_line[i] = (cur_line[i - 1] + cur_line[i]) % 256
+        #print "raw:" + ",".join([str(char) for char in raw_line])
+        print "sub:" + ",".join([("%02X" % char) for char in cur_line])
+      elif filter == 2: # Up
+        cur_line = list(raw_line)
+        for i in range(width - 1):
+          if i == 0:
+            cur_line[i] = cur_line[i] # no change
+          else:
+            cur_line[i] = (prev_line[i] + cur_line[i]) % 256
+        #print "pre:" + ",".join([str(char) for char in prev_line])
+        #print "raw:" + ",".join([str(char) for char in raw_line])
+        print "up_:" + ",".join([("%02X" % char) for char in cur_line])
+      elif filter == 3: # Average
+        cur_line = list(raw_line)
+        for i in range(width - 1):
+          if i == 0:
+            cur_line[i] = cur_line[i] # no change
+          else:
+            cur_line[i] = (cur_line[i] + ((cur_line[i - 1] + prev_line[i]) / 2)) % 256
+        #print "pre:" + ",".join([str(char) for char in prev_line])
+        #print "raw:" + ",".join([str(char) for char in raw_line])
+        print "ave:" + ",".join([("%02X" % char) for char in cur_line])
+      elif filter == 4: # Paeth
+        cur_line = list(raw_line)
+        for i in range(width - 1):
+          if i == 0:
+            cur_line[i] = cur_line[i] # no change
+          else:
+            a = cur_line[i - 1]
+            b = prev_line[i]
+            c = prev_line[i - 1]
+            p = a + b - c
+            pa = abs(p - a)
+            pb = abs(p - b)
+            pc = abs(p - c)
+            if pa <= pb and pa <= pc: x = a
+            elif pb <= pc: x = b
+            else: x = c
+            cur_line[i] = (cur_line[i] + x) % 256
+        #print "pre:" + ",".join([str(char) for char in prev_line])
+        #print "raw:" + ",".join([str(char) for char in raw_line])
+        print "pae:" + ",".join([("%02X" % char) for char in cur_line])
+      else:
         raise Exception, "unsupported filter type: " + str(filter)
-      bitmap.append(list(line))
+      bitmap.append(list(cur_line))
+      prev_line = cur_line
 
     return BitmapFor8bitPalette(width, height, bitmap)
 
