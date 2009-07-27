@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext.webapp import template
 
 import area
 
@@ -10,14 +12,24 @@ class ViewPage(webapp.RequestHandler):
     lnglat = (float(lng), float(lat))
     nearest_area = area.AreaManager.get_nearest_area(lnglat)
     if nearest_area == None:
-      self.error("範囲外です。")
+      self.error_message("範囲外です。")
 
-    html = str(nearest_area.code)
+    xy = nearest_area.lnglat_to_xy(lnglat)
 
-    self.response.headers["Content-Type"] = "text/plain"
+    values = {
+      "area_code": str(nearest_area.code),
+      "lat": str(lnglat[1]),
+      "lng": str(lnglat[0]),
+      "x": str(xy[0]),
+      "y": str(xy[1]),
+    }
+
+    path = os.path.join(os.path.dirname(__file__), "view.html")
+    html = template.render(path, values)
+
     self.response.out.write(html)
 
-  def error(self, message):
+  def error_message(self, message):
     html = """<html><head>"""
     html += """<meta http-equiv="content-type" content="text/html; charset=utf-8">"""
     html += """<title></title>"""
