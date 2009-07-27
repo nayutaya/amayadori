@@ -92,8 +92,26 @@ class RadarImage:
     wm = RadarImage.weighted_average55(crm, w55)
     return wm
 
+  def ballpark_rainfall(self, rainfall):
+    if rainfall < 0: return 0
+    list = [(value, abs(rainfall - value)) for value in [0, 1, 5, 10, 20, 30, 50, 80, 120]]
+    def cmp(a, b):
+      value1, distance1 = a
+      value2, distance2 = b
+      if distance1 > distance2: return 1
+      if distance1 < distance2: return -1
+      if value1 > value2: return 1
+      if value1 < value2: return -1
+      return 0
+    list.sort(cmp)
+    return list[0][0]
+
+  def get_ballpark_rainfall(self, xy):
+    return 0
+
 
 if __name__ == "__main__":
+  """
   w55 = (
     (0.6, 0.7, 0.8, 0.7, 0.6),
     (0.7, 0.8, 0.9, 0.8, 0.7),
@@ -101,3 +119,16 @@ if __name__ == "__main__":
     (0.7, 0.8, 0.9, 0.8, 0.7),
     (0.6, 0.7, 0.8, 0.7, 0.6))
   RadarImage.dump(w55, "%i")
+  """
+  r = RadarImage(None)
+  print r.ballpark_rainfall(-1.0)
+  print r.ballpark_rainfall(0.0)
+  print r.ballpark_rainfall(0.5)
+  print r.ballpark_rainfall(0.9)
+  print r.ballpark_rainfall(2.0)
+  print r.ballpark_rainfall(9.0)
+  print r.ballpark_rainfall(11.0)
+  print r.ballpark_rainfall(21.0)
+  print r.ballpark_rainfall(41.0)
+  print r.ballpark_rainfall(70.0)
+  print r.ballpark_rainfall(100.0)
