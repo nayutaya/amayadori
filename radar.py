@@ -78,6 +78,20 @@ class RadarImage:
     if wsum == 0.0: return 0.0
     return vwsum / wsum
 
+  def get_rainfall(self, xy):
+    cm = RadarImage.color77(self.image, xy)
+    rm = RadarImage.rain77(cm)
+    im = RadarImage.interpolate_by_around(rm)
+    crm = RadarImage.crop(im)
+    w55 = (
+      (0.6, 0.7, 0.8, 0.7, 0.6),
+      (0.7, 0.8, 0.9, 0.8, 0.7),
+      (0.8, 0.9, 1.0, 0.9, 0.8),
+      (0.7, 0.8, 0.9, 0.8, 0.7),
+      (0.6, 0.7, 0.8, 0.7, 0.6))
+    wm = RadarImage.weighted_average55(crm, w55)
+    return wm
+
 
 if __name__ == "__main__":
   w55 = (

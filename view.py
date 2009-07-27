@@ -27,30 +27,7 @@ class ViewPage(webapp.RequestHandler):
     rimage = radar.RadarImage(image)
 
     xy = (370,85)
-    cm = radar.RadarImage.color77(image, xy)
-    #for row in cm:
-    #  print row
-    #print "---"
-    rm = radar.RadarImage.rain77(cm)
-    #for row in rm:
-    #  print row
-    #print "---"
-    im = radar.RadarImage.interpolate_by_around(rm)
-    #for row in im:
-    #  print row
-    #print "---"
-    crm = radar.RadarImage.crop(im)
-    #for row in crm:
-    #  print row
-    #print "---"
-    w55 = (
-      (0.6, 0.7, 0.8, 0.7, 0.6),
-      (0.7, 0.8, 0.9, 0.8, 0.7),
-      (0.8, 0.9, 1.0, 0.9, 0.8),
-      (0.7, 0.8, 0.9, 0.8, 0.7),
-      (0.6, 0.7, 0.8, 0.7, 0.6))
-    wm = radar.RadarImage.weighted_average55(crm, w55)
-    #print wm
+    rainfall = rimage.get_rainfall(xy)
 
     values = {
       "area_code": str(nearest_area.code),
@@ -58,7 +35,7 @@ class ViewPage(webapp.RequestHandler):
       "lng": str(lnglat[0]),
       "x": str(xy[0]),
       "y": str(xy[1]),
-      "current_value": str(wm),
+      "current_value": str(rainfall),
     }
 
     path = os.path.join(os.path.dirname(__file__), "view.html")
