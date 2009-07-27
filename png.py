@@ -128,8 +128,9 @@ class BitmapFor8bitPalette:
     for i in range(0, height):
       filter = struct.unpack("B", io.read(1))[0]
       line   = struct.unpack(str(width) + "B", io.read(width))
+      #if filter != 0: print ("filter", filter)
       if filter != 0:
-        raise Exception, "unsupported filter type"
+        raise Exception, "unsupported filter type: " + str(filter)
       bitmap.append(list(line))
 
     return BitmapFor8bitPalette(width, height, bitmap)
@@ -186,6 +187,12 @@ class Png8bitPalette:
 
     header_chunk  = container.first_chunk_by_type("IHDR")
     header        = Header.load(header_chunk.data)
+    if header.bit_depth          != 8: raise Exception, "unsupported bit depth"
+    if header.colour_type        != 3: raise Exception, "unsupported colour type"
+    if header.compression_method != 0: raise Exception, "unsupported compression method"
+    if header.filter_method      != 0: raise Exception, "unsupported filter method"
+    if header.interlace_method   != 0: raise Exception, "unsupported interlace method"
+
     palette_chunk = container.first_chunk_by_type("PLTE")
     palette       = Palette.load(palette_chunk.data)
     bitmap_chunk  = container.joined_chunk_by_type("IDAT")
