@@ -98,12 +98,28 @@ AreaManager.register(AreaInfo(u"宮古・八重山地方",   219, (550, 455), ( 
 
 
 if __name__ == "__main__":
+  print """<?xml version="1.0" encoding="UTF-8"?>"""
+  print """<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">"""
+  print "<Folder>"
+
   for area in AreaManager.areas:
-    print area.code, area.name
+    #print area.code, area.name
     if area.glng1() > 0:
-      print "N: " + str(area.north())
-      print "S: " + str(area.south())
-      print "W: " + str(area.west())
-      print "E: " + str(area.east())
+      print "<GroundOverlay>"
+      print "<name>" + str(area.code) + "</name>"
+      print "<color>bdffffff</color>"
+      print "<Icon>"
+      print "<href>http://amayadori-opt.appspot.com/images/" + str(area.code) + "/observed.png</href>"
+      print "</Icon>"
+      print "<LatLonBox>"
+      print "<north>" + str(area.north()) + "</north>"
+      print "<south>" + str(area.south()) + "</south>"
+      print "<east>" + str(area.east()) + "</east>"
+      print "<west>" + str(area.west()) + "</west>"
+      print "</LatLonBox>"
+      print "</GroundOverlay>"
+
+  print "</Folder>"
+  print """</kml>"""
 
 #print AreaManager.find_by_code(211)
