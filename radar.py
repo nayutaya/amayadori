@@ -1,7 +1,26 @@
 # -*- coding: utf-8 -*-
 
-
 class RadarImage:
+  color_table = {
+    (255, 255, 255):  -1, # 海岸境界
+    (230, 230, 230):  -1, # 都道府県境界
+    (255,   0,   0): 120, # 80mm/h 以上
+    (255,   0, 255):  80, # 50-80mm/h
+    (255, 153,   0):  50, # 30-50mm/h
+    (255, 255,   0):  30, # 20-30mm/h
+    (  0, 255,   0):  20, # 10-20mm/h
+    (  0,   0, 255):  10, #  5-10mm/h
+    ( 51, 102, 255):   5, #  1- 5mm/h
+    (153, 204, 255):   1, #  0- 1mm/h
+  }
+
+  weight_matrix = (
+    (0.6, 0.7, 0.8, 0.7, 0.6),
+    (0.7, 0.8, 0.9, 0.8, 0.7),
+    (0.8, 0.9, 1.0, 0.9, 0.8),
+    (0.7, 0.8, 0.9, 0.8, 0.7),
+    (0.6, 0.7, 0.8, 0.7, 0.6))
+
   def __init__(self, image):
     self.image = image
 
@@ -18,19 +37,7 @@ class RadarImage:
 
   @staticmethod
   def color_to_rain(color):
-    table = {
-      (255, 255, 255):  -1, # 海岸境界
-      (230, 230, 230):  -1, # 都道府県境界
-      (255,   0,   0): 120,
-      (255,   0, 255):  80,
-      (255, 153,   0):  50,
-      (255, 255,   0):  30,
-      (  0, 255,   0):  20,
-      (  0,   0, 255):  10, # 5-10mm/h
-      ( 51, 102, 255):   5, # 1-5mm/h
-      (153, 204, 255):   1, # 0-1mm/h
-    }
-    return table.get(color, 0)
+    return RadarImage.color_table.get(color, 0)
 
   @staticmethod
   def rain77(color77):
@@ -78,19 +85,13 @@ class RadarImage:
     if wsum == 0.0: return 0.0
     return vwsum / wsum
 
-  def get_rainfall(self, xy):
-    cm = RadarImage.color77(self.image, xy)
-    rm = RadarImage.rain77(cm)
-    im = RadarImage.interpolate_by_around(rm)
-    crm = RadarImage.crop(im)
-    w55 = (
-      (0.6, 0.7, 0.8, 0.7, 0.6),
-      (0.7, 0.8, 0.9, 0.8, 0.7),
-      (0.8, 0.9, 1.0, 0.9, 0.8),
-      (0.7, 0.8, 0.9, 0.8, 0.7),
-      (0.6, 0.7, 0.8, 0.7, 0.6))
-    wm = RadarImage.weighted_average55(crm, w55)
-    return wm
+  def get_average_rainfall(self, xy):
+    color_matrix                 = RadarImage.color77(self.image, xy)
+    raw_rainfall_matrix          = RadarImage.rain77(color_matrix)
+    interpolated_rainfall_matrix = RadarImage.interpolate_by_around(raw_rainfall_matrix)
+    cropped_rainfall_matrix      = RadarImage.crop(interpolated_rainfall_matrix)
+
+    return RadarImage.weighted_average55(cropped_rainfall_matrix, RadarImage.weight_matrix)
 
   def ballpark_rainfall(self, rainfall):
     if rainfall < 0: return 0
@@ -107,7 +108,7 @@ class RadarImage:
     return list[0][0]
 
   def get_ballpark_rainfall(self, xy):
-    return 0
+    return self.ballpark_rainfall(self.get_average_rainfall(xy))
 
 
 if __name__ == "__main__":

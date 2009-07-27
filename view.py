@@ -27,7 +27,7 @@ class ViewPage(webapp.RequestHandler):
     rimage = radar.RadarImage(image)
 
     xy = (370,85)
-    rainfall = rimage.get_rainfall(xy)
+    rainfall = rimage.get_ballpark_rainfall(xy)
 
     values = {
       "area_code": str(nearest_area.code),
