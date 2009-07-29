@@ -8,7 +8,8 @@ def write_header(io):
   io.write("GIF87a")
   # Logical Screen Width, Logical Screen Height
   width, height = 10, 5
-  io.write(struct.pack("HH", width, height))
+  io.write(struct.pack("H", width))
+  io.write(struct.pack("H", height))
   # Global Color Table: なし
   # Color Resolution: 8bit
   # Sort Flag: ソートなし
@@ -21,6 +22,63 @@ def write_header(io):
   io.write(struct.pack("B", 0))
   # Global Color Table: なし
 
+def write_image_block_header(io):
+  # Image Separator
+  io.write(struct.pack("B", 0x2c))
+  # Image Left Position
+  io.write(struct.pack("B", 0))
+  # Image Top Position
+  io.write(struct.pack("B", 0))
+  # Image Width
+  width, height = 10, 5
+  io.write(struct.pack("H", width))
+  io.write(struct.pack("H", height))
+  # Local Color Table Flag: あり
+  # Interlace Flag: なし
+  # Sort Flag: ソートなし
+  # Reserved
+  # Size of Local Color Table: 8bit
+  io.write(struct.pack("B", int("10000111", 2)))
+
+def write_local_color_table(io):
+  # グレースケールとする
+  for i in xrange(256):
+    f.write(struct.pack("B", i))
+    f.write(struct.pack("B", i))
+    f.write(struct.pack("B", i))
+
+def write_trailer(io):
+  io.write(struct.pack("B", 0x3b))
+
 f = open("tmp.gif", "wb")
 write_header(f)
+write_image_block_header(f)
+write_local_color_table(f)
+
+def byte2binstr(value):
+  bin = ""
+  for i in range(8):
+    bin = str(value & 1) + bin
+    value = value >> 1
+  return bin
+
+pixels = [i * 5 for i in range(10 * 5)]
+pixels2 = [byte2binstr(p) for p in pixels]
+print pixels
+print pixels2
+
+
+io = f
+# LZW Minimum Code Side: 8bit
+io.write(struct.pack("B", 8))
+
+# Block Size: n
+#io.write(struct.pack("B", n))
+
+# Image Data:
+
+# Block Terminator: 0
+io.write(struct.pack("B", 0))
+
+write_trailer(f)
 f.close()
