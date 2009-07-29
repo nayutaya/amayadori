@@ -62,20 +62,35 @@ def byte2binstr(value):
     value = value >> 1
   return bin
 
-pixels = [i * 5 for i in range(10 * 5)]
+pixels = [(i * 4) % 256 for i in xrange(10 * 5)]
 pixels2 = [byte2binstr(p) for p in pixels]
 print pixels
 print pixels2
 
+bits = "".join(["0" + x for x in pixels2])
+bits += "100000001" # end code
+print bits
+print len(bits)
+print len(bits) / 8.0
+
+bytes = []
+while len(bits) > 0:
+  oct  = bits[0:8]
+  bits = bits[8:]
+  bytes.append(int(oct, 2))
+print bytes
+print len(bytes)
 
 io = f
 # LZW Minimum Code Side: 8bit
 io.write(struct.pack("B", 8))
 
 # Block Size: n
-#io.write(struct.pack("B", n))
+io.write(struct.pack("B", len(bytes)))
 
 # Image Data:
+for c in bytes:
+  io.write(struct.pack("B", c))
 
 # Block Terminator: 0
 io.write(struct.pack("B", 0))
