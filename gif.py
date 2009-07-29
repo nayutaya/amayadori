@@ -62,16 +62,21 @@ def byte2binstr(value):
     value = value >> 1
   return bin
 
-pixels  = [(i * 3) % 256 for i in xrange(10 * 10)]
+#pixels  = [(i * 3) % 256 for i in xrange(10 * 10)]
+pixels  = [255 for i in xrange(10 * 10)]
 pixels2 = [byte2binstr(p) for p in pixels]
 pixels3 = ["0" + x for x in pixels2]
 #pixels3 = [x + "0" for x in pixels2]
 print pixels
-print pixels2
-print pixels3
+#print pixels2
+#print pixels3
 
-bits = "".join(pixels3)
+bits  = ""
+#bits += "00001000" # 0x08
+bits += "".join(pixels3)
+bits += "100000000" # clear code
 bits += "100000001" # end code
+bits += "".join(["0" for i in range(8 - (len(bits) - (len(bits) / 8 * 8)))]) # padding
 print bits
 print len(bits)
 print len(bits) / 8.0
@@ -81,7 +86,6 @@ while len(bits) > 0:
   oct  = bits[0:8]
   bits = bits[8:]
   bytes.append(int(oct, 2))
-  #bytes.append(int((oct + "00000000")[0:8], 2))
 print bytes
 print len(bytes)
 
