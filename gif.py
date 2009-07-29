@@ -7,7 +7,7 @@ def write_header(io):
   # Signature, Version
   io.write("GIF87a")
   # Logical Screen Width, Logical Screen Height
-  width, height = 10, 5
+  width, height = 10, 10
   io.write(struct.pack("H", width))
   io.write(struct.pack("H", height))
   # Global Color Table: なし
@@ -26,11 +26,11 @@ def write_image_block_header(io):
   # Image Separator
   io.write(struct.pack("B", 0x2c))
   # Image Left Position
-  io.write(struct.pack("B", 0))
+  io.write(struct.pack("H", 0))
   # Image Top Position
-  io.write(struct.pack("B", 0))
+  io.write(struct.pack("H", 0))
   # Image Width
-  width, height = 10, 5
+  width, height = 10, 10
   io.write(struct.pack("H", width))
   io.write(struct.pack("H", height))
   # Local Color Table Flag: あり
@@ -44,8 +44,8 @@ def write_local_color_table(io):
   # グレースケールとする
   for i in xrange(256):
     f.write(struct.pack("B", i))
-    f.write(struct.pack("B", i))
-    f.write(struct.pack("B", i))
+    f.write(struct.pack("B", 0))
+    f.write(struct.pack("B", 0))
 
 def write_trailer(io):
   io.write(struct.pack("B", 0x3b))
@@ -62,12 +62,15 @@ def byte2binstr(value):
     value = value >> 1
   return bin
 
-pixels = [(i * 4) % 256 for i in xrange(10 * 5)]
+pixels  = [(i * 3) % 256 for i in xrange(10 * 10)]
 pixels2 = [byte2binstr(p) for p in pixels]
+pixels3 = ["0" + x for x in pixels2]
+#pixels3 = [x + "0" for x in pixels2]
 print pixels
 print pixels2
+print pixels3
 
-bits = "".join(["0" + x for x in pixels2])
+bits = "".join(pixels3)
 bits += "100000001" # end code
 print bits
 print len(bits)
@@ -78,6 +81,7 @@ while len(bits) > 0:
   oct  = bits[0:8]
   bits = bits[8:]
   bytes.append(int(oct, 2))
+  #bytes.append(int((oct + "00000000")[0:8], 2))
 print bytes
 print len(bytes)
 
