@@ -40,7 +40,7 @@ class ViewPage(webapp.RequestHandler):
     lnglat = (float(lng), float(lat))
     nearest_area = area.AreaManager.get_nearest_area(lnglat)
     if nearest_area == None:
-      self.error_message("�͈͊O�ł��B")
+      self.error_message("範囲外です。")
       return
 
     xy = nearest_area.lnglat_to_xy(lnglat)
@@ -105,7 +105,7 @@ if __name__ == "__main__":
   application = webapp.WSGIApplication(
     [
       (r"/", TopPage),
-      (r"/view/([\-]?\d+(?:\.\d+)?)/([\-]?\d+(?:\.\d+)?)", ViewPage),
+      (r"/view/(\-?\d+(?:\.\d+)?)/(\-?\d+(?:\.\d+)?)", ViewPage),
       (r"/docomo/iarea", DocomoIAreaRedirector),
       (r"/docomo/gps",   DocomoGpsRedirector),
     ],
