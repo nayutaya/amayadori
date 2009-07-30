@@ -13,7 +13,11 @@ import radar
 
 class TopPage(webapp.RequestHandler):
   def get(self):
-    pass
+    values = {}
+
+    path = os.path.join(os.path.dirname(__file__), "top.html")
+    html = template.render(path, values)
+    self.response.out.write(html)
 
 class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
