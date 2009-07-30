@@ -4,9 +4,17 @@
     <title>雨宿り最適化計画</title>
   </head>
   <body>
-    エリア: {{area_code}}<br>
-    指定された座標: {{lat}} / {{lng}}<br>
-    変換された座標: {{x}} / {{y}}<br>
+    <center>
+      <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=150x100&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange">
+    </center>
+
     現在の雨量: {{current_value}}<br>
+
+    <hr>
+    <font size="-1" color="#999999">
+      エリア: {{area_code}}<br>
+      緯度経度: {{lat}} / {{lng}}<br>
+      直交座標: {{x}} / {{y}}<br>
+    </font>
   </body>
 </html>
