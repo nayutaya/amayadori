@@ -5,17 +5,23 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /
-  script: app.py
-- url: /images/\d\d\d
-  script: images.py
-- url: /images/\d\d\d/observed.png
-  script: images_observed.py
-- url: /images/\d\d\d/predictive/[0-9].png
-  script: images_predictive.py
-- url: /(.*\.html)
-  static_files: public/\1
-  upload: public/(.*\.html)
+#- url: /
+#  script: app.py
+#- url: /images/\d\d\d
+#  script: images.py
+#- url: /images/\d\d\d/observed.png
+#  script: images_observed.py
+#- url: /images/\d\d\d/predictive/[0-9].png
+#  script: images_predictive.py
+#- url: /(.*\.html)
+#  static_files: public/\1
+#  upload: public/(.*\.html)
+#- url: /.*
+#  script: view.py
 
+- url: /image/.*
+  script: image_handler.py
+- url: /task/.*
+  script: task_handler.py
 - url: /.*
-  script: view.py
+  script: main_handler.py
