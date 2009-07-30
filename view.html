@@ -5,16 +5,14 @@
   </head>
   <body>
     <center>
-      <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=150x100&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange">
+      <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=200x80&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange">
     </center>
-
+    <br>
     現在の雨量: {{current_value}}<br>
-
     <hr>
     <font size="-1" color="#999999">
-      エリア: {{area_code}}<br>
-      緯度経度: {{lat}} / {{lng}}<br>
-      直交座標: {{x}} / {{y}}<br>
+      緯度経度: {{lat}}, {{lng}}<br>
+      直交座標: {{x}}, {{y}} @{{area_code}}<br>
     </font>
   </body>
 </html>
