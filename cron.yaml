@@ -1,0 +1,4 @@
+cron:
+- description: clear caches
+  url: /task/cache/clear
+  schedule: every 30 minutes

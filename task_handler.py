@@ -19,8 +19,8 @@ class CacheFetchTask(webapp.RequestHandler):
 if __name__ == "__main__":
   application = webapp.WSGIApplication(
     [
-      (r"/task/clear",                         CacheClearTask),
-      (r"/task/fetch/(\d{3})/(\d{8})/(\d{2})", CacheFetchTask),
+      (r"/task/cache/clear",                         CacheClearTask),
+      (r"/task/cache/fetch/(\d{3})/(\d{8})/(\d{2})", CacheFetchTask),
     ],
     debug = True)
   run_wsgi_app(application)
