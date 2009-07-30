@@ -14,11 +14,17 @@ class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
     pass
 
+class DocomoIAreaRedirector(webapp.RequestHandler):
+  def get(self):
+    pass
+
+
 if __name__ == "__main__":
   application = webapp.WSGIApplication(
     [
       (r"/", TopPage),
-      (r"/view/([\+\-]?\d+(?:\.\d+)?)/([\+\-]?\d+(?:\.\d+)?)", ViewPage),
+      (r"/view/([\-]?\d+(?:\.\d+)?)/([\-]?\d+(?:\.\d+)?)", ViewPage),
+      (r"/docomo/iarea", DocomoIAreaRedirector),
     ],
     debug = True)
   run_wsgi_app(application)
