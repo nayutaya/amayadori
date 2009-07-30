@@ -28,7 +28,7 @@ class LatLng:
 class TopPage(webapp.RequestHandler):
   def get(self):
     values = {
-      "redirect_url": "http://v1.latest.amayadori-opt.appspot.com/docomo/iarea",
+      "redirect_url": "http://amayadori-opt.appspot.com/docomo/iarea",
     }
 
     path = os.path.join(os.path.dirname(__file__), "top.html")
