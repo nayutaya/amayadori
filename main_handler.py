@@ -13,6 +13,18 @@ import png
 import radar
 
 
+class LatLng:
+  @staticmethod
+  def dms_to_deg(dms):
+    regexp = re.compile(r"^([\+\-])?(\d+)\.(\d+)\.(\d+\.\d+)$")
+    match  = regexp.match(dms)
+    sign   = (1 if match.group(1) != "-" else -1)
+    deg    = float(match.group(2))
+    min    = float(match.group(3))
+    sec    = float(match.group(4))
+    return sign * (deg + (min / 60) + (sec / 3600))
+
+
 class TopPage(webapp.RequestHandler):
   def get(self):
     values = {
@@ -67,24 +79,27 @@ class DocomoIAreaRedirector(webapp.RequestHandler):
     lat  = self.request.get("LAT")
     lng  = self.request.get("LON")
     xacc = self.request.get("XACC")
-    logging.info("iarea: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
+    logging.info("docomo-iarea: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
 
-    lat_deg = "%.4f" % self.dms_to_deg(lat)
-    lng_deg = "%.4f" % self.dms_to_deg(lng)
-
+    lat_deg = "%.4f" % LatLng.dms_to_deg(lat)
+    lng_deg = "%.4f" % LatLng.dms_to_deg(lng)
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
 
   def get(self):
     self.response.out.write("")
 
-  def dms_to_deg(self, dms):
-    regexp = re.compile(r"^([\+\-])?(\d+)\.(\d+)\.(\d+\.\d+)$")
-    match  = regexp.match(dms)
-    sign   = (1 if match.group(1) != "-" else -1)
-    deg    = float(match.group(2))
-    min    = float(match.group(3))
-    sec    = float(match.group(4))
-    return sign * (deg + (min / 60) + (sec / 3600))
+
+class DocomoGpsRedirector(webapp.RequestHandler):
+  def get(self):
+    lat  = self.request.get("lat")
+    lng  = self.request.get("lon")
+    xacc = self.request.get("x-acc")
+    logging.info("docomo-gps: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
+
+    lat_deg = "%.4f" % LatLng.dms_to_deg(lat)
+    lng_deg = "%.4f" % LatLng.dms_to_deg(lng)
+    self.redirect("/view/" + lat_deg + "/" + lng_deg)
+
 
 if __name__ == "__main__":
   application = webapp.WSGIApplication(
@@ -92,6 +107,7 @@ if __name__ == "__main__":
       (r"/", TopPage),
       (r"/view/([\-]?\d+(?:\.\d+)?)/([\-]?\d+(?:\.\d+)?)", ViewPage),
       (r"/docomo/iarea", DocomoIAreaRedirector),
+      (r"/docomo/gps",   DocomoGpsRedirector),
     ],
     debug = True)
   run_wsgi_app(application)
