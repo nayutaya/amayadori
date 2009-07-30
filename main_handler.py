@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import logging
+import re
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
@@ -14,7 +16,7 @@ import radar
 class TopPage(webapp.RequestHandler):
   def get(self):
     values = {
-      "redirect_url": "http://v1.latest.amayadori-opt.appspot.com/iarea",
+      "redirect_url": "http://v1.latest.amayadori-opt.appspot.com/docomo/iarea",
     }
 
     path = os.path.join(os.path.dirname(__file__), "top.html")
@@ -61,9 +63,28 @@ class ViewPage(webapp.RequestHandler):
 
 
 class DocomoIAreaRedirector(webapp.RequestHandler):
-  def get(self):
-    pass
+  def post(self):
+    lat  = self.request.get("LAT")
+    lng  = self.request.get("LON")
+    xacc = self.request.get("XACC")
+    logging.info("iarea: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
 
+    lat_deg = "%.4f" % self.dms_to_deg(lat)
+    lng_deg = "%.4f" % self.dms_to_deg(lng)
+
+    self.redirect("/view/" + lat_deg + "/" + lng_deg)
+
+  def get(self):
+    self.response.out.write("")
+
+  def dms_to_deg(self, dms):
+    regexp = re.compile(r"^([\+\-])?(\d+)\.(\d+)\.(\d+\.\d+)$")
+    match  = regexp.match(dms)
+    sign   = (1 if match.group(1) != "-" else -1)
+    deg    = float(match.group(2))
+    min    = float(match.group(3))
+    sec    = float(match.group(4))
+    return sign * (deg + (min / 60) + (sec / 3600))
 
 if __name__ == "__main__":
   application = webapp.WSGIApplication(

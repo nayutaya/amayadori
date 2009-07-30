@@ -1,6 +1,6 @@
 
 application: amayadori-opt
-version: test
+version: v1
 runtime: python
 api_version: 1
 
