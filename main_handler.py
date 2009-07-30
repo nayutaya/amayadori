@@ -13,7 +13,9 @@ import radar
 
 class TopPage(webapp.RequestHandler):
   def get(self):
-    values = {}
+    values = {
+      "redirect_url": "http://v1.latest.amayadori-opt.appspot.com/iarea",
+    }
 
     path = os.path.join(os.path.dirname(__file__), "top.html")
     html = template.render(path, values)
