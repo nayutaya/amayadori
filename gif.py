@@ -41,27 +41,10 @@ def write_image_block_header(io):
   io.write(struct.pack("B", int("10000111", 2)))
 
 def write_local_color_table(io):
-  #for i in xrange(256):
-  #  f.write(struct.pack("B", i))
-  #  f.write(struct.pack("B", 0))
-  #  f.write(struct.pack("B", 0))
-
-  # 0: red
-  f.write(struct.pack("B", 255))
-  f.write(struct.pack("B", 0))
-  f.write(struct.pack("B", 0))
-  # 1: green
-  f.write(struct.pack("B", 0))
-  f.write(struct.pack("B", 255))
-  f.write(struct.pack("B", 0))
-  # 2: blue
-  f.write(struct.pack("B", 0))
-  f.write(struct.pack("B", 0))
-  f.write(struct.pack("B", 255))
-  for i in xrange(256 - 3):
-    f.write(struct.pack("B", 255))
-    f.write(struct.pack("B", 255))
-    f.write(struct.pack("B", 255))
+  for i in xrange(256):
+    f.write(struct.pack("B", i))
+    f.write(struct.pack("B", 0))
+    f.write(struct.pack("B", 255 - i))
 
 def write_trailer(io):
   io.write(struct.pack("B", 0x3b))
@@ -78,29 +61,15 @@ def byte2binstr(value):
     value = value >> 1
   return bin
 
-#pixels  = [(i * 3) % 256 for i in xrange(10 * 10)]
-pixels  = [1 for i in xrange(10 * 10)]
+pixels  = [(i * 4) % 256 for i in xrange(10 * 10)]
 pixels2 = [byte2binstr(p) for p in pixels]
 pixels3 = ["0" + x for x in pixels2]
-#pixels3 = [x + "0" for x in pixels2]
 print pixels
-#print pixels2
-#print pixels3
-
-bits  = ""
-#bits += "00001000" # 0x08
-bits += "100000000" # clear code
-bits += "".join(pixels3)
-bits += "100000001" # end code
-bits += "".join(["0" for i in range(8 - (len(bits) - (len(bits) / 8 * 8)))]) # padding
-print bits
-print len(bits)
-print len(bits) / 8.0
 
 bits2 = []
 bits2.append("100000000") # clear code
-for i in range(10 * 10):
-  bits2.append("000000010")
+for x in pixels3:
+  bits2.append(x)
 bits2.append("100000001") # end code
 bits2.reverse()
 
