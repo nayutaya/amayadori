@@ -2,14 +2,20 @@
 
 import datetime
 import logging
+from google.appengine.api.labs import taskqueue
+
 
 class TaskManager:
-  @staticmethod
-  def create_cache_fetch_task_url(area, time, ordinal):
-    print (area, time, ordinal)
-    url  = "/" + ("%03i" % area)
+  @classmethod
+  def create_cache_fetch_task_path(cls, area, time, ordinal):
+    url  = "/task/cache/fetch"
+    url += "/" + ("%03i" % area)
     url += "/" + time.strftime("%Y%m%d%H%M")
     url += "/" + ("%02i" % ordinal)
     return url
 
-print TaskManager.create_cache_fetch_task_url(1,datetime.datetime.now(),3)
+  @classmethod
+  def add_cache_fetch_task(cls, area, time, ordinal):
+    path = cls.create_cache_fetch_task_path(area, time, ordinal)
+    logging.info("task: " + path)
+    taskqueue.add(url=path, params={})

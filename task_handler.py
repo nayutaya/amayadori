@@ -9,19 +9,20 @@ from google.appengine.ext.webapp import template
 
 # for cron
 class CacheClearTask(webapp.RequestHandler):
-  def get(self):
+  def post(self):
     logging.info("CacheClearTask")
 
+# for task-queue
 class CacheFetchTask(webapp.RequestHandler):
-  def get(self, area, date, ordinal):
+  def post(self, area, time, ordinal):
     logging.info("CacheFetchTask")
 
 
 if __name__ == "__main__":
   application = webapp.WSGIApplication(
     [
-      (r"/task/cache/clear",                         CacheClearTask),
-      (r"/task/cache/fetch/(\d{3})/(\d{8})/(\d{2})", CacheFetchTask),
+      (r"/task/cache/clear",                          CacheClearTask),
+      (r"/task/cache/fetch/(\d{3})/(\d{12})/(\d{2})", CacheFetchTask),
     ],
     debug = True)
   run_wsgi_app(application)

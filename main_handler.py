@@ -11,6 +11,7 @@ import area
 import nowcast
 import png
 import radar
+import taskmanager
 
 
 class LatLng:
@@ -48,6 +49,8 @@ class ViewPage(webapp.RequestHandler):
     observed_time = nowcast.get_current_observed_time()
     image_bin     = nowcast.get_image(nearest_area.code, observed_time, 0)
     image         = png.Png8bitPalette.load(image_bin)
+
+    taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 0)
 
     rimage = radar.RadarImage(image)
 
