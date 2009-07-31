@@ -71,6 +71,9 @@ class ViewPage(webapp.RequestHandler):
     xy = (370,85)
     rainfall = rimage.get_ballpark_rainfall(xy)
 
+    # http://amayadori-opt.appspot.com/ のためのGoogle Maps API Key
+    mapkey = "ABQIAAAA-ys93Qu6HH7Py3ElrvrGIxQGMNRpk4DlDb3SBK780CawkJsqbhR6Q77-5by3FYPdmP6wscv2utyMUQ"
+
     values = {
       "area_code": str(nearest_area.code),
       "lat": str(lnglat[1]),
@@ -78,6 +81,7 @@ class ViewPage(webapp.RequestHandler):
       "x": str(xy[0]),
       "y": str(xy[1]),
       "current_value": str(rainfall),
+      "mapkey": mapkey,
     }
 
     path = os.path.join(os.path.dirname(__file__), "view.html")
