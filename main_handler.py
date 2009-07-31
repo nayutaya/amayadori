@@ -36,6 +36,7 @@ class TopPage(webapp.RequestHandler):
     html = template.render(path, values)
     self.response.out.write(html)
 
+import time
 class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
     lnglat = (float(lng), float(lat))
@@ -50,10 +51,20 @@ class ViewPage(webapp.RequestHandler):
     image_bin     = nowcast.get_image(nearest_area.code, observed_time, 0)
     image         = png.Png8bitPalette.load(image_bin)
 
-    tracker = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 0)
-    logging.info("task is_completed: " + str(tracker.is_completed()))
-    #tracker.clear()
-    logging.info("task is_completed: " + str(tracker.is_completed()))
+    # MEMO: タスクの実験用コード
+    tracker0 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 0)
+    logging.info("task0 is_completed: " + str(tracker0.is_completed()))
+    tracker1 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 1)
+    tracker2 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 2)
+    tracker3 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 3)
+    tracker4 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 4)
+    tracker5 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 5)
+    tracker6 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 6)
+    logging.info("task0 is_completed: " + str(tracker0.is_completed()))
+    time.sleep(0.5)
+    logging.info("task0 is_completed: " + str(tracker0.is_completed()))
+    time.sleep(0.5)
+    logging.info("task0 is_completed: " + str(tracker0.is_completed()))
 
     rimage = radar.RadarImage(image)
 

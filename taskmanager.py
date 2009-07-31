@@ -31,11 +31,14 @@ class TaskManager:
 
 class TaskTracker:
   def __init__(self, path):
-    self.path = path
+    self.path      = path
+    self.completed = False
 
   def is_completed(self):
-    records = db.GqlQuery("SELECT * FROM Task WHERE path = :1", self.path)
-    return (records.count() == 0)
+    if not self.completed:
+      records = db.GqlQuery("SELECT * FROM Task WHERE path = :1", self.path)
+      self.completed = (records.count() == 0)
+    return self.completed
 
   def clear(self):
     records = db.GqlQuery("SELECT * FROM Task WHERE path = :1", self.path)
