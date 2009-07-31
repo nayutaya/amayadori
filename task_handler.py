@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
@@ -9,11 +10,11 @@ from google.appengine.ext.webapp import template
 # for cron
 class CacheClearTask(webapp.RequestHandler):
   def get(self):
-    pass
+    logging.info("CacheClearTask")
 
 class CacheFetchTask(webapp.RequestHandler):
   def get(self, area, date, ordinal):
-    pass
+    logging.info("CacheFetchTask")
 
 
 if __name__ == "__main__":
