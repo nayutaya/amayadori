@@ -6,6 +6,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
+import taskmanager
+
 
 # for cron
 class CacheClearTask(webapp.RequestHandler):
@@ -16,6 +18,7 @@ class CacheClearTask(webapp.RequestHandler):
 class CacheFetchTask(webapp.RequestHandler):
   def post(self, area, time, ordinal):
     logging.info("CacheFetchTask")
+    taskmanager.TaskTracker(path = self.request.path).clear()
 
 
 if __name__ == "__main__":

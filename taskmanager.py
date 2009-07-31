@@ -2,7 +2,10 @@
 
 import datetime
 import logging
+from google.appengine.ext import db
 from google.appengine.api.labs import taskqueue
+
+import model
 
 
 class TaskManager:
@@ -18,4 +21,22 @@ class TaskManager:
   def add_cache_fetch_task(cls, area, time, ordinal):
     path = cls.create_cache_fetch_task_path(area, time, ordinal)
     logging.info("task: " + path)
+
+    task = model.Task(path = path, time = datetime.datetime.now())
+    task.put()
+
     taskqueue.add(url=path, params={})
+
+    return TaskTracker(path = path)
+
+class TaskTracker:
+  def __init__(self, path):
+    self.path = path
+
+  def is_completed(self):
+    records = db.GqlQuery("SELECT * FROM Task WHERE path = :1", self.path)
+    return (records.count() == 0)
+
+  def clear(self):
+    records = db.GqlQuery("SELECT * FROM Task WHERE path = :1", self.path)
+    db.delete(records)

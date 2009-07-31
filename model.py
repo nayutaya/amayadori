@@ -18,3 +18,7 @@ class ImageCache(db.Model):
   ordinal     = db.IntegerProperty(required=True)
   image       = db.BlobProperty(required=True)
   expire_time = db.DateTimeProperty(required=True)
+
+class Task(db.Model):
+  path = db.StringProperty(required=True)
+  time = db.DateTimeProperty(required=True)

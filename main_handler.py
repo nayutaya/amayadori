@@ -50,7 +50,10 @@ class ViewPage(webapp.RequestHandler):
     image_bin     = nowcast.get_image(nearest_area.code, observed_time, 0)
     image         = png.Png8bitPalette.load(image_bin)
 
-    taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 0)
+    tracker = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 0)
+    logging.info("task is_completed: " + str(tracker.is_completed()))
+    #tracker.clear()
+    logging.info("task is_completed: " + str(tracker.is_completed()))
 
     rimage = radar.RadarImage(image)
 
