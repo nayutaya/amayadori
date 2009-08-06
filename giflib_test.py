@@ -18,6 +18,8 @@ class TestRawHeader(unittest.TestCase):
     self.assertEqual(8,        obj.color_resolution)
     self.assertEqual(False,    obj.is_sorted_color_table)
     self.assertEqual(0,        obj.size_of_global_color_table)
+    self.assertEqual(0,        obj.background_color_index)
+    self.assertEqual(0,        obj.pixel_aspect_ratio)
 
   def test_flag(self):
     obj = giflib.RawHeader()

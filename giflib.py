@@ -24,6 +24,8 @@ class RawHeader:
     self.color_resolution           = 8 # bits
     self.is_sorted_color_table      = False
     self.size_of_global_color_table = 0 # bits
+    self.background_color_index     = 0
+    self.pixel_aspect_ratio         = 0
 
   def flag(self):
     flag  = 0
