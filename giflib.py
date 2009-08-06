@@ -2,20 +2,24 @@
 
 import struct
 
+
 # 高レベル イメージクラス
 class Image:
   def __init__(self):
     pass
+
 
 # 高レベル パレットクラス
 class Palette:
   def __init__(self):
     pass
 
+
 # 高レベル ビットマップクラス
 class Bitmap:
   def __init__(self):
     pass
+
 
 # 低レベル GIFヘッダ
 class RawHeader:
@@ -105,6 +109,7 @@ class RawImageBlockHeader:
     io.write(struct.pack("B", self.flag()))
     return self
 
+
 # 低レベル トレーラー
 class RawTrailer:
   def __init__(self):
@@ -114,7 +119,32 @@ class RawTrailer:
     io.write(struct.pack("B", 0x3b))
     return self
 
+
 # 低レベル カラーテーブル
+# MEMO: ひとまず8bitカラー専用とする
 class RawColorTable:
   def __init__(self):
     self.table = []
+
+  def size(self):
+    return len(self.table)
+
+  def bit_size(self):
+    return 8
+
+  def append(self, color):
+    self.table.append(color)
+    return self
+
+  def write(self, io):
+    count = 0
+    max   = 2 ** self.bit_size()
+
+    for (r, g, b) in self.table:
+      io.write(struct.pack("BBB", r, g, b))
+      count += 1
+
+    for i in range(max - count):
+      io.write(struct.pack("BBB", 0, 0, 0))
+
+    return self

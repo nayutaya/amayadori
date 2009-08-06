@@ -5,6 +5,7 @@ import StringIO
 
 import giflib
 
+
 class TestRawHeader(unittest.TestCase):
   def setUp(self):
     pass
@@ -188,6 +189,7 @@ class TestRawImageBlockHeader(unittest.TestCase):
       "\x2C\x34\x12\x78\x56\xBC\x9A\xF0\xDE\x87",
       sio.getvalue())
 
+
 class TestRawTrailer(unittest.TestCase):
   def setUp(self):
     pass
@@ -204,13 +206,55 @@ class TestRawTrailer(unittest.TestCase):
       "\x3B",
       sio.getvalue())
 
+
 class TestRawColorTable(unittest.TestCase):
   def setUp(self):
-    pass
+    self.obj = giflib.RawColorTable()
 
   def test_init(self):
-    obj = giflib.RawColorTable()
-    self.assertEqual([], obj.table)
+    self.assertEqual([], self.obj.table)
+
+  def test_size(self):
+    self.assertEqual(0, self.obj.size())
+
+  def test_bit_size(self):
+    self.assertEqual(8, self.obj.bit_size())
+
+  def test_append(self):
+    self.assertEqual(0, self.obj.size())
+
+    self.obj.append((1, 2, 3))
+    self.assertEqual(1, self.obj.size())
+    self.assertEqual((1, 2, 3), self.obj.table[-1])
+
+    self.obj.append((4, 5, 6))
+    self.assertEqual(2, self.obj.size())
+    self.assertEqual((4, 5, 6), self.obj.table[-1])
+
+  def test_write__empty(self):
+    sio = StringIO.StringIO()
+    self.obj.write(sio)
+
+    expected = "".join(["\x00\x00\x00" for i in range(256)])
+    self.assertEqual(expected, sio.getvalue())
+
+  def test_write__one(self):
+    sio = StringIO.StringIO()
+    self.obj.append((0xFD, 0xFE, 0xFF))
+    self.obj.write(sio)
+
+    expected  = "\xFD\xFE\xFF"
+    expected += "".join(["\x00\x00\x00" for i in range(255)])
+    self.assertEqual(expected, sio.getvalue())
+
+  def test_write__full(self):
+    sio = StringIO.StringIO()
+    for i in range(256):
+      self.obj.append((0xFF, 0xFF, 0xFF))
+    self.obj.write(sio)
+
+    expected = "".join(["\xFF\xFF\xFF" for i in range(256)])
+    self.assertEqual(expected, sio.getvalue())
 
 
 if __name__ == "__main__":
