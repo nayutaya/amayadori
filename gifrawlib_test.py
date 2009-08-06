@@ -404,6 +404,31 @@ class TestImageBlock(unittest.TestCase):
       "\x08\x01\xFF\x00",
       sio.getvalue())
 
+  def test_write__256byte(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = [0xCC for i in range(256)]
+    self.obj.write(sio)
+
+    expected  = "\x08"
+    expected += "\xFF" + "".join(["\xCC" for i in range(255)])
+    expected += "\x01" + "\xCC"
+    expected += "\x00"
+    self.assertEqual(expected, sio.getvalue())
+
+  def test_write__511byte(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = [0xCC for i in range(511)]
+    self.obj.write(sio)
+
+    expected  = "\x08"
+    expected += "\xFF" + "".join(["\xCC" for i in range(255)])
+    expected += "\xFF" + "".join(["\xCC" for i in range(255)])
+    expected += "\x01" + "\xCC"
+    expected += "\x00"
+    self.assertEqual(expected, sio.getvalue())
+
 
 if __name__ == "__main__":
   unittest.main()

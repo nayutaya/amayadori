@@ -217,9 +217,14 @@ class ImageBlock:
   def write(self, io):
     io.write(struct.pack("B", self.minimum_code))
 
-    if len(self.data) > 0:
-      io.write(struct.pack("B", len(self.data)))
-      for byte in self.data:
+    bytes = self.data[:]
+
+    while len(bytes) > 0:
+      block = bytes[0:255]
+      bytes = bytes[255:]
+
+      io.write(struct.pack("B", len(block)))
+      for byte in block:
         io.write(struct.pack("B", byte))
 
     # Block Terminator
