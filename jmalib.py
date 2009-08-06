@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import re
 
 
 class TimeUtility:
@@ -14,6 +15,19 @@ class TimeUtility:
 
 
 class RadarNowCast:
+  @classmethod
+  def parse_radar_js(cls, src):
+    regexp = re.compile(r"(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})-(\d{2})\.png")
+    result = []
+
+    for (year, month, day, hour, minute, ordinal) in regexp.findall(src):
+      time = datetime.datetime(
+        int(year), int(month), int(day),
+        int(hour), int(minute))
+      result.append((time, int(ordinal)))
+
+    return result
+
   @classmethod
   def create_radar_image_url(cls, area, time):
     url  = "http://www.jma.go.jp/jp/radnowc/imgs/radar"

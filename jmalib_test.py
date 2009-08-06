@@ -28,6 +28,26 @@ class TestRadarNowCast(unittest.TestCase):
   def setUp(self):
     self.klass = jmalib.RadarNowCast
 
+  def test_parse_radar_js(self):
+    src = """
+      var idx=0;
+      ImgRadar1kmColor[idx++] = new ImageInfo("200908061355-00.png","");
+      ImgRadar1kmColor[idx++] = new ImageInfo("200908061350-00.png","");
+      ImgRadar1kmColor[idx++] = new ImageInfo("200908061345-00.png","");
+      ImgRadar1kmColor[idx++] = new ImageInfo("200908061340-00.png","");
+      ImgRadar1kmColor[idx++] = new ImageInfo("200908061335-00.png","");
+      """
+    expected = [
+      (datetime.datetime(2009, 8, 6, 13, 55), 0),
+      (datetime.datetime(2009, 8, 6, 13, 50), 0),
+      (datetime.datetime(2009, 8, 6, 13, 45), 0),
+      (datetime.datetime(2009, 8, 6, 13, 40), 0),
+      (datetime.datetime(2009, 8, 6, 13, 35), 0),
+    ]
+    self.assertEqual(
+      expected,
+      self.klass.parse_radar_js(src))
+
   def test_create_radar_image_url(self):
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/radar/000/200001010000-00.png",
