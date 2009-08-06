@@ -42,6 +42,12 @@ class RadarNowCast:
     return result
 
   @classmethod
+  def get_latest_time(cls, time_and_ordinals):
+    times = [time for (time, ordinal) in time_and_ordinals]
+    times.sort()
+    return times[-1]
+
+  @classmethod
   def create_radar_image_url(cls, area, time):
     url  = "http://www.jma.go.jp/jp/radnowc/imgs/radar"
     url += "/" + ("%03i" % area)

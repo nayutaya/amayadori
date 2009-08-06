@@ -70,6 +70,18 @@ class TestRadarNowCast(unittest.TestCase):
       expected,
       self.klass.parse_nowcast_js(src))
 
+  def test_get_latest_time(self):
+    time_and_ordinals = [
+      (datetime.datetime(2009, 8, 6, 13, 55), 0),
+      (datetime.datetime(2009, 8, 6, 13, 50), 1),
+      (datetime.datetime(2009, 8, 6, 13, 45), 2),
+      (datetime.datetime(2009, 8, 6, 13, 40), 3),
+      (datetime.datetime(2009, 8, 6, 13, 35), 4),
+    ]
+    self.assertEqual(
+      datetime.datetime(2009, 8, 6, 13, 55),
+      self.klass.get_latest_time(time_and_ordinals))
+
   def test_create_radar_image_url(self):
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/radar/000/200001010000-00.png",
