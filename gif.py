@@ -34,7 +34,8 @@ def write_local_color_table(io):
     f.write(struct.pack("B", 255 - i))
 
 def write_trailer(io):
-  io.write(struct.pack("B", 0x3b))
+  trailer = giflib.RawTrailer()
+  trailer.write(io)
 
 f = open("tmp.gif", "wb")
 write_header(f)
