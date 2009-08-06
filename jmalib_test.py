@@ -48,6 +48,28 @@ class TestRadarNowCast(unittest.TestCase):
       expected,
       self.klass.parse_radar_js(src))
 
+  def test_parse_nowcast_js(self):
+    src = """
+      var idx=0;
+      ImgNowcastColor[idx++] = new ImageInfo("200908061400-06.png","");
+      ImgNowcastColor[idx++] = new ImageInfo("200908061400-05.png","");
+      ImgNowcastColor[idx++] = new ImageInfo("200908061400-04.png","");
+      ImgNowcastColor[idx++] = new ImageInfo("200908061400-03.png","");
+      ImgNowcastColor[idx++] = new ImageInfo("200908061400-02.png","");
+      ImgNowcastColor[idx++] = new ImageInfo("200908061400-01.png","");
+      """
+    expected = [
+      (datetime.datetime(2009, 8, 6, 14, 0), 6),
+      (datetime.datetime(2009, 8, 6, 14, 0), 5),
+      (datetime.datetime(2009, 8, 6, 14, 0), 4),
+      (datetime.datetime(2009, 8, 6, 14, 0), 3),
+      (datetime.datetime(2009, 8, 6, 14, 0), 2),
+      (datetime.datetime(2009, 8, 6, 14, 0), 1),
+    ]
+    self.assertEqual(
+      expected,
+      self.klass.parse_nowcast_js(src))
+
   def test_create_radar_image_url(self):
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/radar/000/200001010000-00.png",
