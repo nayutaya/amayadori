@@ -3,10 +3,10 @@
 import StringIO
 import struct
 
-import giflib
+import gifrawlib
 
 def write_header(io):
-  header = giflib.RawFileHeader()
+  header = gifrawlib.FileHeader()
   header.width                  = 10
   header.height                 = 10
   header.color_resolution       = 8
@@ -17,7 +17,7 @@ def write_header(io):
   header.write(io)
 
 def write_image_block_header(io):
-  header = giflib.RawImageBlockHeader()
+  header = gifrawlib.ImageBlockHeader()
   header.left                  = 0
   header.top                   = 0
   header.width                 = 10
@@ -28,13 +28,13 @@ def write_image_block_header(io):
   header.write(io)
 
 def write_local_color_table(io):
-  ctable = giflib.RawColorTable()
+  ctable = gifrawlib.ColorTable()
   for i in xrange(256):
     ctable.append((i, 0, 255 - i))
   ctable.write(io)
 
 def write_trailer(io):
-  trailer = giflib.RawTrailer()
+  trailer = gifrawlib.Trailer()
   trailer.write(io)
 
 f = open("tmp.gif", "wb")

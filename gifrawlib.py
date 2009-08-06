@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# 低レベルGIFライブラリ
+
 import struct
 
 
@@ -21,8 +23,8 @@ class Bitmap:
     pass
 
 
-# 低レベル ファイルヘッダ
-class RawFileHeader:
+# ファイルヘッダ
+class FileHeader:
   def __init__(self):
     self.signature              = "GIF87a"
     self.width                  = 0 # pixel
@@ -66,8 +68,8 @@ class RawFileHeader:
     return self
 
 
-# 低レベル イメージブロックヘッダ
-class RawImageBlockHeader:
+# イメージブロックヘッダ
+class ImageBlockHeader:
   def __init__(self):
     self.left                  = 0 # pixel
     self.top                   = 0 # pixel
@@ -110,8 +112,8 @@ class RawImageBlockHeader:
     return self
 
 
-# 低レベル トレーラー
-class RawTrailer:
+# トレーラー
+class Trailer:
   def __init__(self):
     pass
 
@@ -120,9 +122,9 @@ class RawTrailer:
     return self
 
 
-# 低レベル カラーテーブル
+# カラーテーブル
 # MEMO: ひとまず8bitカラー専用とする
-class RawColorTable:
+class ColorTable:
   def __init__(self):
     self.table = []
 

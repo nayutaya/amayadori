@@ -3,12 +3,12 @@
 import unittest
 import StringIO
 
-import giflib
+import gifrawlib
 
 
-class TestRawFileHeader(unittest.TestCase):
+class TestFileHeader(unittest.TestCase):
   def setUp(self):
-    self.obj = giflib.RawFileHeader()
+    self.obj = gifrawlib.FileHeader()
 
   def test_init(self):
     self.assertEqual("GIF87a", self.obj.signature)
@@ -90,9 +90,9 @@ class TestRawFileHeader(unittest.TestCase):
       sio.getvalue())
 
 
-class TestRawImageBlockHeader(unittest.TestCase):
+class TestImageBlockHeader(unittest.TestCase):
   def setUp(self):
-    self.obj = giflib.RawImageBlockHeader()
+    self.obj = gifrawlib.ImageBlockHeader()
 
   def test_init(self):
     self.assertEqual(0,     self.obj.left)
@@ -159,7 +159,7 @@ class TestRawImageBlockHeader(unittest.TestCase):
 
   def test_write(self):
     sio = StringIO.StringIO()
-    obj = giflib.RawImageBlockHeader()
+    obj = gifrawlib.ImageBlockHeader()
     obj.left                  = 0x1234
     obj.top                   = 0x5678
     obj.width                 = 0x9ABC
@@ -174,9 +174,9 @@ class TestRawImageBlockHeader(unittest.TestCase):
       sio.getvalue())
 
 
-class TestRawTrailer(unittest.TestCase):
+class TestTrailer(unittest.TestCase):
   def setUp(self):
-    self.obj = giflib.RawTrailer()
+    self.obj = gifrawlib.Trailer()
 
   def test_init(self):
     pass
@@ -190,9 +190,9 @@ class TestRawTrailer(unittest.TestCase):
       sio.getvalue())
 
 
-class TestRawColorTable(unittest.TestCase):
+class TestColorTable(unittest.TestCase):
   def setUp(self):
-    self.obj = giflib.RawColorTable()
+    self.obj = gifrawlib.ColorTable()
 
   def test_init(self):
     self.assertEqual([], self.obj.table)
