@@ -11,7 +11,7 @@ import taskmanager
 
 # for cron
 class CacheClearTask(webapp.RequestHandler):
-  def post(self):
+  def get(self):
     logging.info("CacheClearTask")
 
 # for task-queue
