@@ -28,10 +28,10 @@ def write_image_block_header(io):
   header.write(io)
 
 def write_local_color_table(io):
+  ctable = giflib.RawColorTable()
   for i in xrange(256):
-    f.write(struct.pack("B", i))
-    f.write(struct.pack("B", 0))
-    f.write(struct.pack("B", 255 - i))
+    ctable.append((i, 0, 255 - i))
+  ctable.write(io)
 
 def write_trailer(io):
   trailer = giflib.RawTrailer()
