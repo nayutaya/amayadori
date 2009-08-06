@@ -239,9 +239,9 @@ class TestColorTable(unittest.TestCase):
     self.assertEqual(expected, sio.getvalue())
 
 
-class TestUncompressedImageBlock(unittest.TestCase):
+class TestUncompressedImageBlockData(unittest.TestCase):
   def setUp(self):
-    self.obj = gifrawlib.UncompressedImageBlock()
+    self.obj = gifrawlib.UncompressedImageBlockData()
 
   def test_init(self):
     self.assertEqual([], self.obj.pixels)
@@ -260,6 +260,20 @@ class TestUncompressedImageBlock(unittest.TestCase):
     self.assertEqual(2, self.obj.size())
     self.assertEqual(1, self.obj.pixels[-1])
 
+  def test_bitsets__empty(self):
+    expected = [
+      "100000000", # clear code
+      "100000001", # end code
+    ]
+    self.assertEqual(expected, self.obj.bitsets())
+
+  #def test_bytes__empty(self):
+  #  expected = [
+  #    int("00000000", 2),
+  #    int("11000000", 2),
+  #    int("10000000", 2),
+  #  ]
+  #  self.assertEqual(expected, self.obj.bytes())
 
 
 if __name__ == "__main__":

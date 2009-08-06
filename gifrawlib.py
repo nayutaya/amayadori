@@ -151,9 +151,9 @@ class ColorTable:
 
     return self
 
-# 無圧縮イメージブロック
+# 無圧縮イメージブロックデータ
 # MEMO: ひとまず8bitカラー専用とする
-class UncompressedImageBlock:
+class UncompressedImageBlockData:
   def __init__(self):
     self.pixels = []
 
@@ -163,3 +163,14 @@ class UncompressedImageBlock:
   def append(self, pixel):
     self.pixels.append(pixel)
     return self
+
+  def bitsets(self):
+    bitsets = []
+    bitsets.append("100000000") # clear code
+    bitsets.append("100000001") # end code
+    return bitsets
+
+  #def bytes(self):
+  #  bits = 
+
+    return []
