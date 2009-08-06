@@ -3,6 +3,7 @@
 import unittest
 
 import giflib
+import gifrawlib
 
 
 class TestBitmap(unittest.TestCase):
@@ -46,6 +47,16 @@ class TestBitmap(unittest.TestCase):
       4, 0, 0, 0, 2,
     ]
     self.assertEqual(expected, obj.pixels)
+
+  def test_create_image_block_data(self):
+    obj = giflib.Bitmap(3, 2)
+    obj.pixels = [0, 1, 2, 3, 4, 5]
+
+    data = gifrawlib.UncompressedImageBlockData()
+    for byte in obj.pixels:
+      data.append(byte)
+    expected = data.bytes()
+    self.assertEqual(expected, obj.create_image_block_data())
 
 
 if __name__ == "__main__":

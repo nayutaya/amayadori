@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import gifrawlib
+
+
 # 高レベル ビットマップクラス
 class Bitmap:
   def __init__(self, width, height, depth = 8):
@@ -14,6 +17,13 @@ class Bitmap:
   def set_pixel(self, x, y, pixel):
     self.pixels[y * self.width + x] = pixel
     return self
+
+  def create_image_block_data(self):
+    data = gifrawlib.UncompressedImageBlockData()
+    for pixel in self.pixels:
+      data.append(pixel)
+    return data.bytes()
+
 
 # 高レベル イメージクラス
 #class Image:
