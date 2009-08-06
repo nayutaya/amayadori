@@ -239,5 +239,28 @@ class TestColorTable(unittest.TestCase):
     self.assertEqual(expected, sio.getvalue())
 
 
+class TestUncompressedImageBlock(unittest.TestCase):
+  def setUp(self):
+    self.obj = gifrawlib.UncompressedImageBlock()
+
+  def test_init(self):
+    self.assertEqual([], self.obj.pixels)
+
+  def test_size(self):
+    self.assertEqual(0, self.obj.size())
+
+  def test_append(self):
+    self.assertEqual(0, self.obj.size())
+
+    self.obj.append(0)
+    self.assertEqual(1, self.obj.size())
+    self.assertEqual(0, self.obj.pixels[-1])
+
+    self.obj.append(1)
+    self.assertEqual(2, self.obj.size())
+    self.assertEqual(1, self.obj.pixels[-1])
+
+
+
 if __name__ == "__main__":
   unittest.main()

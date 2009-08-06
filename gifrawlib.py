@@ -150,3 +150,16 @@ class ColorTable:
       io.write(struct.pack("BBB", 0, 0, 0))
 
     return self
+
+# 無圧縮イメージブロック
+# MEMO: ひとまず8bitカラー専用とする
+class UncompressedImageBlock:
+  def __init__(self):
+    self.pixels = []
+
+  def size(self):
+    return len(self.pixels)
+
+  def append(self, pixel):
+    self.pixels.append(pixel)
+    return self
