@@ -8,6 +8,9 @@ class Bitmap:
     self.depth  = depth
     self.pixels = [0 for i in xrange(self.width * self.height)]
 
+  def get_pixel(self, x, y):
+    return self.pixels[y * self.width + x]
+
   def set_pixel(self, x, y, pixel):
     self.pixels[y * self.width + x] = pixel
     return self
