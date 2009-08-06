@@ -188,6 +188,21 @@ class TestRawImageBlockHeader(unittest.TestCase):
       "\x2C\x34\x12\x78\x56\xBC\x9A\xF0\xDE\x87",
       sio.getvalue())
 
+class TestRawTrailer(unittest.TestCase):
+  def setUp(self):
+    pass
+
+  def test_init(self):
+    pass
+
+  def test_write(self):
+    sio = StringIO.StringIO()
+    obj = giflib.RawTrailer()
+    obj.write(sio)
+
+    self.assertEqual(
+      "\x3B",
+      sio.getvalue())
 
 if __name__ == "__main__":
   unittest.main()

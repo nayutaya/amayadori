@@ -104,3 +104,12 @@ class RawImageBlockHeader:
     io.write(struct.pack("H", self.height))
     io.write(struct.pack("B", self.flag()))
     return self
+
+# 低レベル トレーラー
+class RawTrailer:
+  def __init__(self):
+    pass
+
+  def write(self, io):
+    io.write(struct.pack("B", 0x3b))
+    return self
