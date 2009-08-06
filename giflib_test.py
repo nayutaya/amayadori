@@ -82,20 +82,20 @@ class TestRawHeader(unittest.TestCase):
     self.assertEqual(7, obj.size_of_global_color_table_flag())
 
   def test_write(self):
+    sio = StringIO.StringIO()
     obj = giflib.RawHeader()
     obj.width                      = 0x1234
     obj.height                     = 0x5678
     obj.color_resolution           = 8
     obj.is_sorted_color_table      = False
     obj.size_of_global_color_table = 0
-    io1 = StringIO.StringIO()
-    obj.write(io1)
-    #print io1
+    obj.background_color_index     = 0x90
+    obj.pixel_aspect_ratio         = 0xAB
+    obj.write(sio)
 
-    expected = "GIF87a"
-    actual   = io1.getvalue()
-    print actual
-    self.assertEqual(expected, actual)
+    self.assertEqual(
+      "GIF87a\x34\x12\x78\x56\x70\x90\xAB",
+      sio.getvalue())
 
 
 if __name__ == "__main__":

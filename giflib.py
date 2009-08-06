@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import struct
+
 # 高レベル イメージクラス
 class Image:
   def __init__(self):
@@ -52,4 +54,9 @@ class RawHeader:
 
   def write(self, io):
     io.write(self.signature)
+    io.write(struct.pack("H", self.width))
+    io.write(struct.pack("H", self.height))
+    io.write(struct.pack("B", self.flag()))
+    io.write(struct.pack("B", self.background_color_index))
+    io.write(struct.pack("B", self.pixel_aspect_ratio))
     return self
