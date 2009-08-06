@@ -42,36 +42,10 @@ write_header(f)
 write_image_block_header(f)
 write_local_color_table(f)
 
-def byte2binstr(value):
-  bin = ""
-  for i in range(8):
-    bin = str(value & 1) + bin
-    value = value >> 1
-  return bin
-
-pixels  = [(i * 4) % 256 for i in xrange(10 * 10)]
-pixels2 = [byte2binstr(p) for p in pixels]
-pixels3 = ["0" + x for x in pixels2]
-print pixels
-
-bits2 = []
-bits2.append("100000000") # clear code
-for x in pixels3:
-  bits2.append(x)
-bits2.append("100000001") # end code
-bits2.reverse()
-
-bits = "".join(bits2)
-bits = "".join(["0" for i in range(8 - (len(bits) - (len(bits) / 8 * 8)))]) + bits # padding
-
-bytes = []
-while len(bits) > 0:
-  oct  = bits[0:8]
-  bits = bits[8:]
-  bytes.append(int(oct, 2))
-print bytes
-print len(bytes)
-bytes.reverse()
+data = gifrawlib.UncompressedImageBlockData()
+for i in xrange(10 * 10):
+  data.append((i * 4) % 256)
+bytes = data.bytes()
 
 io = f
 # LZW Minimum Code Side: 8bit
