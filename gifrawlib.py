@@ -5,24 +5,6 @@
 import struct
 
 
-# 高レベル イメージクラス
-class Image:
-  def __init__(self):
-    pass
-
-
-# 高レベル パレットクラス
-class Palette:
-  def __init__(self):
-    pass
-
-
-# 高レベル ビットマップクラス
-class Bitmap:
-  def __init__(self):
-    pass
-
-
 # ファイルヘッダ
 class FileHeader:
   def __init__(self):
