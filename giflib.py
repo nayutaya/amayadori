@@ -21,8 +21,8 @@ class Bitmap:
 class RawHeader:
   def __init__(self):
     self.signature                  = "GIF87a"
-    self.width                      = None
-    self.height                     = None
+    self.width                      = 0 # pixel
+    self.height                     = 0 # pixel
     self.color_resolution           = 8 # bits
     self.is_sorted_color_table      = False
     self.size_of_global_color_table = 0 # bits
@@ -60,3 +60,14 @@ class RawHeader:
     io.write(struct.pack("B", self.background_color_index))
     io.write(struct.pack("B", self.pixel_aspect_ratio))
     return self
+
+# 低レベル イメージブロックヘッダ
+class RawImageBlockHeader:
+  def __init__(self):
+    self.left                  = 0 # pixel
+    self.top                   = 0 # pixel
+    self.width                 = 0 # pixel
+    self.height                = 0 # pixel
+    self.is_interlaced         = False
+    self.is_sorted_color_table = False
+    self.size_of_color_table   = 0 # bits

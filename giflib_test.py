@@ -13,8 +13,8 @@ class TestRawHeader(unittest.TestCase):
     obj = giflib.RawHeader()
 
     self.assertEqual("GIF87a", obj.signature)
-    self.assertEqual(None,     obj.width)
-    self.assertEqual(None,     obj.height)
+    self.assertEqual(0,        obj.width)
+    self.assertEqual(0,        obj.height)
     self.assertEqual(8,        obj.color_resolution)
     self.assertEqual(False,    obj.is_sorted_color_table)
     self.assertEqual(0,        obj.size_of_global_color_table)
@@ -97,6 +97,20 @@ class TestRawHeader(unittest.TestCase):
       "GIF87a\x34\x12\x78\x56\x70\x90\xAB",
       sio.getvalue())
 
+
+class TestRawImageBlockHeader(unittest.TestCase):
+  def setUp(self):
+    pass
+
+  def test_init(self):
+    obj = giflib.RawImageBlockHeader()
+    self.assertEqual(0,     obj.left)
+    self.assertEqual(0,     obj.top)
+    self.assertEqual(0,     obj.width)
+    self.assertEqual(0,     obj.height)
+    self.assertEqual(False, obj.is_interlaced)
+    self.assertEqual(False, obj.is_sorted_color_table)
+    self.assertEqual(0,     obj.size_of_color_table)
 
 if __name__ == "__main__":
   unittest.main()
