@@ -3,24 +3,18 @@
 import StringIO
 import struct
 
+import giflib
+
 def write_header(io):
-  # Signature, Version
-  io.write("GIF87a")
-  # Logical Screen Width, Logical Screen Height
-  width, height = 10, 10
-  io.write(struct.pack("H", width))
-  io.write(struct.pack("H", height))
-  # Global Color Table: なし
-  # Color Resolution: 8bit
-  # Sort Flag: ソートなし
-  # Size of Global Color Table: 0bit
-  flags = int("01110000", 2)
-  io.write(struct.pack("B", flags))
-  # Background Color Index
-  io.write(struct.pack("B", 0))
-  # Pixel Aspect Ratio
-  io.write(struct.pack("B", 0))
-  # Global Color Table: なし
+  header = giflib.RawHeader()
+  header.width                      = 10
+  header.height                     = 10
+  header.color_resolution           = 8
+  header.is_sorted_color_table      = False
+  header.size_of_global_color_table = 0
+  header.background_color_index     = 0
+  header.pixel_aspect_ratio         = 0
+  header.write(io)
 
 def write_image_block_header(io):
   # Image Separator
