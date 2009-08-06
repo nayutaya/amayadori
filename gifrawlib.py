@@ -206,3 +206,10 @@ class UncompressedImageBlockData:
     bytes.reverse()
 
     return bytes
+
+
+# イメージブロック
+class ImageBlock:
+  def __init__(self):
+    self.minimum_code = 8 # bit
+    self.data         = []

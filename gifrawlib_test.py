@@ -376,6 +376,14 @@ class TestUncompressedImageBlockData(unittest.TestCase):
     self.assertEqual(expected, self.obj.bytes())
 
 
+class TestImageBlock(unittest.TestCase):
+  def setUp(self):
+    self.obj = gifrawlib.ImageBlock()
+
+  def test_init(self):
+    self.assertEqual(8,  self.obj.minimum_code)
+    self.assertEqual([], self.obj.data)
+
 
 if __name__ == "__main__":
   unittest.main()
