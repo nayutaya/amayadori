@@ -56,17 +56,17 @@ class RadarNowCast:
     return url
 
   @classmethod
-  def create_nowcast_image_url(cls, area, time, no):
+  def create_nowcast_image_url(cls, area, time, ordinal):
     url = "http://www.jma.go.jp/jp/radnowc/imgs/nowcast"
     url += "/" + ("%03i" % area)
     url += "/" + time.strftime("%Y%m%d%H%M")
-    url += "-" + ("%02i" % no)
+    url += "-" + ("%02i" % ordinal)
     url += ".png"
     return url
 
   @classmethod
-  def create_image_url(cls, area, time, no):
-    if no == 0:
+  def create_image_url(cls, area, time, ordinal):
+    if ordinal == 0:
       return cls.create_radar_image_url(area, time)
     else:
-      return cls.create_nowcast_image_url(area, time, no)
+      return cls.create_nowcast_image_url(area, time, ordinal)
