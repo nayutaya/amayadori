@@ -21,34 +21,6 @@ class TestRawHeader(unittest.TestCase):
     self.assertEqual(0,        obj.background_color_index)
     self.assertEqual(0,        obj.pixel_aspect_ratio)
 
-  def test_flag(self):
-    obj = giflib.RawHeader()
-
-    obj.color_resolution      = 1
-    obj.is_sorted_color_table = False
-    obj.color_table_size      = 0
-    self.assertEqual(int("00000000", 2), obj.flag())
-
-    obj.color_resolution      = 1
-    obj.is_sorted_color_table = False
-    obj.color_table_size      = 1
-    self.assertEqual(int("10000000", 2), obj.flag())
-
-    obj.color_resolution      = 8
-    obj.is_sorted_color_table = False
-    obj.color_table_size      = 1
-    self.assertEqual(int("11110000", 2), obj.flag())
-
-    obj.color_resolution      = 8
-    obj.is_sorted_color_table = True
-    obj.color_table_size      = 1
-    self.assertEqual(int("11111000", 2), obj.flag())
-
-    obj.color_resolution      = 8
-    obj.is_sorted_color_table = True
-    obj.color_table_size      = 8
-    self.assertEqual(int("11111111", 2), obj.flag())
-
   def test_has_color_table_flag(self):
     obj = giflib.RawHeader()
     obj.color_table_size = 0
@@ -80,6 +52,34 @@ class TestRawHeader(unittest.TestCase):
     self.assertEqual(0, obj.color_table_size_flag())
     obj.color_table_size = 8
     self.assertEqual(7, obj.color_table_size_flag())
+
+  def test_flag(self):
+    obj = giflib.RawHeader()
+
+    obj.color_resolution      = 1
+    obj.is_sorted_color_table = False
+    obj.color_table_size      = 0
+    self.assertEqual(int("00000000", 2), obj.flag())
+
+    obj.color_resolution      = 1
+    obj.is_sorted_color_table = False
+    obj.color_table_size      = 1
+    self.assertEqual(int("10000000", 2), obj.flag())
+
+    obj.color_resolution      = 8
+    obj.is_sorted_color_table = False
+    obj.color_table_size      = 1
+    self.assertEqual(int("11110000", 2), obj.flag())
+
+    obj.color_resolution      = 8
+    obj.is_sorted_color_table = True
+    obj.color_table_size      = 1
+    self.assertEqual(int("11111000", 2), obj.flag())
+
+    obj.color_resolution      = 8
+    obj.is_sorted_color_table = True
+    obj.color_table_size      = 8
+    self.assertEqual(int("11111111", 2), obj.flag())
 
   def test_write(self):
     sio = StringIO.StringIO()

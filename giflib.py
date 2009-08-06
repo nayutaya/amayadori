@@ -29,14 +29,6 @@ class RawHeader:
     self.background_color_index = 0
     self.pixel_aspect_ratio     = 0
 
-  def flag(self):
-    flag  = 0
-    flag |= (self.has_color_table_flag()       << 7)
-    flag |= (self.color_resolution_flag()      << 4)
-    flag |= (self.is_sorted_color_table_flag() << 3)
-    flag |= (self.color_table_size_flag()      << 0)
-    return flag
-
   def has_color_table_flag(self):
     return 0 if self.color_table_size == 0 else 1
 
@@ -51,6 +43,14 @@ class RawHeader:
       return 0
     else:
       return self.color_table_size - 1
+
+  def flag(self):
+    flag  = 0
+    flag |= (self.has_color_table_flag()       << 7)
+    flag |= (self.color_resolution_flag()      << 4)
+    flag |= (self.is_sorted_color_table_flag() << 3)
+    flag |= (self.color_table_size_flag()      << 0)
+    return flag
 
   def write(self, io):
     io.write(self.signature)
