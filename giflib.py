@@ -113,3 +113,8 @@ class RawTrailer:
   def write(self, io):
     io.write(struct.pack("B", 0x3b))
     return self
+
+# 低レベル カラーテーブル
+class RawColorTable:
+  def __init__(self):
+    self.table = []

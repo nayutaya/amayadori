@@ -204,5 +204,14 @@ class TestRawTrailer(unittest.TestCase):
       "\x3B",
       sio.getvalue())
 
+class TestRawColorTable(unittest.TestCase):
+  def setUp(self):
+    pass
+
+  def test_init(self):
+    obj = giflib.RawColorTable()
+    self.assertEqual([], obj.table)
+
+
 if __name__ == "__main__":
   unittest.main()
