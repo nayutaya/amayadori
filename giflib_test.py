@@ -112,6 +112,66 @@ class TestRawImageBlockHeader(unittest.TestCase):
     self.assertEqual(False, obj.is_sorted_color_table)
     self.assertEqual(0,     obj.color_table_size)
 
+  def test_has_color_table_flag(self):
+    obj = giflib.RawImageBlockHeader()
+    obj.color_table_size = 0
+    self.assertEqual(0, obj.has_color_table_flag())
+    obj.color_table_size = 1
+    self.assertEqual(1, obj.has_color_table_flag())
+    obj.color_table_size = 8
+    self.assertEqual(1, obj.has_color_table_flag())
+
+  def test_is_interlaced_flag(self):
+    obj = giflib.RawImageBlockHeader()
+    obj.is_interlaced = False
+    self.assertEqual(0, obj.is_interlaced_flag())
+    obj.is_interlaced = True
+    self.assertEqual(1, obj.is_interlaced_flag())
+
+  def test_is_sorted_color_table_flag(self):
+    obj = giflib.RawImageBlockHeader()
+    obj.is_sorted_color_table = False
+    self.assertEqual(0, obj.is_sorted_color_table_flag())
+    obj.is_sorted_color_table = True
+    self.assertEqual(1, obj.is_sorted_color_table_flag())
+
+  def test_color_table_size_flag(self):
+    obj = giflib.RawImageBlockHeader()
+    obj.color_table_size = 0
+    self.assertEqual(0, obj.color_table_size_flag())
+    obj.color_table_size = 1
+    self.assertEqual(0, obj.color_table_size_flag())
+    obj.color_table_size = 8
+    self.assertEqual(7, obj.color_table_size_flag())
+
+  def test_flag(self):
+    obj = giflib.RawImageBlockHeader()
+
+    obj.is_interlaced         = False
+    obj.is_sorted_color_table = False
+    obj.color_table_size      = 0
+    self.assertEqual(int("00000000", 2), obj.flag())
+
+    obj.is_interlaced         = False
+    obj.is_sorted_color_table = False
+    obj.color_table_size      = 1
+    self.assertEqual(int("10000000", 2), obj.flag())
+
+    obj.is_interlaced         = True
+    obj.is_sorted_color_table = False
+    obj.color_table_size      = 1
+    self.assertEqual(int("11000000", 2), obj.flag())
+
+    obj.is_interlaced         = True
+    obj.is_sorted_color_table = True
+    obj.color_table_size      = 1
+    self.assertEqual(int("11100000", 2), obj.flag())
+
+    obj.is_interlaced         = True
+    obj.is_sorted_color_table = True
+    obj.color_table_size      = 8
+    self.assertEqual(int("11100111", 2), obj.flag())
+
 
 if __name__ == "__main__":
   unittest.main()
