@@ -267,6 +267,33 @@ class TestUncompressedImageBlockData(unittest.TestCase):
     ]
     self.assertEqual(expected, self.obj.bitsets())
 
+  def test_bits_to_bytes__empty(self):
+    self.assertEqual(
+      [],
+      self.obj.bits_to_bytes(""))
+
+  def test_bits_to_bytes__1byte(self):
+    self.assertEqual(
+      [int("11111111", 2)],
+      self.obj.bits_to_bytes("11111111"))
+
+  def test_bits_to_bytes__less_than_1byte(self):
+    self.assertEqual(
+      [int("000000001", 2)],
+      self.obj.bits_to_bytes("1"))
+    self.assertEqual(
+      [int("00001111", 2)],
+      self.obj.bits_to_bytes("1111"))
+    self.assertEqual(
+      [int("01111111", 2)],
+      self.obj.bits_to_bytes("1111111"))
+
+  def test_bits_to_bytes__1byte_and_half(self):
+    self.assertEqual(
+      [int("10000000", 2), int("1111", 2)],
+      self.obj.bits_to_bytes("100000001111"))
+
+
   #def test_bytes__empty(self):
   #  expected = [
   #    int("00000000", 2),

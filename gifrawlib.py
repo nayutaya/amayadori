@@ -170,6 +170,16 @@ class UncompressedImageBlockData:
     bitsets.append("100000001") # end code
     return bitsets
 
+  def bits_to_bytes(self, bits):
+    bytes = []
+
+    while len(bits) > 0:
+      octet = bits[0:8]
+      bits  = bits[8:]
+      bytes.append(int(octet, 2))
+
+    return bytes
+
   #def bytes(self):
   #  bits = 
 
