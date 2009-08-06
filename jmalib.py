@@ -48,6 +48,20 @@ class RadarNowCast:
     return times[-1]
 
   @classmethod
+  def get_current_radar_time(cls, fetcher):
+    url    = "http://www.jma.go.jp/jp/radnowc/hisjs/radar.js"
+    source = fetcher(url)
+    parsed = cls.parse_radar_js(source)
+    return cls.get_latest_time(parsed)
+
+  @classmethod
+  def get_current_nowcast_time(cls, fetcher):
+    url    = "http://www.jma.go.jp/jp/radnowc/hisjs/nowcast.js"
+    source = fetcher(url)
+    parsed = cls.parse_nowcast_js(source)
+    return cls.get_latest_time(parsed)
+
+  @classmethod
   def create_radar_image_url(cls, area, time):
     url  = "http://www.jma.go.jp/jp/radnowc/imgs/radar"
     url += "/" + ("%03i" % area)

@@ -82,6 +82,30 @@ class TestRadarNowCast(unittest.TestCase):
       datetime.datetime(2009, 8, 6, 13, 55),
       self.klass.get_latest_time(time_and_ordinals))
 
+  def test_get_current_radar_time(self):
+    def fetcher(url):
+      src = """
+        var idx=0;
+        ImgRadar1kmColor[idx++] = new ImageInfo("200908061355-00.png","");
+        ImgRadar1kmColor[idx++] = new ImageInfo("200908061350-00.png","");
+        """
+      return src
+    self.assertEqual(
+      datetime.datetime(2009, 8, 6, 13, 55),
+      self.klass.get_current_radar_time(fetcher))
+
+  def test_get_current_nowcast_time(self):
+    def fetcher(url):
+      src = """
+        var idx=0;
+        ImgNowcastColor[idx++] = new ImageInfo("200908061355-06.png","");
+        ImgNowcastColor[idx++] = new ImageInfo("200908061350-05.png","");
+        """
+      return src
+    self.assertEqual(
+      datetime.datetime(2009, 8, 6, 13, 55),
+      self.klass.get_current_nowcast_time(fetcher))
+
   def test_create_radar_image_url(self):
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/radar/000/200001010000-00.png",
