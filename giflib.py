@@ -47,3 +47,7 @@ class RawHeader:
       return 0
     else:
       return self.size_of_global_color_table - 1
+
+  def write(self, io):
+    io.write(self.signature)
+    return self

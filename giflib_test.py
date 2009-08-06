@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import StringIO
 
 import giflib
 
@@ -77,6 +78,23 @@ class TestRawHeader(unittest.TestCase):
     self.assertEqual(0, obj.size_of_global_color_table_flag())
     obj.size_of_global_color_table = 8
     self.assertEqual(7, obj.size_of_global_color_table_flag())
+
+  def test_write(self):
+    obj = giflib.RawHeader()
+    obj.width                      = 0x1234
+    obj.height                     = 0x5678
+    obj.color_resolution           = 8
+    obj.is_sorted_color_table      = False
+    obj.size_of_global_color_table = 0
+    io1 = StringIO.StringIO()
+    obj.write(io1)
+    #print io1
+
+    expected = "GIF87a"
+    actual   = io1.getvalue()
+    print actual
+    self.assertEqual(expected, actual)
+
 
 if __name__ == "__main__":
   unittest.main()
