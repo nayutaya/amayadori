@@ -2,6 +2,13 @@
 
 import datetime
 
+
+class TimeUtility:
+  @classmethod
+  def get_per_minute_time(cls, time):
+    return datetime.datetime(time.year, time.month, time.day, time.hour, time.minute)
+
+
 class RadarNowCast:
   @classmethod
   def create_radar_image_url(cls, area, time):
