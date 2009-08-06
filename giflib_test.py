@@ -172,6 +172,22 @@ class TestRawImageBlockHeader(unittest.TestCase):
     obj.color_table_size      = 8
     self.assertEqual(int("11100111", 2), obj.flag())
 
+  def test_write(self):
+    sio = StringIO.StringIO()
+    obj = giflib.RawImageBlockHeader()
+    obj.left                  = 0x1234
+    obj.top                   = 0x5678
+    obj.width                 = 0x9ABC
+    obj.height                = 0xDEF0
+    obj.is_interlaced         = False
+    obj.is_sorted_color_table = False
+    obj.color_table_size      = 8
+    obj.write(sio)
+
+    self.assertEqual(
+      "\x2C\x34\x12\x78\x56\xBC\x9A\xF0\xDE\x87",
+      sio.getvalue())
+
 
 if __name__ == "__main__":
   unittest.main()

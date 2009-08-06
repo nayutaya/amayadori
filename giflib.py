@@ -95,3 +95,12 @@ class RawImageBlockHeader:
     flag |= (self.is_sorted_color_table_flag() << 5)
     flag |= (self.color_table_size_flag()      << 0)
     return flag
+
+  def write(self, io):
+    io.write(struct.pack("B", 0x2c))
+    io.write(struct.pack("H", self.left))
+    io.write(struct.pack("H", self.top))
+    io.write(struct.pack("H", self.width))
+    io.write(struct.pack("H", self.height))
+    io.write(struct.pack("B", self.flag()))
+    return self
