@@ -6,7 +6,11 @@ class Bitmap:
     self.width  = width
     self.height = height
     self.depth  = depth
-    self.pixels = []
+    self.pixels = [0 for i in xrange(self.width * self.height)]
+
+  def set_pixel(self, x, y, pixel):
+    self.pixels[y * self.width + x] = pixel
+    return self
 
 # 高レベル イメージクラス
 #class Image:
