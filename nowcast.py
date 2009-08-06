@@ -38,8 +38,7 @@ def get_current_observed_time():
 
     cache = model.ObservedTimeCache(
       current_time  = current_time,
-      observed_time = observed_time,
-      expire_time   = current_time + datetime.timedelta(minutes = 20))
+      observed_time = observed_time)
     cache.put()
 
     return observed_time
@@ -57,8 +56,7 @@ def get_current_predictive_time():
 
     cache = model.PredictiveTimeCache(
       current_time    = current_time,
-      predictive_time = predictive_time,
-      expire_time     = current_time + datetime.timedelta(minutes = 20))
+      predictive_time = predictive_time)
     cache.put()
 
     return predictive_time
@@ -75,8 +73,7 @@ def get_image(area, time, ordinal):
       area        = area,
       time        = time,
       ordinal     = ordinal,
-      image       = db.Blob(image),
-      expire_time = get_jst_now() + datetime.timedelta(minutes = 20))
+      image       = db.Blob(image))
     cache.put()
 
   return cache.image
