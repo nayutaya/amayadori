@@ -136,5 +136,16 @@ class TestRadarNowCast(unittest.TestCase):
       self.klass.create_nowcast_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99),
       self.klass.create_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99))
 
+  def test_get_image(self):
+    def fetcher(url):
+      return "binary"
+    self.assertEqual(
+      "binary",
+      self.klass.get_image(0, datetime.datetime(2000, 1, 1, 0, 0), 0, fetcher))
+    self.assertEqual(
+      "binary",
+      self.klass.get_image(0, datetime.datetime(2000, 1, 1, 0, 0), 1, fetcher))
+
+
 if __name__ == "__main__":
   unittest.main()

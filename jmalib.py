@@ -84,3 +84,9 @@ class RadarNowCast:
       return cls.create_radar_image_url(area, time)
     else:
       return cls.create_nowcast_image_url(area, time, ordinal)
+
+  @classmethod
+  def get_image(cls, area, time, ordinal, fetcher):
+    url    = cls.create_image_url(area, time, ordinal)
+    binary = fetcher(url)
+    return binary
