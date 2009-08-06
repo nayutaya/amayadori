@@ -293,14 +293,14 @@ class TestUncompressedImageBlockData(unittest.TestCase):
       [int("10000000", 2), int("1111", 2)],
       self.obj.bits_to_bytes("100000001111"))
 
+  def test_bytes__empty(self):
+    expected = [
+      int("00000000", 2),
+      int("00000011", 2),
+      int("00000010", 2),
+    ]
+    self.assertEqual(expected, self.obj.bytes())
 
-  #def test_bytes__empty(self):
-  #  expected = [
-  #    int("00000000", 2),
-  #    int("11000000", 2),
-  #    int("10000000", 2),
-  #  ]
-  #  self.assertEqual(expected, self.obj.bytes())
 
 
 if __name__ == "__main__":
