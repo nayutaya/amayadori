@@ -5,24 +5,6 @@
 import struct
 
 
-# 高レベル イメージクラス
-class Image:
-  def __init__(self):
-    pass
-
-
-# 高レベル パレットクラス
-class Palette:
-  def __init__(self):
-    pass
-
-
-# 高レベル ビットマップクラス
-class Bitmap:
-  def __init__(self):
-    pass
-
-
 # ファイルヘッダ
 class FileHeader:
   def __init__(self):
@@ -206,3 +188,28 @@ class UncompressedImageBlockData:
     bytes.reverse()
 
     return bytes
+
+
+# イメージブロック
+class ImageBlock:
+  def __init__(self):
+    self.minimum_code = 8 # bit
+    self.data         = []
+
+  def write(self, io):
+    io.write(struct.pack("B", self.minimum_code))
+
+    bytes = self.data[:]
+
+    while len(bytes) > 0:
+      block = bytes[0:255]
+      bytes = bytes[255:]
+
+      io.write(struct.pack("B", len(block)))
+      for byte in block:
+        io.write(struct.pack("B", byte))
+
+    # Block Terminator
+    io.write(struct.pack("B", 0))
+
+    return self

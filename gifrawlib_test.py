@@ -376,6 +376,59 @@ class TestUncompressedImageBlockData(unittest.TestCase):
     self.assertEqual(expected, self.obj.bytes())
 
 
+class TestImageBlock(unittest.TestCase):
+  def setUp(self):
+    self.obj = gifrawlib.ImageBlock()
+
+  def test_init(self):
+    self.assertEqual(8,  self.obj.minimum_code)
+    self.assertEqual([], self.obj.data)
+
+  def test_write__empty(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = []
+    self.obj.write(sio)
+
+    self.assertEqual(
+      "\x08\x00",
+      sio.getvalue())
+
+  def test_write__1byte(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = [0xFF]
+    self.obj.write(sio)
+
+    self.assertEqual(
+      "\x08\x01\xFF\x00",
+      sio.getvalue())
+
+  def test_write__256byte(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = [0xCC for i in range(256)]
+    self.obj.write(sio)
+
+    expected  = "\x08"
+    expected += "\xFF" + "".join(["\xCC" for i in range(255)])
+    expected += "\x01" + "\xCC"
+    expected += "\x00"
+    self.assertEqual(expected, sio.getvalue())
+
+  def test_write__511byte(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = [0xCC for i in range(511)]
+    self.obj.write(sio)
+
+    expected  = "\x08"
+    expected += "\xFF" + "".join(["\xCC" for i in range(255)])
+    expected += "\xFF" + "".join(["\xCC" for i in range(255)])
+    expected += "\x01" + "\xCC"
+    expected += "\x00"
+    self.assertEqual(expected, sio.getvalue())
+
 
 if __name__ == "__main__":
   unittest.main()
