@@ -197,20 +197,12 @@ class UncompressedImageBlockData:
 
   def bytes(self):
     bitsets = self.bitsets()
-    #print bitsets
     bitsets.reverse()
-    #print bitsets
 
     bits    = "".join(bitsets)
     padding = "".join(["0" for i in range(8 - (len(bits) % 8))]) if len(bits) % 8 > 0 else ""
-    #print bits
-    #print padding
-    #print padding + bits
-    #print len(padding + bits)
 
     bytes = self.bits_to_bytes(padding + bits)
-    #print bytes
     bytes.reverse()
-    #print bytes
 
     return bytes
