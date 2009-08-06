@@ -47,19 +47,10 @@ for i in xrange(10 * 10):
   data.append((i * 4) % 256)
 bytes = data.bytes()
 
-io = f
-# LZW Minimum Code Side: 8bit
-io.write(struct.pack("B", 8))
-
-# Block Size: n
-io.write(struct.pack("B", len(bytes)))
-
-# Image Data:
-for c in bytes:
-  io.write(struct.pack("B", c))
-
-# Block Terminator: 0
-io.write(struct.pack("B", 0))
+image = gifrawlib.ImageBlock()
+image.minimum_code = 8
+image.data         = bytes
+image.write(f)
 
 write_trailer(f)
 f.close()
