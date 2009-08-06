@@ -384,6 +384,26 @@ class TestImageBlock(unittest.TestCase):
     self.assertEqual(8,  self.obj.minimum_code)
     self.assertEqual([], self.obj.data)
 
+  def test_write__empty(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = []
+    self.obj.write(sio)
+
+    self.assertEqual(
+      "\x08\x00",
+      sio.getvalue())
+
+  def test_write__1byte(self):
+    sio = StringIO.StringIO()
+    self.obj.minimum_code = 8
+    self.obj.data         = [0xFF]
+    self.obj.write(sio)
+
+    self.assertEqual(
+      "\x08\x01\xFF\x00",
+      sio.getvalue())
+
 
 if __name__ == "__main__":
   unittest.main()
