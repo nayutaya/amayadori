@@ -87,29 +87,9 @@ def get_current_predictive_time():
     #else:
       # TODO: raise exception
 
-def create_observed_image_url(area, time):
-  url  = "http://www.jma.go.jp/jp/radnowc/imgs/radar/"
-  url += ("%03i" % area)
-  url += "/"
-  url += time.strftime("%Y%m%d%H%M")
-  url += "-00.png"
-  return url
-
-def create_predictive_image_url(area, time, no):
-  url = "http://www.jma.go.jp/jp/radnowc/imgs/nowcast/"
-  url += ("%03i" % area)
-  url += "/"
-  url += time.strftime("%Y%m%d%H%M")
-  url += "-"
-  url += ("%02i" % no)
-  url += ".png"
-  return url
-
+import jmalib
 def create_image_url(area, time, no):
-  if no == 0:
-    return create_observed_image_url(area, time)
-  else:
-    return create_predictive_image_url(area, time, no)
+  return jmalib.RadarNowCast.create_image_url(area, time, no)
 
 def get_image(area, time, ordinal):
   caches = db.GqlQuery("SELECT * FROM ImageCache WHERE area = :1 AND time = :2 AND ordinal = :3", area, time, ordinal)
