@@ -7,6 +7,7 @@ from google.appengine.ext import db
 from google.appengine.api import urlfetch
 
 import model
+import jmalib
 
 
 def get_jst_now():
@@ -28,18 +29,8 @@ def get_current_observed_time():
     logging.info("fetch " + url)
     result = urlfetch.fetch(url)
     if result.status_code == 200:
-      list = re.compile(r"\d{12}-\d{2}\.png").findall(result.content)
-      list.sort()
-
-      match = re.compile(r"(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})").match(list[-1])
-      # TODO: if not match, raise exception
-
-      observed_time = datetime.datetime(
-        int(match.group(1)),
-        int(match.group(2)),
-        int(match.group(3)),
-        int(match.group(4)),
-        int(match.group(5)))
+      parsed_data   = jmalib.RadarNowCast.parse_radar_js(result.content)
+      observed_time = jmalib.RadarNowCast.get_latest_time(parsed_data)
 
       cache = model.ObservedTimeCache(
         current_time  = current_time,
@@ -64,18 +55,8 @@ def get_current_predictive_time():
     logging.info("fetch " + url)
     result = urlfetch.fetch(url)
     if result.status_code == 200:
-      list = re.compile(r"\d{12}-\d{2}\.png").findall(result.content)
-      list.sort()
-
-      match = re.compile(r"(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})").match(list[-1])
-      # TODO: if not match, raise exception
-
-      predictive_time = datetime.datetime(
-        int(match.group(1)),
-        int(match.group(2)),
-        int(match.group(3)),
-        int(match.group(4)),
-        int(match.group(5)))
+      parsed_data     = jmalib.RadarNowCast.parse_nowcast_js(result.content)
+      predictive_time = jmalib.RadarNowCast.get_latest_time(parsed_data)
 
       cache = model.PredictiveTimeCache(
         current_time    = current_time,
@@ -87,7 +68,6 @@ def get_current_predictive_time():
     #else:
       # TODO: raise exception
 
-import jmalib
 def create_image_url(area, time, no):
   return jmalib.RadarNowCast.create_image_url(area, time, no)
 
