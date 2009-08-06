@@ -25,22 +25,24 @@ def get_current_observed_time():
     return caches[0].observed_time
 
   else:
-    url = "http://www.jma.go.jp/jp/radnowc/hisjs/radar.js"
-    logging.info("fetch " + url)
-    result = urlfetch.fetch(url)
-    if result.status_code == 200:
-      parsed_data   = jmalib.RadarNowCast.parse_radar_js(result.content)
-      observed_time = jmalib.RadarNowCast.get_latest_time(parsed_data)
+    def fetcher(url):
+      logging.info("fetch " + url)
+      result = urlfetch.fetch(url)
+      if result.status_code == 200:
+        return result.content
+      else:
+        # TODO: raise exception
+        return None
 
-      cache = model.ObservedTimeCache(
-        current_time  = current_time,
-        observed_time = observed_time,
-        expire_time   = current_time + datetime.timedelta(minutes = 20))
-      cache.put()
+    observed_time = jmalib.RadarNowCast.get_current_radar_time(fetcher)
 
-      return observed_time
-    #else:
-      # TODO: raise exception
+    cache = model.ObservedTimeCache(
+      current_time  = current_time,
+      observed_time = observed_time,
+      expire_time   = current_time + datetime.timedelta(minutes = 20))
+    cache.put()
+
+    return observed_time
 
 def get_current_predictive_time():
   current_time = get_per_minute_time(get_jst_now())
@@ -51,22 +53,24 @@ def get_current_predictive_time():
     return caches[0].predictive_time
 
   else:
-    url = "http://www.jma.go.jp/jp/radnowc/hisjs/nowcast.js"
-    logging.info("fetch " + url)
-    result = urlfetch.fetch(url)
-    if result.status_code == 200:
-      parsed_data     = jmalib.RadarNowCast.parse_nowcast_js(result.content)
-      predictive_time = jmalib.RadarNowCast.get_latest_time(parsed_data)
+    def fetcher(url):
+      logging.info("fetch " + url)
+      result = urlfetch.fetch(url)
+      if result.status_code == 200:
+        return result.content
+      else:
+        # TODO: raise exception
+        return None
 
-      cache = model.PredictiveTimeCache(
-        current_time    = current_time,
-        predictive_time = predictive_time,
-        expire_time     = current_time + datetime.timedelta(minutes = 20))
-      cache.put()
+    predictive_time = jmalib.RadarNowCast.get_current_nowcast_time(fetcher)
 
-      return predictive_time
-    #else:
-      # TODO: raise exception
+    cache = model.PredictiveTimeCache(
+      current_time    = current_time,
+      predictive_time = predictive_time,
+      expire_time     = current_time + datetime.timedelta(minutes = 20))
+    cache.put()
+
+    return predictive_time
 
 def create_image_url(area, time, no):
   return jmalib.RadarNowCast.create_image_url(area, time, no)
