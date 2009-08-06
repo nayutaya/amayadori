@@ -6,9 +6,9 @@ import StringIO
 import giflib
 
 
-class TestRawHeader(unittest.TestCase):
+class TestRawFileHeader(unittest.TestCase):
   def setUp(self):
-    self.obj = giflib.RawHeader()
+    self.obj = giflib.RawFileHeader()
 
   def test_init(self):
     self.assertEqual("GIF87a", self.obj.signature)

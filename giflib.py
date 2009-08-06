@@ -21,8 +21,8 @@ class Bitmap:
     pass
 
 
-# 低レベル GIFヘッダ
-class RawHeader:
+# 低レベル ファイルヘッダ
+class RawFileHeader:
   def __init__(self):
     self.signature              = "GIF87a"
     self.width                  = 0 # pixel

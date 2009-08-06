@@ -6,7 +6,7 @@ import struct
 import giflib
 
 def write_header(io):
-  header = giflib.RawHeader()
+  header = giflib.RawFileHeader()
   header.width                  = 10
   header.height                 = 10
   header.color_resolution       = 8
