@@ -26,10 +26,25 @@ class TestRawHeader(unittest.TestCase):
     obj.size_of_global_color_table = 0
     self.assertEqual(int("00000000", 2), obj.flag())
 
-    #obj.color_resolution           = 2
-    #obj.is_sorted_color_table      = False
-    #obj.size_of_global_color_table = 0
-    #self.assertEqual(int("00010000", 2), obj.flag())
+    obj.color_resolution           = 1
+    obj.is_sorted_color_table      = False
+    obj.size_of_global_color_table = 1
+    self.assertEqual(int("10000000", 2), obj.flag())
+
+    obj.color_resolution           = 8
+    obj.is_sorted_color_table      = False
+    obj.size_of_global_color_table = 1
+    self.assertEqual(int("11110000", 2), obj.flag())
+
+    obj.color_resolution           = 8
+    obj.is_sorted_color_table      = True
+    obj.size_of_global_color_table = 1
+    self.assertEqual(int("11111000", 2), obj.flag())
+
+    obj.color_resolution           = 8
+    obj.is_sorted_color_table      = True
+    obj.size_of_global_color_table = 8
+    self.assertEqual(int("11111111", 2), obj.flag())
 
   def test_has_global_color_table_flag(self):
     obj = giflib.RawHeader()

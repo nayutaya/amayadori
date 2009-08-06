@@ -26,19 +26,15 @@ class RawHeader:
     self.size_of_global_color_table = 0 # bits
 
   def flag(self):
-    bits = ""
-    bits += "0"
-
-    bits += "0"
-    bits += "000"
-
-    return int(bits, 2)
+    flag  = 0
+    flag |= (self.has_global_color_table_flag()     << 7)
+    flag |= (self.color_resolution_flag()           << 4)
+    flag |= (self.is_sorted_color_table_flag()      << 3)
+    flag |= (self.size_of_global_color_table_flag() << 0)
+    return flag
 
   def has_global_color_table_flag(self):
-    if self.size_of_global_color_table == 0:
-      return 0
-    else:
-      return 1
+    return 0 if self.size_of_global_color_table == 0 else 1
 
   def color_resolution_flag(self):
     return self.color_resolution - 1
