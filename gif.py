@@ -7,32 +7,25 @@ import giflib
 
 def write_header(io):
   header = giflib.RawHeader()
-  header.width                      = 10
-  header.height                     = 10
-  header.color_resolution           = 8
-  header.is_sorted_color_table      = False
-  header.size_of_global_color_table = 0
-  header.background_color_index     = 0
-  header.pixel_aspect_ratio         = 0
+  header.width                  = 10
+  header.height                 = 10
+  header.color_resolution       = 8
+  header.is_sorted_color_table  = False
+  header.color_table_size       = 0
+  header.background_color_index = 0
+  header.pixel_aspect_ratio     = 0
   header.write(io)
 
 def write_image_block_header(io):
-  # Image Separator
-  io.write(struct.pack("B", 0x2c))
-  # Image Left Position
-  io.write(struct.pack("H", 0))
-  # Image Top Position
-  io.write(struct.pack("H", 0))
-  # Image Width
-  width, height = 10, 10
-  io.write(struct.pack("H", width))
-  io.write(struct.pack("H", height))
-  # Local Color Table Flag: あり
-  # Interlace Flag: なし
-  # Sort Flag: ソートなし
-  # Reserved
-  # Size of Local Color Table: 8bit
-  io.write(struct.pack("B", int("10000111", 2)))
+  header = giflib.RawImageBlockHeader()
+  header.left                  = 0
+  header.top                   = 0
+  header.width                 = 10
+  header.height                = 10
+  header.is_interlaced         = False
+  header.is_sorted_color_table = False
+  header.color_table_size      = 8
+  header.write(io)
 
 def write_local_color_table(io):
   for i in xrange(256):
