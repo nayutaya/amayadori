@@ -167,6 +167,14 @@ class UncompressedImageBlockData:
   def bitsets(self):
     bitsets = []
     bitsets.append("100000000") # clear code
+
+    for pixel in self.pixels:
+      bin = ""
+      for i in range(8):
+        bin = str(pixel & 1) + bin
+        pixel >>= 1
+      bitsets.append("0" + bin)
+
     bitsets.append("100000001") # end code
     return bitsets
 

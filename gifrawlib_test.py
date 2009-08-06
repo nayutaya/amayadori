@@ -267,6 +267,22 @@ class TestUncompressedImageBlockData(unittest.TestCase):
     ]
     self.assertEqual(expected, self.obj.bitsets())
 
+  def test_bitsets__4pixel(self):
+    self.obj.append(int("11111111", 2))
+    self.obj.append(int("11110000", 2))
+    self.obj.append(int("11001100", 2))
+    self.obj.append(int("10101010", 2))
+
+    expected = [
+      "100000000", # clear code
+      "011111111",
+      "011110000",
+      "011001100",
+      "010101010",
+      "100000001", # end code
+    ]
+    self.assertEqual(expected, self.obj.bitsets())
+
   def test_bits_to_bytes__empty(self):
     self.assertEqual(
       [],
@@ -298,6 +314,23 @@ class TestUncompressedImageBlockData(unittest.TestCase):
       int("00000000", 2),
       int("00000011", 2),
       int("00000010", 2),
+    ]
+    self.assertEqual(expected, self.obj.bytes())
+
+  def test_bytes__4pixel(self):
+    self.obj.append(int("11111111", 2))
+    self.obj.append(int("11110000", 2))
+    self.obj.append(int("11001100", 2))
+    self.obj.append(int("10101010", 2))
+
+    expected = [
+      int("00000000", 2),
+      int("11111111", 2),
+      int("11000001", 2),
+      int("01100011", 2),
+      int("10100110", 2),
+      int("00101010", 2),
+      int("00100000", 2),
     ]
     self.assertEqual(expected, self.obj.bytes())
 
