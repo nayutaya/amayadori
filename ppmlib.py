@@ -2,6 +2,7 @@
 
 import imglib
 
+
 # ASCII形式PPMファイル書き込みクラス
 class PpmWriter:
   def __init__(self, bitmap):
@@ -24,3 +25,15 @@ class PpmWriter:
       io.write("\n")
 
     return self
+
+
+if __name__ == "__main__":
+  # 256x256のPPMイメージファイルを書き込む
+  bitmap = imglib.RgbBitmap(256, 256)
+  for y in range(256):
+    for x in range(256):
+      bitmap.set_pixel(x, y, (y, 0, x))
+  file = open("tmp.ppm", "wb")
+  ppm = PpmWriter(bitmap)
+  ppm.write(file)
+  file.close()
