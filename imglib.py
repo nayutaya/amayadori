@@ -2,12 +2,17 @@
 
 # 汎用イメージライブラリ
 
-# インデックスカラービットマップ
-class IndexBitmap:
-  def __init__(self, width, height):
+# ビットマップ基底クラス
+class BitmapBase:
+  def __init__(self, width, height, init_pixel):
     self.width  = width
     self.height = height
-    self.pixels = [0 for i in xrange(self.width * self.height)]
+    self.pixels = [init_pixel for i in xrange(self.width * self.height)]
+
+# インデックスカラービットマップクラス
+class IndexBitmap(BitmapBase):
+  def __init__(self, width, height):
+    BitmapBase.__init__(self, width, height, 0)
 
   def get_pixels(self):
     return self.pixels[:]
@@ -26,14 +31,10 @@ class IndexBitmap:
     return self
 
 
-# RGBカラービットマップ
-class RgbBitmap:
+# RGBカラービットマップクラス
+class RgbBitmap(BitmapBase):
   def __init__(self, width, height):
-    init_pixel = (0, 0, 0)
-
-    self.width  = width
-    self.height = height
-    self.pixels = [init_pixel for i in xrange(self.width * self.height)]
+    BitmapBase.__init__(self, width, height, (0, 0, 0))
 
   def get_pixels(self):
     return self.pixels[:]
