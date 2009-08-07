@@ -12,5 +12,14 @@ class IndexBitmap:
     return self.pixels[:]
 
   def set_pixels(self, pixels):
+    if len(pixels) != self.width * self.height:
+      raise ValueError, "invalid size"
     self.pixels = pixels[:]
+    return self
+
+  def get_pixel(self, x, y):
+    return self.pixels[y * self.width + x]
+
+  def set_pixel(self, x, y, pixel):
+    self.pixels[y * self.width + x] = pixel
     return self

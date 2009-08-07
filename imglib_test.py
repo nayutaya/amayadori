@@ -29,6 +29,39 @@ class TestIndexBitmap(unittest.TestCase):
     obj.set_pixels(pixels)
     self.assertEqual(pixels, obj.get_pixels())
 
+  def test_set_pixels__invalid_size(self):
+    obj = self.klass(10, 5)
+    self.assertRaises(ValueError, obj.set_pixels, [0])
+
+  def test_get_pixel(self):
+    obj = self.klass(5, 4)
+    obj.set_pixels([
+      1, 0, 0, 0, 3,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      4, 0, 0, 0, 2,
+    ])
+
+    self.assertEqual(1, obj.get_pixel(0, 0))
+    self.assertEqual(2, obj.get_pixel(4, 3))
+    self.assertEqual(3, obj.get_pixel(4, 0))
+    self.assertEqual(4, obj.get_pixel(0, 3))
+
+  def test_set_pixel(self):
+    obj = self.klass(5, 4)
+    obj.set_pixel(0, 0, 1)
+    obj.set_pixel(4, 3, 2)
+    obj.set_pixel(4, 0, 3)
+    obj.set_pixel(0, 3, 4)
+
+    expected = [
+      1, 0, 0, 0, 3,
+      0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0,
+      4, 0, 0, 0, 2,
+    ]
+    self.assertEqual(expected, obj.get_pixels())
+
 
 if __name__ == "__main__":
   unittest.main()
