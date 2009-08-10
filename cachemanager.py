@@ -48,3 +48,15 @@ class CacheManager:
       return records[0]
     else:
       return None
+
+  @classmethod
+  def clear_radar_time(cls, current_time):
+    records = db.GqlQuery("SELECT * FROM RadarTime WHERE current_time <= :1", current_time)
+    db.delete(records)
+    return None
+
+  @classmethod
+  def clear_nowcast_time(cls, current_time):
+    records = db.GqlQuery("SELECT * FROM NowcastTime WHERE current_time <= :1", current_time)
+    db.delete(records)
+    return None
