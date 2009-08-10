@@ -8,7 +8,9 @@ from google.appengine.ext.webapp import template
 
 import nowcast
 import timeutil
+import areamanager
 
+AreaManager = areamanager.AreaManager
 
 class IndexPage(webapp.RequestHandler):
   def get(self, area):
@@ -16,10 +18,18 @@ class IndexPage(webapp.RequestHandler):
     otime = nowcast.get_current_observed_time()
     ptime = nowcast.get_current_predictive_time()
 
+    links = []
+    for areainfo in AreaManager.areas:
+      if areainfo.code == area:
+        links.append("<b>" + areainfo.name + "</b>")
+      else:
+        links.append("<a href=\"/image/" + str(areainfo.code) + ".html\">" + areainfo.name + "</a>")
+
     values = {
-      "area":  ("%03i" % area),
+      "area" : ("%03i" % area),
       "otime": otime.strftime("%Y%m%d%H%M"),
       "ptime": ptime.strftime("%Y%m%d%H%M"),
+      "link" : "[ " + " | ".join(links) + " ]",
     }
 
     path = os.path.join(os.path.dirname(__file__), "image.html")
