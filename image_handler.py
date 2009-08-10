@@ -6,17 +6,19 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
-import nowcast
+import nowcast # TODO: 削除予定
+import amayadori
 import timeutil
 import areamanager
+import cachemanager
 
 AreaManager = areamanager.AreaManager
 
 class IndexPage(webapp.RequestHandler):
   def get(self, area):
     area  = int(area)
-    otime = nowcast.get_current_observed_time()
-    ptime = nowcast.get_current_predictive_time()
+    rtime = amayadori.get_radar_time()
+    ntime = amayadori.get_nowcast_time()
 
     links = []
     for areainfo in AreaManager.areas:
@@ -27,8 +29,8 @@ class IndexPage(webapp.RequestHandler):
 
     values = {
       "area" : ("%03i" % area),
-      "otime": otime.strftime("%Y%m%d%H%M"),
-      "ptime": ptime.strftime("%Y%m%d%H%M"),
+      "rtime": rtime.strftime("%Y%m%d%H%M"),
+      "ntime": ntime.strftime("%Y%m%d%H%M"),
       "link" : "[ " + " | ".join(links) + " ]",
     }
 
