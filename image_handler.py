@@ -2,22 +2,13 @@
 
 import logging
 import os
-import datetime
-import re
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
 import nowcast
+import timeutil
 
-class TimeUtility:
-  @classmethod
-  def yyyymmddhhnn_to_datetime(cls, str):
-    regexp = re.compile(r"^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$")
-    match  = regexp.match(str)
-    return datetime.datetime(
-        int(match.group(1)), int(match.group(2)), int(match.group(3)),
-        int(match.group(4)), int(match.group(5)))
 
 class IndexPage(webapp.RequestHandler):
   def get(self, area):
@@ -39,7 +30,7 @@ class IndexPage(webapp.RequestHandler):
 class WholeImage(webapp.RequestHandler):
   def get(self, area, time, ordinal):
     area    = int(area)
-    time    = TimeUtility.yyyymmddhhnn_to_datetime(time)
+    time    = timeutil.yyyymmddhhnn_to_datetime(time)
     ordinal = int(ordinal)
 
     image = nowcast.get_image(area, time, ordinal)
