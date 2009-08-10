@@ -21,8 +21,18 @@ class TimeUtility:
 
 class IndexPage(webapp.RequestHandler):
   def get(self, area):
+    area  = int(area)
+    otime = nowcast.get_current_observed_time()
+    ptime = nowcast.get_current_predictive_time()
+
+    values = {
+      "area":  ("%03i" % area),
+      "otime": otime.strftime("%Y%m%d%H%M"),
+      "ptime": ptime.strftime("%Y%m%d%H%M"),
+    }
+
     path = os.path.join(os.path.dirname(__file__), "image.html")
-    html = template.render(path, {})
+    html = template.render(path, values)
     self.response.out.write(html)
 
 
