@@ -7,7 +7,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
-import area
+import areamanager
 import nowcast
 import png
 import radar
@@ -40,7 +40,7 @@ import time
 class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
     lnglat = (float(lng), float(lat))
-    nearest_area = area.AreaManager.get_nearest_area(lnglat)
+    nearest_area = areamanager.AreaManager.get_nearest_area(lnglat)
     if nearest_area == None:
       self.error_message("範囲外です。")
       return

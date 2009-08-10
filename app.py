@@ -5,7 +5,7 @@ import logging
 
 import nowcast
 import png
-import area
+import areamanager
 import radar
 
 logging.getLogger().setLevel(logging.DEBUG)
