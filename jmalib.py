@@ -4,6 +4,7 @@ import datetime
 import re
 
 
+# TODO: timeutilへ移動予定
 class TimeUtility:
   @classmethod
   def get_jst_now(cls, utcnow = datetime.datetime.utcnow()):
