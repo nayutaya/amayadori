@@ -8,13 +8,8 @@ from google.appengine.api import urlfetch
 
 import model
 import jmalib
+import timeutil
 
-
-def get_jst_now():
-  return datetime.datetime.utcnow() + datetime.timedelta(hours = 9)
-
-def get_per_minute_time(time):
-  return datetime.datetime(time.year, time.month, time.day, time.hour, time.minute)
 
 def fetcher(url):
   logging.info("fetch " + url)
@@ -26,7 +21,7 @@ def fetcher(url):
     return None
 
 def get_current_observed_time():
-  current_time = get_per_minute_time(get_jst_now())
+  current_time = timeutil.get_per_minute_time(timeutil.get_jst_now())
 
   caches = db.GqlQuery("SELECT * FROM ObservedTimeCache WHERE current_time = :1", current_time)
 
@@ -44,7 +39,7 @@ def get_current_observed_time():
     return observed_time
 
 def get_current_predictive_time():
-  current_time = get_per_minute_time(get_jst_now())
+  current_time = timeutil.get_per_minute_time(timeutil.get_jst_now())
 
   caches = db.GqlQuery("SELECT * FROM PredictiveTimeCache WHERE current_time = :1", current_time)
 
