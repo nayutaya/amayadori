@@ -125,33 +125,31 @@ AreaManager.register(AreaInfo(u"大東島地方",         218, (550, 455), (  8,
 AreaManager.register(AreaInfo(u"宮古・八重山地方",   219, (550, 455), ( 35,  84), (499, 387), (122,  26), (127,  23)))
 
 
-def dump_kml():
-  print """<?xml version="1.0" encoding="UTF-8"?>"""
-  print """<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">"""
-  print "<Folder>"
-
-  for area in AreaManager.areas:
-    if area.glng1() > 0:
-      print "<GroundOverlay>"
-      print "<name>" + str(area.code) + "</name>"
-      print "<color>bdffffff</color>"
-      print "<Icon>"
-      print "<href>http://amayadori-opt.appspot.com/images/" + str(area.code) + "/observed.png</href>"
-      print "</Icon>"
-      print "<LatLonBox>"
-      print "<north>" + str(area.north()) + "</north>"
-      print "<south>" + str(area.south()) + "</south>"
-      print "<east>" + str(area.east()) + "</east>"
-      print "<west>" + str(area.west()) + "</west>"
-      print "</LatLonBox>"
-      print "</GroundOverlay>"
-
-  print "</Folder>"
-  print """</kml>"""
-
-
 if __name__ == "__main__":
-  #dump_kml()
-  lnglat = (135.0, 35.0)
-  area = AreaManager.get_nearest_area(lnglat)
-  print area
+  def dump_kml():
+    print """<?xml version="1.0" encoding="UTF-8"?>"""
+    print """<kml xmlns="http://www.opengis.net/kml/2.2">"""
+    print "  <Folder>"
+
+    for area in AreaManager.areas:
+      if area.glng1() > 0:
+        print "    <GroundOverlay>"
+        print "      <name>" + str(area.code) + "</name>"
+        print "      <color>bdffffff</color>"
+        print "      <Icon>"
+        print "        <href>http://amayadori-opt.appspot.com/images/" + str(area.code) + "/observed.png</href>"
+        print "      </Icon>"
+        print "      <LatLonBox>"
+        print "        <north>" + str(area.north()) + "</north>"
+        print "        <south>" + str(area.south()) + "</south>"
+        print "        <east>" + str(area.east()) + "</east>"
+        print "        <west>" + str(area.west()) + "</west>"
+        print "      </LatLonBox>"
+        print "    </GroundOverlay>"
+
+    print "  </Folder>"
+    print """</kml>"""
+  dump_kml()
+  #lnglat = (135.0, 35.0)
+  #area = AreaManager.get_nearest_area(lnglat)
+  #print area
