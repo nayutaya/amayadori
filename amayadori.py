@@ -68,3 +68,10 @@ def get_time_table():
       table.append(((nowcast_time, i + 1), present_time))
 
   return table
+
+def expire_cache():
+  expire_time = get_current_time() - datetime.timedelta(minutes = 30)
+  CacheManager.clear_radar_time(expire_time)
+  CacheManager.clear_nowcast_time(expire_time)
+  CacheManager.clear_image(expire_time)
+  return None

@@ -36,3 +36,5 @@ for (time, ordinal), present_time in table:
   rimage = radar.RadarImage.from_binary(image)
   rainfall = rimage.get_ballpark_rainfall(xy)
   print present_time, rainfall
+
+amayadori.expire_cache()
