@@ -1,26 +1,16 @@
 
 # -*- coding: utf-8 -*-
 
+import glob
+import re
+
 import png
 import imglib
 import ppmlib
 
-#file = open("00.png", "rb")
-file = open("200908111540-02.png", "rb")
-bin  = file.read()
-png  = png.Png8bitPalette.load(bin)
-width  = png.bitmap.width
-height = png.bitmap.height
-
-bitmap = imglib.RgbBitmap(width, height)
-for y in range(height):
-  for x in range(width):
-    rgb = png.get_color((x, y))
-    bitmap.set_pixel(x, y, rgb)
 
 water  = (0, 0, 0)
 ground = (0, 64, 0)
-
 ctable = {
   #(255,   0,   0): (255,   0,   0), # ‰J‰_    80mm/h ˆÈã
   #(255,   0, 255): (255,   0, 255), # ‰J‰_ 50-80mm/h
@@ -138,23 +128,54 @@ ctable = {
   (164, 191, 151): ground, # ‘å’n
 }
 
-missing = {}
+def color_conv(src):
+  dst = imglib.RgbBitmap(src.width, src.height)
 
-for y in range(bitmap.height):
-  for x in range(bitmap.width):
-    rgb1 = bitmap.get_pixel(x, y)
-    rgb2 = ctable.get(rgb1, (255, 128, 255))
-    #rgb2 = ctable.get(rgb1, rgb1)
-    if ctable.get(rgb1) == None:
-      missing[rgb1] = missing.get(rgb1, 0) + 1
+  missing = {}
 
-    bitmap.set_pixel(x, y, rgb2)
+  for y in xrange(src.height):
+    for x in xrange(src.width):
+      rgb1 = src.get_pixel(x, y)
+      rgb2 = ctable.get(rgb1, (255, 128, 255))
+      #rgb2 = ctable.get(rgb1, rgb1)
+      if ctable.get(rgb1) == None:
+        missing[rgb1] = missing.get(rgb1, 0) + 1
 
-outfile = open("tmp.ppm", "wb")
-ppm = ppmlib.PpmWriter(bitmap)
-ppm.write(outfile)
-outfile.close()
+      dst.set_pixel(x, y, rgb2)
 
+  return dst
+
+
+for infilepath in glob.glob("tmp/*.png")[0:2]:
+  outfilepath = re.sub(r"^tmp\\", r"tmp2\\", re.sub(r"\.png$", r".ppm", infilepath))
+  print infilepath
+  print outfilepath
+
+  infile = open(infilepath, "rb")
+  infilebin = infile.read()
+  infile.close()
+
+  pngimg = png.Png8bitPalette.load(infilebin)
+  width  = pngimg.bitmap.width
+  height = pngimg.bitmap.height
+
+  bitmap = imglib.RgbBitmap(width, height)
+  for y in range(height):
+    for x in range(width):
+      rgb = pngimg.get_color((x, y))
+      bitmap.set_pixel(x, y, rgb)
+
+  bitmap2 = color_conv(bitmap)
+
+  outfile = open(outfilepath, "wb")
+  ppm = ppmlib.PpmWriter(bitmap2)
+  ppm.write(outfile)
+  outfile.close()
+
+  #break
+
+
+"""
 def cmp(a, b):
   argb, ac = a
   brgb, bc = b
@@ -166,3 +187,4 @@ for (rgb, count) in missing:
   #if g > r and g > b:
   if b > r and b > g:
     print (rgb, count)
+"""
