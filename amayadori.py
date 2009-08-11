@@ -18,8 +18,11 @@ def fetcher(url):
     # TODO: raise exception
     return None
 
+def get_current_time():
+  return timeutil.get_per_minute_time(timeutil.get_jst_now())
+
 def get_radar_time():
-  current_time = timeutil.get_per_minute_time(timeutil.get_jst_now())
+  current_time = get_current_time()
   cached_time  = CacheManager.get_radar_time(current_time)
 
   if cached_time == None:
@@ -30,7 +33,7 @@ def get_radar_time():
   return cached_time.radar_time
 
 def get_nowcast_time():
-  current_time = timeutil.get_per_minute_time(timeutil.get_jst_now())
+  current_time = get_current_time()
   cached_time  = CacheManager.get_nowcast_time(current_time)
 
   if cached_time == None:
