@@ -16,7 +16,10 @@ def h(rgb):
 
 
 water  = (0, 0, 0)
+water2 = (0, 255, 255)
 ground = (0, 64, 0)
+ground2 = (0, 128, 0)
+
 ctable = {
   #(255,   0,   0): (255,   0,   0), # 雨雲    80mm/h 以上
   #(255,   0, 255): (255,   0, 255), # 雨雲 50-80mm/h
@@ -56,8 +59,11 @@ ctable = {
   (145, 176, 210): water,
   (184, 184, 228): water,
   (193, 193, 193): water,
-  h(0xC0C0C0): water,
+  h(0x7D9EC1): water,
   h(0x89AAD3): water,
+  h(0x8AA9D2): water,
+  h(0x8BABD1): water,
+  h(0xC0C0C0): water,
 
   # 湖境界
   ( 92, 115, 159): water,
@@ -79,7 +85,12 @@ ctable = {
   (137, 170, 168): water,
   (142, 173, 180): water,
   (151, 181, 180): water,
+  h(0x687F8F): water,
+  h(0x6F8EA9): water,
+  h(0x748FA9): water,
   h(0x748FAD): water,
+  h(0x7A9FA5): water,
+  h(0x7F9EC0): water,
   h(0x7F9EC2): water,
   h(0x809EAC): water,
   h(0x90AFB7): water,
@@ -142,14 +153,35 @@ ctable = {
   (162, 190, 149): ground,
   (163, 191, 151): ground,
   (164, 191, 151): ground,
+  h(0x747B72): ground,
+  h(0x749665): ground,
+  h(0x769867): ground,
+  h(0x779968): ground,
+  h(0x789585): ground,
   h(0x799283): ground,
+  h(0x7E9E92): ground,
+  h(0x7EA16D): ground,
+  h(0x80A07E): ground,
+  h(0x82A37F): ground,
   h(0x839F84): ground,
+  h(0x84958A): ground,
+  h(0x86A976): ground,
+  h(0x8AA486): ground,
   h(0x8AAC7A): ground,
+  h(0x8CAD7C): ground,
+  h(0x8DAAA6): ground,
+  h(0x8DACA7): ground,
   h(0x8DAE7D): ground,
+  h(0x8DAFAC): ground,
   h(0x8FAB88): ground,
+  h(0x90B081): ground,
+  h(0x91B182): ground,
   h(0x94B29A): ground,
+  h(0x96B588): ground,
   h(0x9DB9AB): ground,
+  h(0x9EBA90): ground,
   h(0xA0BC93): ground,
+  h(0xA1BD95): ground,
   h(0xA2BE96): ground,
 }
 
