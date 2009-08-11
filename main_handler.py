@@ -32,7 +32,7 @@ class TopPage(webapp.RequestHandler):
       "redirect_url": "http://amayadori-opt.appspot.com/docomo/iarea",
     }
 
-    path = os.path.join(os.path.dirname(__file__), "top.html")
+    path = os.path.join(os.path.dirname(__file__), "views/top.html")
     html = template.render(path, values)
     self.response.out.write(html)
 
@@ -84,7 +84,7 @@ class ViewPage(webapp.RequestHandler):
       "mapkey": mapkey,
     }
 
-    path = os.path.join(os.path.dirname(__file__), "view.html")
+    path = os.path.join(os.path.dirname(__file__), "views/view.html")
     html = template.render(path, values)
 
     self.response.out.write(html)

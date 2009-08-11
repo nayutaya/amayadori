@@ -33,7 +33,7 @@ class IndexPage(webapp.RequestHandler):
       "link" : "[ " + " | ".join(links) + " ]",
     }
 
-    path = os.path.join(os.path.dirname(__file__), "image.html")
+    path = os.path.join(os.path.dirname(__file__), "views/image.html")
     html = template.render(path, values)
     self.response.out.write(html)
 
