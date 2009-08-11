@@ -6,6 +6,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
+import amayadori
 import taskmanager
 
 
@@ -13,6 +14,7 @@ import taskmanager
 class CacheClearTask(webapp.RequestHandler):
   def get(self):
     logging.info("CacheClearTask")
+    amayadori.expire_cache()
 
 # for task-queue
 class CacheFetchTask(webapp.RequestHandler):
