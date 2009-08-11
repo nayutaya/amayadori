@@ -39,3 +39,15 @@ def get_nowcast_time():
       nowcast_time = jmalib.RadarNowCast.get_current_nowcast_time(fetcher))
 
   return cached_time.nowcast_time
+
+def get_image(area, time, ordinal):
+  cached_image = CacheManager.get_image(area, time, ordinal)
+
+  if cached_image == None:
+    cached_image = CacheManager.create_image(
+      area    = area,
+      time    = time,
+      ordinal = ordinal,
+      image   = jmalib.RadarNowCast.get_image(area, time, ordinal, fetcher))
+
+  return cached_image.image
