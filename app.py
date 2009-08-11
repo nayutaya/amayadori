@@ -3,7 +3,7 @@
 import datetime
 import logging
 
-import nowcast
+import amayadori
 import png
 import areamanager
 import radar
@@ -19,9 +19,9 @@ print ""
 
 
 
-observed_time = nowcast.get_current_observed_time()
+observed_time = amayadori.get_radar_time()
 print observed_time
-predictive_time = nowcast.get_current_predictive_time()
+predictive_time = amayadori.get_nowcast_time()
 print predictive_time
 
 list = []
@@ -39,7 +39,7 @@ xy = (200,300)
 area_code = 211
 
 for (image_time, image_ordinal), time in list:
-  image = nowcast.get_image(area_code, image_time, image_ordinal)
+  image = amayadori.get_image(area_code, image_time, image_ordinal)
   rimage = radar.RadarImage.from_binary(image)
   rainfall = rimage.get_ballpark_rainfall(xy)
 
