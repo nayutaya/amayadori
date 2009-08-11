@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import datetime
 from google.appengine.api import urlfetch
 
 import cachemanager
@@ -54,3 +55,16 @@ def get_image(area, time, ordinal):
       image   = jmalib.RadarNowCast.get_image(area, time, ordinal, fetcher))
 
   return cached_image.image
+
+def get_time_table():
+  radar_time   = get_radar_time()
+  nowcast_time = get_nowcast_time()
+
+  table = [((radar_time, 0), radar_time)]
+
+  for i in range(6):
+    present_time = nowcast_time + datetime.timedelta(minutes = i * 10)
+    if present_time > radar_time:
+      table.append(((nowcast_time, i + 1), present_time))
+
+  return table

@@ -5,8 +5,8 @@ runtime: python
 api_version: 1
 
 handlers:
-#- url: /
-#  script: app.py
+- url: /app
+  script: app.py
 #- url: /(.*\.html)
 #  static_files: public/\1
 #  upload: public/(.*\.html)
