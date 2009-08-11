@@ -8,7 +8,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
 import areamanager
-import nowcast
+import amayadori
 import png
 import radar
 import taskmanager
@@ -47,9 +47,9 @@ class ViewPage(webapp.RequestHandler):
 
     xy = nearest_area.lnglat_to_xy(lnglat)
 
-    observed_time = nowcast.get_current_observed_time()
-    image_bin     = nowcast.get_image(nearest_area.code, observed_time, 0)
-    image         = png.Png8bitPalette.load(image_bin)
+    radar_time = amayadori.get_radar_time()
+    image_bin  = amayadori.get_image(nearest_area.code, radar_time, 0)
+    image      = png.Png8bitPalette.load(image_bin)
 
     # MEMO: タスクの実験用コード
     #tracker0 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 0)
@@ -122,6 +122,10 @@ class DocomoGpsRedirector(webapp.RequestHandler):
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
 
 
+class TestPage(webapp.RequestHandler):
+  def get(self):
+    pass
+
 if __name__ == "__main__":
   application = webapp.WSGIApplication(
     [
@@ -129,6 +133,7 @@ if __name__ == "__main__":
       (r"/view/(\-?\d+(?:\.\d+)?)/(\-?\d+(?:\.\d+)?)", ViewPage),
       (r"/docomo/iarea", DocomoIAreaRedirector),
       (r"/docomo/gps",   DocomoGpsRedirector),
+      (r"/test",         TestPage),
     ],
     debug = True)
   run_wsgi_app(application)

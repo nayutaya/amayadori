@@ -6,7 +6,6 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
-import nowcast # TODO: 削除予定
 import amayadori
 import timeutil
 import areamanager
@@ -45,7 +44,7 @@ class WholeImage(webapp.RequestHandler):
     time    = timeutil.yyyymmddhhnn_to_datetime(time)
     ordinal = int(ordinal)
 
-    image = nowcast.get_image(area, time, ordinal)
+    image = amayadori.get_image(area, time, ordinal)
 
     self.response.headers["Content-Type"] = "image/png"
     self.response.out.write(image)
