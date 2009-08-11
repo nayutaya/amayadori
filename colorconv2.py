@@ -7,14 +7,48 @@ import png
 import imglib
 import ppmlib
 
+water   = 0x000000
+water2  = 0x00FFFF # テスト用
+ground  = 0x004000
+ground2 = 0x008000 # テスト用
+
 translate_table = {
+  #0xFC0000: 0xFF0000, # 雨雲    80mm/h 以上
+  #0xFC00FC: 0xFF00FF, # 雨雲 50-80mm/h
+  #0xFC9800: 0xFF9900, # 雨雲 30-50mm/h
+  #0xFCFC00: 0xFFFF00, # 雨雲 20-30mm/h
+  #0x00FC00: 0x00FF00, # 雨雲 10-20mm/h
+  #0x0000FC: 0x0000FF, # 雨雲  5-10mm/h
+  #0x3064FC: 0x3366FF, # 雨雲  1- 5mm/h
+  #0x98CCFC: 0x99CCFF, # 雨雲  0- 1mm/h
+  # カラーテーブルの確認用に、色を減らす
+  0xFC0000: 0x0000FF, # 雨雲    80mm/h 以上
+  0xFC00FC: 0x0000FF, # 雨雲 50-80mm/h
+  0xFC9800: 0x0000FF, # 雨雲 30-50mm/h
+  0xFCFC00: 0x0000FF, # 雨雲 20-30mm/h
+  0x00FC00: 0x0000FF, # 雨雲 10-20mm/h
+  0x0000FC: 0x0000FF, # 雨雲  5-10mm/h
+  0x3064FC: 0x0000FF, # 雨雲  1- 5mm/h
+  0x98CCFC: 0x0000FF, # 雨雲  0- 1mm/h
+
+  0x603810: ground, # 観測点
+  0xE4E4E4: 0xFFFFFF, # 都道府県境界
+  0xFCFCFC: 0xFFFFFF, # 海岸境界
+  0x646464: 0x666666, # 海岸境界/グリッド
 }
 
-def int_to_rgb(rgb):
-  r = (0xFF0000 & rgb) >> 16
-  g = (0x00FF00 & rgb) >> 8
-  b = (0x0000FF & rgb) >> 0
+def int_to_rgb(int):
+  r = (0xFF0000 & int) >> 16
+  g = (0x00FF00 & int) >> 8
+  b = (0x0000FF & int) >> 0
   return (r, g, b)
+
+def rgb_to_int(rgb):
+  r, g, b = rgb
+  int  = r << 16
+  int |= g << 8
+  int |= b << 0
+  return int
 
 def pngbin_to_bitmap(bin):
   pngimg = png.Png8bitPalette.load(bin)
@@ -55,8 +89,14 @@ def translate(src):
   dst = imglib.RgbBitmap(src.width, src.height)
   for y in xrange(src.height):
     for x in xrange(src.width):
-      r, g, b = src.get_pixel(x, y)
-      dst.set_pixel(x, y, (r, g, b))
+      rgb1 = src.get_pixel(x, y)
+      color1 = rgb_to_int(rgb1)
+      color2 = translate_table.get(color1)
+      if color2 == None:
+        color2 = 0x000000
+        #color2 = color1
+      rgb2 = int_to_rgb(color2)
+      dst.set_pixel(x, y, rgb2)
   return dst
 
 
@@ -72,30 +112,6 @@ for infilepath in glob.glob("tmp/*.png"):
 
 
 """
-  #(255,   0,   0): (255,   0,   0), # 雨雲    80mm/h 以上
-  #(255,   0, 255): (255,   0, 255), # 雨雲 50-80mm/h
-  #(255, 153,   0): (255, 153,   0), # 雨雲 30-50mm/h
-  #(255, 255,   0): (255, 255,   0), # 雨雲 20-30mm/h
-  #(  0, 255,   0): (  0, 255,   0), # 雨雲 10-20mm/h
-  #(  0,   0, 255): (  0,   0, 255), # 雨雲  5-10mm/h
-  #( 51, 102, 255): ( 51, 102, 255), # 雨雲  1- 5mm/h
-  #(153, 204, 255): (153, 204, 255), # 雨雲  0- 1mm/h
-
-  # カラーテーブルの確認用に、色を減らす
-
-  0xFF0000: 0xFF0000, # 雨雲    80mm/h 以上
-  0xFF00FF: 0xFF00FF, # 雨雲 50-80mm/h
-  0xFF9900: 0xFF9900, # 雨雲 30-50mm/h
-  0xFFFF00: 0xFFFF00, # 雨雲 20-30mm/h
-  0x00FF00: 0x00FF00, # 雨雲 10-20mm/h
-  0x0000FF: 0x0000FF, # 雨雲  5-10mm/h
-  0x3366FF: 0x3366FF, # 雨雲  1- 5mm/h
-  0x99CCFF: 0x99CCFF, # 雨雲  0- 1mm/h
-
-  ( 96,  57,  19): ground, # 観測点
-  (230, 230, 230): (255, 255, 255), # 都道府県境界
-  (255, 255, 255): (255, 255, 255), # 海岸境界
-  (102, 102, 102): (102, 102, 102), # 海岸境界/グリッド
 
   (116, 123, 114): (116, 123, 114), # 海岸境界
   (160, 160, 160): (160, 160, 160), # 海岸境界
