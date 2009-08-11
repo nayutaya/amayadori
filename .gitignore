@@ -1,4 +1,5 @@
-*.pyc
-*.swp
+*.bat
 *.png
 *.ppm
+*.pyc
+*.swp
