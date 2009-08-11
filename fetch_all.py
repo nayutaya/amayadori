@@ -29,8 +29,9 @@ area_codes = [i + 201 for i in range(19)]
 #area_codes = [201, 202]
 
 for area in area_codes:
-  image_time    = radar_time
-  image_ordinal = 0
+  #image_time    = radar_time
+  image_time    = nowcast_time
+  image_ordinal = 1
   path = create_path(area, image_time, image_ordinal)
   print path
   if not os.path.exists(path):
