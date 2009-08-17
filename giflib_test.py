@@ -145,6 +145,17 @@ class ImageBitmap(unittest.TestCase):
     self.assertEqual(0,     fh.background_color_index)
     self.assertEqual(0,     fh.pixel_aspect_ratio)
 
+  def test_create_image_block_header(self):
+    obj = giflib.Image(10, 20, 8)
+    ibh = obj.create_image_block_header()
+    self.assertEqual(0,     ibh.left)
+    self.assertEqual(0,     ibh.top)
+    self.assertEqual(10,    ibh.width)
+    self.assertEqual(20,    ibh.height)
+    self.assertEqual(False, ibh.is_interlaced)
+    self.assertEqual(False, ibh.is_sorted_color_table)
+    self.assertEqual(8,     ibh.color_table_size)
+
 
 if __name__ == "__main__":
   unittest.main()

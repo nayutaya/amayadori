@@ -93,5 +93,15 @@ class Image:
     file_header.color_resolution = self.depth()
     return file_header
 
+  def create_image_block_header(self):
+    image_block_header = gifrawlib.ImageBlockHeader()
+    image_block_header.left             = 0
+    image_block_header.top              = 0
+    image_block_header.width            = self.width()
+    image_block_header.height           = self.height()
+    image_block_header.color_table_size = self.depth()
+    return image_block_header
+
+
 #  def __init__(self):
 #    self.palette = Palette()
