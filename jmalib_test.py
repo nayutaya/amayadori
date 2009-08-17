@@ -6,24 +6,6 @@ import datetime
 import jmalib
 
 
-class TestTimeUtility(unittest.TestCase):
-  def setUp(self):
-    self.klass = jmalib.TimeUtility
-
-  def test_get_jst_now(self):
-    self.assertEqual(
-      datetime.datetime(2000, 1, 1, 9, 0),
-      self.klass.get_jst_now(datetime.datetime(2000, 1, 1, 0, 0)))
-
-  def test_get_per_minute_time(self):
-    self.assertEqual(
-      datetime.datetime(2000, 1, 1, 0, 0),
-      self.klass.get_per_minute_time(datetime.datetime(2000, 1, 1, 0, 0, 0)))
-    self.assertEqual(
-      datetime.datetime(1999, 12, 31, 23, 59),
-      self.klass.get_per_minute_time(datetime.datetime(1999, 12, 31, 23, 59, 59)))
-
-
 class TestRadarNowCast(unittest.TestCase):
   def setUp(self):
     self.klass = jmalib.RadarNowCast

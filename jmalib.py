@@ -4,17 +4,6 @@ import datetime
 import re
 
 
-# TODO: timeutilへ移動予定
-class TimeUtility:
-  @classmethod
-  def get_jst_now(cls, utcnow = datetime.datetime.utcnow()):
-    return utcnow + datetime.timedelta(hours = 9)
-
-  @classmethod
-  def get_per_minute_time(cls, time):
-    return datetime.datetime(time.year, time.month, time.day, time.hour, time.minute)
-
-
 class RadarNowCast:
   @classmethod
   def parse_radar_js(cls, src):
