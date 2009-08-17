@@ -6,7 +6,6 @@ import struct
 import giflib
 
 
-
 image = giflib.Image(10, 10, 8)
 
 palette = image.palette
@@ -24,9 +23,5 @@ f = open("tmp.gif", "wb")
 blocks = image.create_blocks()
 for block in blocks:
   block.write(f)
-
-
-trailer = image.create_trailer()
-trailer.write(f)
 
 f.close()
