@@ -47,7 +47,8 @@ class ViewPage(webapp.RequestHandler):
 
     xy = area.lnglat_to_xy(lnglat)
 
-    radar_time = amayadori.get_radar_time()
+    radar_time   = amayadori.get_radar_time()
+    nowcast_time = amayadori.get_nowcast_time()
     image_bin  = amayadori.get_image(area.code, radar_time, 0)
     image      = png.Png8bitPalette.load(image_bin)
 
@@ -83,6 +84,7 @@ class ViewPage(webapp.RequestHandler):
       "current_value": str(rainfall),
       "mapkey": mapkey,
       "radar_time": radar_time.strftime("%Y%m%d%H%M"),
+      "nowcast_time": nowcast_time.strftime("%Y%m%d%H%M"),
     }
 
     path = os.path.join(os.path.dirname(__file__), "views/view.html")
