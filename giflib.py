@@ -26,10 +26,12 @@ class Bitmap:
     self.bitmap.set_pixels(pixels)
     return self
 
-  def get_pixel(self, x, y):
+  def get_pixel(self, xy):
+    x, y = xy
     return self.bitmap.get_pixel(x, y)
 
-  def set_pixel(self, x, y, pixel):
+  def set_pixel(self, xy, pixel):
+    x, y = xy
     self.bitmap.set_pixel(x, y, pixel)
     return self
 

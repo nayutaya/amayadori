@@ -16,7 +16,7 @@ bitmap = image.bitmap
 for y in range(10):
   for x in range(10):
     i = y * 10 + x
-    bitmap.set_pixel(x, y, (i * 4) % 256)
+    bitmap.set_pixel((x, y), (i * 4) % 256)
 
 f = open("tmp.gif", "wb")
 image.write(f)
