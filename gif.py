@@ -4,6 +4,7 @@ import StringIO
 import struct
 
 import gifrawlib
+import giflib
 
 def write_header(io):
   header = gifrawlib.FileHeader()
@@ -42,10 +43,14 @@ write_header(f)
 write_image_block_header(f)
 write_local_color_table(f)
 
-data = gifrawlib.UncompressedImageBlockData()
-for i in xrange(10 * 10):
-  data.append((i * 4) % 256)
-bytes = data.bytes()
+
+bitmap = giflib.Bitmap(10, 10, 8)
+for y in range(10):
+  for x in range(10):
+    i = y * 10 + x
+    bitmap.set_pixel(x, y, (i * 4) % 256)
+bytes = bitmap.create_image_block_data().bytes()
+
 
 image = gifrawlib.ImageBlock()
 image.minimum_code = 8
