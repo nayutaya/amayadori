@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import StringIO
 
 import giflib
 import gifrawlib
@@ -203,6 +204,18 @@ class ImageBitmap(unittest.TestCase):
     self.assertEqual(
       gifrawlib.Trailer,
       blocks[4].__class__)
+
+  def test_wirte(self):
+    obj = giflib.Image(10, 20, 8)
+    sio1 = StringIO.StringIO()
+    sio2 = StringIO.StringIO()
+
+    for block in obj.create_blocks():
+      block.write(sio1)
+
+    obj.write(sio2)
+
+    self.assertEqual(sio1.getvalue(), sio2.getvalue())
 
 
 if __name__ == "__main__":

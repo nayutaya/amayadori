@@ -19,9 +19,5 @@ for y in range(10):
     bitmap.set_pixel(x, y, (i * 4) % 256)
 
 f = open("tmp.gif", "wb")
-
-blocks = image.create_blocks()
-for block in blocks:
-  block.write(f)
-
+image.write(f)
 f.close()

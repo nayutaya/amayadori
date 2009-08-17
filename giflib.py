@@ -118,3 +118,8 @@ class Image:
     blocks.append(self.bitmap.create_image_block())
     blocks.append(self.create_trailer())
     return blocks
+
+  def write(self, io):
+    for block in self.create_blocks():
+      block.write(io)
+    return self
