@@ -241,6 +241,22 @@ class ImageBitmap(unittest.TestCase):
       [(1, 2, 3), (4, 5, 6)],
       obj.palette.get_colors())
 
+  def test_lookup_color(self):
+    obj = giflib.Image(10, 20, 8)
+    self.assertEqual(0, obj.append_color((1, 2, 3)))
+    self.assertEqual(1, obj.append_color((4, 5, 6)))
+    self.assertEqual(0, obj.lookup_color((1, 2, 3)))
+    self.assertEqual(1, obj.lookup_color((4, 5, 6)))
+    self.assertEqual(None, obj.lookup_color((7, 8, 9)))
+
+  def test_allocate_color(self):
+    obj = giflib.Image(10, 20, 8)
+    self.assertEqual(0, obj.append_color((1, 2, 3)))
+    self.assertEqual(0, obj.allocate_color((1, 2, 3)))
+    self.assertEqual(1, obj.allocate_color((4, 5, 6)))
+    self.assertEqual(1, obj.allocate_color((4, 5, 6)))
+
+
   def test_get_pixel(self):
     obj = giflib.Image(2, 2, 8)
     obj.bitmap.set_pixels([

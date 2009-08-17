@@ -140,6 +140,12 @@ class Image:
   def append_color(self, rgb):
     return self.palette.append(rgb)
 
+  def lookup_color(self, rgb):
+    return self.palette.lookup(rgb)
+
+  def allocate_color(self, rgb):
+    return self.palette.allocate(rgb)
+
   def get_pixel(self, xy):
     return self.bitmap.get_pixel(xy)
 
