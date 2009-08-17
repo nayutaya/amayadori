@@ -120,6 +120,9 @@ class ColorTable:
     self.table.append(color)
     return self
 
+  def get_colors(self):
+    return self.table[:]
+
   def write(self, io):
     count = 0
     max   = 2 ** self.bit_size()

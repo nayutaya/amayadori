@@ -213,6 +213,16 @@ class TestColorTable(unittest.TestCase):
     self.assertEqual(2, self.obj.size())
     self.assertEqual((4, 5, 6), self.obj.table[-1])
 
+  def test_get_colors(self):
+    self.assertEqual(
+      [],
+      self.obj.get_colors())
+
+    self.obj.append((1, 2, 3))
+    self.assertEqual(
+      [(1, 2, 3)],
+      self.obj.get_colors())
+
   def test_write__empty(self):
     sio = StringIO.StringIO()
     self.obj.write(sio)
