@@ -45,13 +45,15 @@ class Bitmap:
     return image_block
 
 
+
+# 高レベル パレットクラス
+class Palette:
+  def __init__(self, depth = 8):
+    self.depth = depth
+
+
 # 高レベル イメージクラス
 #class Image:
 #  def __init__(self, width, height):
 #    self.palette = Palette()
 #    self.bitmap  = Bitmap(width, height)
-
-# 高レベル パレットクラス
-#class Palette:
-#  def __init__(self):
-#    pass

@@ -64,5 +64,18 @@ class TestBitmap(unittest.TestCase):
     self.assertEqual(8,     ib.minimum_code)
     self.assertEqual(bytes, ib.data)
 
+
+class PaletteBitmap(unittest.TestCase):
+  def setUp(self):
+    pass
+
+  def test_init(self):
+    obj = giflib.Palette()
+    self.assertEqual(8, obj.depth)
+
+    obj = giflib.Palette(2)
+    self.assertEqual(2, obj.depth)
+
+
 if __name__ == "__main__":
   unittest.main()
