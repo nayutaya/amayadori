@@ -6,16 +6,6 @@ import struct
 import gifrawlib
 import giflib
 
-def write_image_block_header(io):
-  header = gifrawlib.ImageBlockHeader()
-  header.left                  = 0
-  header.top                   = 0
-  header.width                 = 10
-  header.height                = 10
-  header.is_interlaced         = False
-  header.is_sorted_color_table = False
-  header.color_table_size      = 8
-  header.write(io)
 
 def write_trailer(io):
   trailer = gifrawlib.Trailer()
@@ -26,8 +16,8 @@ f = open("tmp.gif", "wb")
 image = giflib.Image(10, 10, 8)
 file_header = image.create_file_header()
 file_header.write(f)
-
-write_image_block_header(f)
+image_block_header = image.create_image_block_header()
+image_block_header.write(f)
 
 palette = giflib.Palette()
 for i in xrange(256):
