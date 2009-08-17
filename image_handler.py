@@ -52,7 +52,15 @@ class WholeImage(webapp.RequestHandler):
 
 class PartialImage(webapp.RequestHandler):
   def get(self, area, time, ordinal, x, y):
-    pass
+    import giflib
+    image = giflib.Image(31, 31, 8)
+    image.append_color((64, 64, 64))
+    image.append_color((255, 0, 0))
+    for i in range(31):
+      image.set_pixel((i, i), 1)
+      image.set_pixel((31 - i, i), 1)
+    self.response.headers["Content-Type"] = "image/gif"
+    image.write(self.response.out)
 
 
 if __name__ == "__main__":
