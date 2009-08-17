@@ -52,13 +52,31 @@ class WholeImage(webapp.RequestHandler):
 
 class PartialImage(webapp.RequestHandler):
   def get(self, area, time, ordinal, x, y):
+    area    = int(area)
+    time    = timeutil.yyyymmddhhnn_to_datetime(time)
+    ordinal = int(ordinal)
+    x, y    = int(x), int(y)
+
+    image = amayadori.get_image(area, time, ordinal)
+
+    sx = x - 15 if x >= 15 else 0
+    sy = y - 15 if y >= 15 else 0
+    dx = 31
+    dy = 31
+
+    import png
+    pngimg = png.Png8bitPalette.load(image)
+
     import giflib
     image = giflib.Image(31, 31, 8)
-    image.append_color((64, 64, 64))
-    image.append_color((255, 0, 0))
-    for i in range(31):
-      image.set_pixel((i, i), 1)
-      image.set_pixel((31 - i, i), 1)
+    image.allocate_color((192, 192, 192))
+
+    for yy in range(dy):
+      for xx in range(dx):
+        rgb   = pngimg.get_color((sx + xx, sy + yy))
+        index = image.allocate_color(rgb)
+        image.set_pixel((xx, yy), index)
+
     self.response.headers["Content-Type"] = "image/gif"
     image.write(self.response.out)
 
