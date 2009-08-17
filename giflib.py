@@ -56,8 +56,11 @@ class Palette:
     return len(self.colors)
 
   def append(self, rgb):
-    self.colors.append(0)
+    self.colors.append(rgb)
     return self.size() - 1
+
+  def get_colors(self):
+    return self.colors[:]
 
 
 # 高レベル イメージクラス
