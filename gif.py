@@ -49,13 +49,10 @@ for y in range(10):
   for x in range(10):
     i = y * 10 + x
     bitmap.set_pixel(x, y, (i * 4) % 256)
-bytes = bitmap.create_image_block_data().bytes()
 
 
-image = gifrawlib.ImageBlock()
-image.minimum_code = 8
-image.data         = bytes
-image.write(f)
+image_block = bitmap.create_image_block()
+image_block.write(f)
 
 write_trailer(f)
 f.close()
