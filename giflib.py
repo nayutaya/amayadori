@@ -115,4 +115,5 @@ class Image:
     blocks.append(self.create_file_header())
     blocks.append(self.create_image_block_header())
     blocks.append(self.palette.create_color_table())
+    blocks.append(self.bitmap.create_image_block())
     return blocks
