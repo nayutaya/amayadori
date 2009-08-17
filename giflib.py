@@ -102,6 +102,10 @@ class Image:
     image_block_header.color_table_size = self.depth()
     return image_block_header
 
+  def create_trailer(self):
+    trailer = gifrawlib.Trailer()
+    return trailer
+
 
 #  def __init__(self):
 #    self.palette = Palette()

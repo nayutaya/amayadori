@@ -137,6 +137,7 @@ class ImageBitmap(unittest.TestCase):
   def test_create_file_header(self):
     obj = giflib.Image(10, 20, 8)
     fh = obj.create_file_header()
+    self.assertEqual(gifrawlib.FileHeader, fh.__class__)
     self.assertEqual(10,    fh.width)
     self.assertEqual(20,    fh.height)
     self.assertEqual(8,     fh.color_resolution)
@@ -148,6 +149,7 @@ class ImageBitmap(unittest.TestCase):
   def test_create_image_block_header(self):
     obj = giflib.Image(10, 20, 8)
     ibh = obj.create_image_block_header()
+    self.assertEqual(gifrawlib.ImageBlockHeader, ibh.__class__)
     self.assertEqual(0,     ibh.left)
     self.assertEqual(0,     ibh.top)
     self.assertEqual(10,    ibh.width)
@@ -155,6 +157,11 @@ class ImageBitmap(unittest.TestCase):
     self.assertEqual(False, ibh.is_interlaced)
     self.assertEqual(False, ibh.is_sorted_color_table)
     self.assertEqual(8,     ibh.color_table_size)
+
+  def test_create_trailer(self):
+    obj = giflib.Image(10, 20, 8)
+    t = obj.create_trailer()
+    self.assertEqual(gifrawlib.Trailer, t.__class__)
 
 
 if __name__ == "__main__":
