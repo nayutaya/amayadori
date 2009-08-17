@@ -52,8 +52,11 @@ class Bitmap:
 # 高レベル パレットクラス
 class Palette:
   def __init__(self, depth = 8):
-    self.depth  = depth
+    self.depth_ = depth
     self.colors = []
+
+  def depth(self):
+    return self.depth_
 
   def size(self):
     return len(self.colors)
@@ -75,7 +78,8 @@ class Palette:
 # 高レベル イメージクラス
 class Image:
   def __init__(self, width, height, depth = 8):
-    self.bitmap = Bitmap(width, height, depth)
+    self.palette = Palette(depth)
+    self.bitmap  = Bitmap(width, height, depth)
 
   def width(self):
     return self.bitmap.width()
@@ -111,7 +115,3 @@ class Image:
     blocks.append(self.create_file_header())
     blocks.append(self.create_image_block_header())
     return blocks
-
-
-#  def __init__(self):
-#    self.palette = Palette()

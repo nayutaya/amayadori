@@ -13,14 +13,14 @@ blocks = image.create_blocks()
 for block in blocks:
   block.write(f)
 
-palette = giflib.Palette()
+palette = image.palette
 for i in xrange(256):
   palette.append((i, 0, 255 - i))
 color_table = palette.create_color_table()
 color_table.write(f)
 
 
-bitmap = giflib.Bitmap(10, 10, 8)
+bitmap = image.bitmap
 for y in range(10):
   for x in range(10):
     i = y * 10 + x

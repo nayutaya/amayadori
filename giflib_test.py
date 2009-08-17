@@ -71,10 +71,10 @@ class PaletteBitmap(unittest.TestCase):
 
   def test_init(self):
     obj = giflib.Palette()
-    self.assertEqual(8, obj.depth)
+    self.assertEqual(8, obj.depth())
 
     obj = giflib.Palette(2)
-    self.assertEqual(2, obj.depth)
+    self.assertEqual(2, obj.depth())
 
   def test_size(self):
     obj = giflib.Palette()
@@ -127,6 +127,10 @@ class ImageBitmap(unittest.TestCase):
     self.assertEqual(1, obj.width())
     self.assertEqual(2, obj.height())
     self.assertEqual(8, obj.depth())
+    self.assertEqual(1, obj.bitmap.width())
+    self.assertEqual(2, obj.bitmap.height())
+    self.assertEqual(8, obj.bitmap.depth())
+    self.assertEqual(8, obj.palette.depth())
 
   def test_init__case2(self):
     obj = giflib.Image(10, 20, 2)
