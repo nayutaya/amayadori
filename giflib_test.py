@@ -54,6 +54,15 @@ class TestBitmap(unittest.TestCase):
       ibd.bytes(),
       obj.create_image_block_data().bytes())
 
+  def test_create_image_block(self):
+    obj = giflib.Bitmap(3, 2)
+    obj.set_pixels([0, 1, 2, 3, 4, 5])
+
+    bytes = obj.create_image_block_data().bytes()
+
+    ib = obj.create_image_block()
+    self.assertEqual(8,     ib.minimum_code)
+    self.assertEqual(bytes, ib.data)
 
 if __name__ == "__main__":
   unittest.main()

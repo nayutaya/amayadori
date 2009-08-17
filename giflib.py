@@ -36,6 +36,14 @@ class Bitmap:
       data.append(pixel)
     return data
 
+  def create_image_block(self):
+    image_block_data = self.create_image_block_data()
+
+    image_block = gifrawlib.ImageBlock();
+    image_block.minimum_code = self.depth
+    image_block.data         = image_block_data.bytes()
+    return image_block
+
 
 # 高レベル イメージクラス
 #class Image:
