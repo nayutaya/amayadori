@@ -128,3 +128,10 @@ class Image:
 
   def append_color(self, rgb):
     return self.palette.append(rgb)
+
+  def get_pixel(self, xy):
+    return self.bitmap.get_pixel(xy)
+
+  def set_pixel(self, xy, pixel):
+    self.bitmap.set_pixel(xy, pixel)
+    return self

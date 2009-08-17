@@ -225,6 +225,26 @@ class ImageBitmap(unittest.TestCase):
       [(1, 2, 3), (4, 5, 6)],
       obj.palette.get_colors())
 
+  def test_get_pixel(self):
+    obj = giflib.Image(2, 2, 8)
+    obj.bitmap.set_pixels([
+      1, 2,
+      3, 4,
+    ])
+
+    self.assertEqual(2, obj.get_pixel((1, 0)))
+    self.assertEqual(3, obj.get_pixel((0, 1)))
+
+  def test_set_pixel(self):
+    obj = giflib.Image(2, 2, 8)
+    obj.set_pixel((1, 0), 1)
+    obj.set_pixel((0, 1), 2)
+
+    expected = [
+      0, 1,
+      2, 0,
+    ]
+    self.assertEqual(expected, obj.bitmap.get_pixels())
 
 if __name__ == "__main__":
   unittest.main()
