@@ -34,7 +34,7 @@ class Bitmap:
     data = gifrawlib.UncompressedImageBlockData()
     for pixel in self.get_pixels():
       data.append(pixel)
-    return data.bytes()
+    return data
 
 
 # 高レベル イメージクラス

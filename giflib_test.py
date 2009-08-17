@@ -51,7 +51,7 @@ class TestBitmap(unittest.TestCase):
     for byte in obj.get_pixels():
       data.append(byte)
     expected = data.bytes()
-    self.assertEqual(expected, obj.create_image_block_data())
+    self.assertEqual(expected, obj.create_image_block_data().bytes())
 
 
 if __name__ == "__main__":
