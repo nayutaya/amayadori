@@ -50,7 +50,6 @@ class Bitmap:
     return image_block
 
 
-
 # 高レベル パレットクラス
 class Palette:
   def __init__(self, depth = 8):
@@ -66,6 +65,12 @@ class Palette:
   def append(self, rgb):
     self.colors.append(rgb)
     return self.size() - 1
+
+  def lookup(self, rgb):
+    try:
+      return self.colors.index(rgb)
+    except ValueError:
+      return None
 
   def get_colors(self):
     return self.colors[:]
