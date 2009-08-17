@@ -106,6 +106,12 @@ class Image:
     trailer = gifrawlib.Trailer()
     return trailer
 
+  def create_blocks(self):
+    blocks = []
+    blocks.append(self.create_file_header())
+    blocks.append(self.create_image_block_header())
+    return blocks
+
 
 #  def __init__(self):
 #    self.palette = Palette()

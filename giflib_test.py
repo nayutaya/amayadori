@@ -163,6 +163,23 @@ class ImageBitmap(unittest.TestCase):
     t = obj.create_trailer()
     self.assertEqual(gifrawlib.Trailer, t.__class__)
 
+  def test_create_blocks(self):
+    obj = giflib.Image(10, 20, 8)
+    blocks = obj.create_blocks()
+    self.assertEqual(2, len(blocks))
+
+    self.assertEqual(
+      gifrawlib.FileHeader,
+      blocks[0].__class__)
+    self.assertEqual(10, blocks[0].width)
+    self.assertEqual(20, blocks[0].height)
+
+    self.assertEqual(
+      gifrawlib.ImageBlockHeader,
+      blocks[1].__class__)
+    self.assertEqual(10, blocks[1].width)
+    self.assertEqual(20, blocks[1].height)
+
 
 if __name__ == "__main__":
   unittest.main()

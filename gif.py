@@ -9,10 +9,9 @@ import giflib
 f = open("tmp.gif", "wb")
 
 image = giflib.Image(10, 10, 8)
-file_header = image.create_file_header()
-file_header.write(f)
-image_block_header = image.create_image_block_header()
-image_block_header.write(f)
+blocks = image.create_blocks()
+for block in blocks:
+  block.write(f)
 
 palette = giflib.Palette()
 for i in xrange(256):
