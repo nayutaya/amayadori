@@ -40,26 +40,26 @@ import time
 class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
     lnglat = (float(lng), float(lat))
-    nearest_area = areamanager.AreaManager.get_nearest_area(lnglat)
-    if nearest_area == None:
+    area = areamanager.AreaManager.get_nearest_area(lnglat)
+    if area == None:
       self.error_message("範囲外です。")
       return
 
-    xy = nearest_area.lnglat_to_xy(lnglat)
+    xy = area.lnglat_to_xy(lnglat)
 
     radar_time = amayadori.get_radar_time()
-    image_bin  = amayadori.get_image(nearest_area.code, radar_time, 0)
+    image_bin  = amayadori.get_image(area.code, radar_time, 0)
     image      = png.Png8bitPalette.load(image_bin)
 
     # MEMO: タスクの実験用コード
-    #tracker0 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 0)
+    #tracker0 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 0)
     #logging.info("task0 is_completed: " + str(tracker0.is_completed()))
-    #tracker1 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 1)
-    #tracker2 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 2)
-    #tracker3 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 3)
-    #tracker4 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 4)
-    #tracker5 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 5)
-    #tracker6 = taskmanager.TaskManager.add_cache_fetch_task(nearest_area.code, observed_time, 6)
+    #tracker1 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 1)
+    #tracker2 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 2)
+    #tracker3 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 3)
+    #tracker4 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 4)
+    #tracker5 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 5)
+    #tracker6 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 6)
     #logging.info("task0 is_completed: " + str(tracker0.is_completed()))
     #time.sleep(0.5)
     #logging.info("task0 is_completed: " + str(tracker0.is_completed()))
@@ -68,20 +68,21 @@ class ViewPage(webapp.RequestHandler):
 
     rimage = radar.RadarImage(image)
 
-    xy = (370,85)
+    #xy = (370,85)
     rainfall = rimage.get_ballpark_rainfall(xy)
 
     # http://amayadori-opt.appspot.com/ のためのGoogle Maps API Key
     mapkey = "ABQIAAAA-ys93Qu6HH7Py3ElrvrGIxQGMNRpk4DlDb3SBK780CawkJsqbhR6Q77-5by3FYPdmP6wscv2utyMUQ"
 
     values = {
-      "area_code": str(nearest_area.code),
+      "area": str(area.code),
       "lat": str(lnglat[1]),
       "lng": str(lnglat[0]),
       "x": str(xy[0]),
       "y": str(xy[1]),
       "current_value": str(rainfall),
       "mapkey": mapkey,
+      "radar_time": radar_time.strftime("%Y%m%d%H%M"),
     }
 
     path = os.path.join(os.path.dirname(__file__), "views/view.html")
