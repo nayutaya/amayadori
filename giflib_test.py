@@ -217,6 +217,14 @@ class ImageBitmap(unittest.TestCase):
 
     self.assertEqual(sio1.getvalue(), sio2.getvalue())
 
+  def test_append_color(self):
+    obj = giflib.Image(10, 20, 8)
+    self.assertEqual(0, obj.append_color((1, 2, 3)))
+    self.assertEqual(1, obj.append_color((4, 5, 6)))
+    self.assertEqual(
+      [(1, 2, 3), (4, 5, 6)],
+      obj.palette.get_colors())
+
 
 if __name__ == "__main__":
   unittest.main()

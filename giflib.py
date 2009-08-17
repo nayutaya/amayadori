@@ -125,3 +125,6 @@ class Image:
     for block in self.create_blocks():
       block.write(io)
     return self
+
+  def append_color(self, rgb):
+    return self.palette.append(rgb)

@@ -8,9 +8,8 @@ import giflib
 
 image = giflib.Image(10, 10, 8)
 
-palette = image.palette
 for i in xrange(256):
-  palette.append((i, 0, 255 - i))
+  image.append_color((i, 0, 255 - i))
 
 bitmap = image.bitmap
 for y in range(10):
