@@ -8,13 +8,16 @@ import imglib
 class Bitmap:
   def __init__(self, width, height, depth = 8):
     self.bitmap = imglib.IndexBitmap(width, height)
-    self.depth  = depth
+    self.depth_ = depth
 
   def width(self):
     return self.bitmap.width
 
   def height(self):
     return self.bitmap.height
+
+  def depth(self):
+    return self.depth_
 
   def get_pixels(self):
     return self.bitmap.get_pixels()
@@ -40,7 +43,7 @@ class Bitmap:
     image_block_data = self.create_image_block_data()
 
     image_block = gifrawlib.ImageBlock();
-    image_block.minimum_code = self.depth
+    image_block.minimum_code = self.depth()
     image_block.data         = image_block_data.bytes()
     return image_block
 
@@ -72,21 +75,23 @@ class Palette:
 # 高レベル イメージクラス
 class Image:
   def __init__(self, width, height, depth = 8):
-    self.width_  = width
-    self.height_ = height
-    self.depth_  = depth
-    pass
+    self.bitmap = Bitmap(width, height, depth)
 
   def width(self):
-    return self.width_
+    return self.bitmap.width()
 
   def height(self):
-    return self.height_
+    return self.bitmap.height()
 
   def depth(self):
-    return self.depth_
+    return self.bitmap.depth()
 
+  def create_file_header(self):
+    file_header = gifrawlib.FileHeader()
+    file_header.width            = self.width()
+    file_header.height           = self.height()
+    file_header.color_resolution = self.depth()
+    return file_header
 
 #  def __init__(self):
 #    self.palette = Palette()
-#    self.bitmap  = Bitmap(width, height)

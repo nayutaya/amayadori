@@ -14,7 +14,7 @@ class TestBitmap(unittest.TestCase):
     obj = giflib.Bitmap(10, 20)
     self.assertEqual(10, obj.width())
     self.assertEqual(20, obj.height())
-    self.assertEqual(8,  obj.depth)
+    self.assertEqual(8,  obj.depth())
 
   def test_get_pixel(self):
     obj = giflib.Bitmap(4, 3)
@@ -133,6 +133,17 @@ class ImageBitmap(unittest.TestCase):
     self.assertEqual(10, obj.width())
     self.assertEqual(20, obj.height())
     self.assertEqual(2,  obj.depth())
+
+  def test_create_file_header(self):
+    obj = giflib.Image(10, 20, 8)
+    fh = obj.create_file_header()
+    self.assertEqual(10,    fh.width)
+    self.assertEqual(20,    fh.height)
+    self.assertEqual(8,     fh.color_resolution)
+    self.assertEqual(False, fh.is_sorted_color_table)
+    self.assertEqual(0,     fh.color_table_size)
+    self.assertEqual(0,     fh.background_color_index)
+    self.assertEqual(0,     fh.pixel_aspect_ratio)
 
 
 if __name__ == "__main__":
