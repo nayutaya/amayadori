@@ -99,6 +99,24 @@ class PaletteBitmap(unittest.TestCase):
       [(1, 2, 3)],
       obj.get_colors())
 
+  def test_create_color_table__empty(self):
+    ct1 = gifrawlib.ColorTable()
+
+    obj = giflib.Palette()
+    ct2 = obj.create_color_table()
+
+    self.assertEqual(ct1.get_colors(), ct2.get_colors())
+
+  def test_create_color_table__not_empty(self):
+    ct1 = gifrawlib.ColorTable()
+    ct1.append((1, 2, 3))
+
+    obj = giflib.Palette()
+    obj.append((1, 2, 3))
+    ct2 = obj.create_color_table()
+
+    self.assertEqual(ct1.get_colors(), ct2.get_colors())
+
 
 if __name__ == "__main__":
   unittest.main()

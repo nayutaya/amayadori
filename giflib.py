@@ -62,6 +62,12 @@ class Palette:
   def get_colors(self):
     return self.colors[:]
 
+  def create_color_table(self):
+    color_table = gifrawlib.ColorTable()
+    for color in self.colors:
+      color_table.append(color)
+    return color_table
+
 
 # 高レベル イメージクラス
 #class Image:
