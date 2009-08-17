@@ -76,6 +76,17 @@ class PaletteBitmap(unittest.TestCase):
     obj = giflib.Palette(2)
     self.assertEqual(2, obj.depth)
 
+  def test_size(self):
+    obj = giflib.Palette()
+    self.assertEqual(0, obj.size())
+
+  def test_append(self):
+    obj = giflib.Palette()
+    self.assertEqual(0, obj.size())
+    self.assertEqual(0, obj.append((0, 0, 0)))
+    self.assertEqual(1, obj.size())
+    self.assertEqual(1, obj.append((0, 0, 0)))
+    self.assertEqual(2, obj.size())
 
 if __name__ == "__main__":
   unittest.main()

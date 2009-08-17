@@ -49,7 +49,15 @@ class Bitmap:
 # 高レベル パレットクラス
 class Palette:
   def __init__(self, depth = 8):
-    self.depth = depth
+    self.depth  = depth
+    self.colors = []
+
+  def size(self):
+    return len(self.colors)
+
+  def append(self, rgb):
+    self.colors.append(0)
+    return self.size() - 1
 
 
 # 高レベル イメージクラス
