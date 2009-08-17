@@ -47,11 +47,12 @@ class TestBitmap(unittest.TestCase):
     obj = giflib.Bitmap(3, 2)
     obj.set_pixels([0, 1, 2, 3, 4, 5])
 
-    data = gifrawlib.UncompressedImageBlockData()
+    ibd = gifrawlib.UncompressedImageBlockData()
     for byte in obj.get_pixels():
-      data.append(byte)
-    expected = data.bytes()
-    self.assertEqual(expected, obj.create_image_block_data().bytes())
+      ibd.append(byte)
+    self.assertEqual(
+      ibd.bytes(),
+      obj.create_image_block_data().bytes())
 
 
 if __name__ == "__main__":
