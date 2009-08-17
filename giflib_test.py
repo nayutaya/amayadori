@@ -169,8 +169,10 @@ class ImageBitmap(unittest.TestCase):
 
   def test_create_blocks(self):
     obj = giflib.Image(10, 20, 8)
+    obj.palette.append((1, 2, 3))
+
     blocks = obj.create_blocks()
-    self.assertEqual(2, len(blocks))
+    self.assertEqual(3, len(blocks))
 
     self.assertEqual(
       gifrawlib.FileHeader,
@@ -183,6 +185,13 @@ class ImageBitmap(unittest.TestCase):
       blocks[1].__class__)
     self.assertEqual(10, blocks[1].width)
     self.assertEqual(20, blocks[1].height)
+
+    self.assertEqual(
+      gifrawlib.ColorTable,
+      blocks[2].__class__)
+    self.assertEqual(
+      [(1, 2, 3)],
+      blocks[2].get_colors())
 
 
 if __name__ == "__main__":

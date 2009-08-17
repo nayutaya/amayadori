@@ -9,15 +9,14 @@ import giflib
 f = open("tmp.gif", "wb")
 
 image = giflib.Image(10, 10, 8)
-blocks = image.create_blocks()
-for block in blocks:
-  block.write(f)
 
 palette = image.palette
 for i in xrange(256):
   palette.append((i, 0, 255 - i))
-color_table = palette.create_color_table()
-color_table.write(f)
+
+blocks = image.create_blocks()
+for block in blocks:
+  block.write(f)
 
 
 bitmap = image.bitmap
