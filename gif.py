@@ -3,13 +3,8 @@
 import StringIO
 import struct
 
-import gifrawlib
 import giflib
 
-
-def write_trailer(io):
-  trailer = gifrawlib.Trailer()
-  trailer.write(io)
 
 f = open("tmp.gif", "wb")
 
@@ -36,5 +31,7 @@ for y in range(10):
 image_block = bitmap.create_image_block()
 image_block.write(f)
 
-write_trailer(f)
+trailer = image.create_trailer()
+trailer.write(f)
+
 f.close()
