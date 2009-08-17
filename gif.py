@@ -28,12 +28,6 @@ def write_image_block_header(io):
   header.color_table_size      = 8
   header.write(io)
 
-def write_local_color_table(io):
-  ctable = gifrawlib.ColorTable()
-  for i in xrange(256):
-    ctable.append((i, 0, 255 - i))
-  ctable.write(io)
-
 def write_trailer(io):
   trailer = gifrawlib.Trailer()
   trailer.write(io)
@@ -41,7 +35,13 @@ def write_trailer(io):
 f = open("tmp.gif", "wb")
 write_header(f)
 write_image_block_header(f)
-write_local_color_table(f)
+
+
+palette = giflib.Palette()
+for i in xrange(256):
+  palette.append((i, 0, 255 - i))
+color_table = palette.create_color_table()
+color_table.write(f)
 
 
 bitmap = giflib.Bitmap(10, 10, 8)
