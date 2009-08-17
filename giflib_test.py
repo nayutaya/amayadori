@@ -118,5 +118,22 @@ class PaletteBitmap(unittest.TestCase):
     self.assertEqual(ct1.get_colors(), ct2.get_colors())
 
 
+class ImageBitmap(unittest.TestCase):
+  def setUp(self):
+    pass
+
+  def test_init__case1(self):
+    obj = giflib.Image(1, 2)
+    self.assertEqual(1, obj.width())
+    self.assertEqual(2, obj.height())
+    self.assertEqual(8, obj.depth())
+
+  def test_init__case2(self):
+    obj = giflib.Image(10, 20, 2)
+    self.assertEqual(10, obj.width())
+    self.assertEqual(20, obj.height())
+    self.assertEqual(2,  obj.depth())
+
+
 if __name__ == "__main__":
   unittest.main()

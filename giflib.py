@@ -70,7 +70,23 @@ class Palette:
 
 
 # 高レベル イメージクラス
-#class Image:
-#  def __init__(self, width, height):
+class Image:
+  def __init__(self, width, height, depth = 8):
+    self.width_  = width
+    self.height_ = height
+    self.depth_  = depth
+    pass
+
+  def width(self):
+    return self.width_
+
+  def height(self):
+    return self.height_
+
+  def depth(self):
+    return self.depth_
+
+
+#  def __init__(self):
 #    self.palette = Palette()
 #    self.bitmap  = Bitmap(width, height)
