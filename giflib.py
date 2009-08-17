@@ -72,6 +72,12 @@ class Palette:
     except ValueError:
       return None
 
+  def allocate(self, rgb):
+    index = self.lookup(rgb)
+    if index == None:
+      index = self.append(rgb)
+    return index
+
   def get_colors(self):
     return self.colors[:]
 
