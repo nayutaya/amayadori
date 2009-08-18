@@ -52,6 +52,7 @@ class WholeImage(webapp.RequestHandler):
     self.response.headers["Content-Type"] = "image/png"
     self.response.out.write(image)
 
+
 class WholeReducedImage(webapp.RequestHandler):
   def get(self, area, time, ordinal):
     area    = int(area)
@@ -61,19 +62,17 @@ class WholeReducedImage(webapp.RequestHandler):
     image = amayadori.get_image(area, time, ordinal)
 
     pngimg = png.Png8bitPalette.load(image)
-    #gifimg = giflib.Image(pngimg.bitmap.width, pngimg.bitmap.height, 8)
     gifimg = giflib.Image(150, pngimg.bitmap.height, 8)
     gifimg.allocate_color((192, 192, 192))
 
-    for y in xrange(gifimg.height()):
-      for x in xrange(150):
-        rgb1  = pngimg.get_color((x + pngimg.bitmap.width - 150, y))
+    width, height = (gifimg.width(), gifimg.height())
+    for y in xrange(height):
+      for x in xrange(width):
+        rgb1  = pngimg.get_color((x + 200, y))
         rgb2  = jmalib.RadarNowCast.color_reduction(rgb1)
         index = gifimg.allocate_color(rgb2)
         gifimg.set_pixel((x, y), index)
 
-    #self.response.headers["Content-Type"] = "image/png"
-    #self.response.out.write(image)
     self.response.headers["Content-Type"] = "image/gif"
     gifimg.write(self.response.out)
 
