@@ -4,9 +4,6 @@
     <title>雨宿り最適化計画</title>
   </head>
   <body>
-    <center>
-      <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=200x80&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange&key={{mapkey}}">
-    </center>
     <br>
     現在の雨量: {{current_value}}<br>
     <img src="/image/{{area}}/{{radar_time}}/00.{{x}}.{{y}}.gif"   width="41" height="41" border="0"><br>
@@ -16,7 +13,11 @@
     <img src="/image/{{area}}/{{nowcast_time}}/04.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
     <img src="/image/{{area}}/{{nowcast_time}}/05.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
     <img src="/image/{{area}}/{{nowcast_time}}/06.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
-    <hr>
+    <hr size="1">
+    <center>
+      <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=200x100&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange&key={{mapkey}}">
+    </center>
+    <hr size="1">
     <font size="-1" color="#999999">
       緯度経度: {{lat}}, {{lng}}<br>
       直交座標: {{x}}, {{y}} @{{area}}<br>
