@@ -75,7 +75,7 @@ class PartialReducedImage(webapp.RequestHandler):
     for yy in xrange(dy):
       for xx in xrange(dx):
         rgb1  = pngimg.get_color((sx + xx, sy + yy))
-        rgb2  = jmalib.RadarNowCast.color_reduction(rgb1)
+        rgb2  = jmalib.color_reduction(rgb1)
         index = gifimg.allocate_color(rgb2)
         gifimg.set_pixel((xx, yy), index)
 

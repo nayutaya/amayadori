@@ -7,9 +7,9 @@ import jmalib
 import imglib
 
 
-class TestRadarNowCast(unittest.TestCase):
+class TestJmaLib(unittest.TestCase):
   def setUp(self):
-    self.klass = jmalib.RadarNowCast
+    pass
 
   def test_parse_radar_js(self):
     src = """
@@ -29,7 +29,7 @@ class TestRadarNowCast(unittest.TestCase):
     ]
     self.assertEqual(
       expected,
-      self.klass.parse_radar_js(src))
+      jmalib.parse_radar_js(src))
 
   def test_parse_nowcast_js(self):
     src = """
@@ -51,7 +51,7 @@ class TestRadarNowCast(unittest.TestCase):
     ]
     self.assertEqual(
       expected,
-      self.klass.parse_nowcast_js(src))
+      jmalib.parse_nowcast_js(src))
 
   def test_get_latest_time(self):
     time_and_ordinals = [
@@ -63,7 +63,7 @@ class TestRadarNowCast(unittest.TestCase):
     ]
     self.assertEqual(
       datetime.datetime(2009, 8, 6, 13, 55),
-      self.klass.get_latest_time(time_and_ordinals))
+      jmalib.get_latest_time(time_and_ordinals))
 
   def test_get_current_radar_time(self):
     def fetcher(url):
@@ -75,7 +75,7 @@ class TestRadarNowCast(unittest.TestCase):
       return src
     self.assertEqual(
       datetime.datetime(2009, 8, 6, 13, 55),
-      self.klass.get_current_radar_time(fetcher))
+      jmalib.get_current_radar_time(fetcher))
 
   def test_get_current_nowcast_time(self):
     def fetcher(url):
@@ -87,57 +87,57 @@ class TestRadarNowCast(unittest.TestCase):
       return src
     self.assertEqual(
       datetime.datetime(2009, 8, 6, 13, 55),
-      self.klass.get_current_nowcast_time(fetcher))
+      jmalib.get_current_nowcast_time(fetcher))
 
   def test_create_radar_image_url(self):
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/radar/000/200001010000-00.png",
-      self.klass.create_radar_image_url(0, datetime.datetime(2000, 1, 1, 0, 0)))
+      jmalib.create_radar_image_url(0, datetime.datetime(2000, 1, 1, 0, 0)))
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/radar/999/199912312359-00.png",
-      self.klass.create_radar_image_url(999, datetime.datetime(1999, 12, 31, 23, 59)))
+      jmalib.create_radar_image_url(999, datetime.datetime(1999, 12, 31, 23, 59)))
 
   def test_create_nowcast_image_url(self):
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/nowcast/000/200001010000-00.png",
-      self.klass.create_nowcast_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 0))
+      jmalib.create_nowcast_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 0))
     self.assertEqual(
       "http://www.jma.go.jp/jp/radnowc/imgs/nowcast/999/199912312359-99.png",
-      self.klass.create_nowcast_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99))
+      jmalib.create_nowcast_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99))
 
   def test_create_image_url(self):
     self.assertEqual(
-      self.klass.create_radar_image_url(0, datetime.datetime(2000, 1, 1, 0, 0)),
-      self.klass.create_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 0))
+      jmalib.create_radar_image_url(0, datetime.datetime(2000, 1, 1, 0, 0)),
+      jmalib.create_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 0))
     self.assertEqual(
-      self.klass.create_radar_image_url(999, datetime.datetime(1999, 12, 31, 23, 59)),
-      self.klass.create_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 0))
+      jmalib.create_radar_image_url(999, datetime.datetime(1999, 12, 31, 23, 59)),
+      jmalib.create_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 0))
     self.assertEqual(
-      self.klass.create_nowcast_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 1),
-      self.klass.create_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 1))
+      jmalib.create_nowcast_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 1),
+      jmalib.create_image_url(0, datetime.datetime(2000, 1, 1, 0, 0), 1))
     self.assertEqual(
-      self.klass.create_nowcast_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99),
-      self.klass.create_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99))
+      jmalib.create_nowcast_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99),
+      jmalib.create_image_url(999, datetime.datetime(1999, 12, 31, 23, 59), 99))
 
   def test_get_image(self):
     def fetcher(url):
       return "binary"
     self.assertEqual(
       "binary",
-      self.klass.get_image(0, datetime.datetime(2000, 1, 1, 0, 0), 0, fetcher))
+      jmalib.get_image(0, datetime.datetime(2000, 1, 1, 0, 0), 0, fetcher))
     self.assertEqual(
       "binary",
-      self.klass.get_image(0, datetime.datetime(2000, 1, 1, 0, 0), 1, fetcher))
+      jmalib.get_image(0, datetime.datetime(2000, 1, 1, 0, 0), 1, fetcher))
 
   def test_is_water_color(self):
     def h(int):
       return imglib.Color.int_to_rgb(int)
 
-    self.assertEqual(True,  self.klass.is_water_color(h(0xC0C0C0)))
-    self.assertEqual(True,  self.klass.is_water_color(h(0xC1C1C1)))
+    self.assertEqual(True,  jmalib.is_water_color(h(0xC0C0C0)))
+    self.assertEqual(True,  jmalib.is_water_color(h(0xC1C1C1)))
 
-    self.assertEqual(True , self.klass.is_water_color(h(0x000000)))
-    self.assertEqual(False, self.klass.is_water_color(h(0x000100)))
+    self.assertEqual(True , jmalib.is_water_color(h(0x000000)))
+    self.assertEqual(False, jmalib.is_water_color(h(0x000100)))
 
     list = [
       0x5B719B, 0x5B7298, 0x5C739F, 0x5D739F, 0x5E759E,
@@ -156,14 +156,14 @@ class TestRadarNowCast(unittest.TestCase):
     for int in list:
       self.assertEqual(
         (h(int), True),
-        (h(int), self.klass.is_water_color(h(int))))
+        (h(int), jmalib.is_water_color(h(int))))
 
   def test_is_ground_color(self):
     def h(int):
       return imglib.Color.int_to_rgb(int)
 
-    self.assertEqual(False, self.klass.is_ground_color(h(0x000000)))
-    self.assertEqual(True,  self.klass.is_ground_color(h(0x000100)))
+    self.assertEqual(False, jmalib.is_ground_color(h(0x000000)))
+    self.assertEqual(True,  jmalib.is_ground_color(h(0x000100)))
 
     list = [
       0x698B5A, 0x6D8D5E, 0x6D8E5F, 0x6F9060, 0x6F915F,
@@ -194,10 +194,10 @@ class TestRadarNowCast(unittest.TestCase):
     for int in list:
       self.assertEqual(
         (h(int), True),
-        (h(int), self.klass.is_ground_color(h(int))))
+        (h(int), jmalib.is_ground_color(h(int))))
 
   def test_color_reduction(self):
-    target = self.klass.color_reduction
+    target = jmalib.color_reduction
 
     # •s–¾
     #self.assertEqual((192,   0, 192), target((  0,   0,   0)))
