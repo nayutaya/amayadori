@@ -4,22 +4,61 @@
     <title>雨宿り最適化計画</title>
   </head>
   <body>
-    雨宿り最適化計画
-    <hr>
-    iエリア<br>
-    <form action="http://w1m.docomo.ne.jp/cp/iarea" method="get">
-     <input type="hidden" name="ecode" value="OPENAREACODE">
-     <input type="hidden" name="msn" value="OPENAREAKEY">
-     <input type="hidden" name="posinfo" value="2">
-     <input type="hidden" name="nl" value="{{redirect_url}}">
-     <input type="submit" value="測位">
-    </form>
-    <hr>
-    GPS<br>
-    <form action="/docomo/gps" method="get" lcs>
-     <input type="submit" value="測位">
-    </form>
-    <hr>
+    <table width="100%" bgcolor="#3B5A98">
+      <tr>
+        <td align="center"><font color="#FFFFFF">雨宿り最適化計画</font></td>
+      </tr>
+    </table>
+
+    <br>
+
+    <table width="100%" bgcolor="#CC0033">
+      <tr>
+        <td align="center"><font size="-1" color="#FFFFFF">◆ NTT docomo ◆</font></td>
+      </tr>
+    </table>
+
+    <font size="-1">
+      <br>
+      <form action="http://w1m.docomo.ne.jp/cp/iarea" method="get">
+       <input type="hidden" name="ecode" value="OPENAREACODE">
+       <input type="hidden" name="msn" value="OPENAREAKEY">
+       <input type="hidden" name="posinfo" value="2">
+       <input type="hidden" name="nl" value="{{redirect_url}}">
+       <center><input type="submit" value="iエリアで測位"></center>
+      </form>
+      <form action="/docomo/gps" method="get" lcs>
+       <center><input type="submit" value="GPSで測位"></center>
+      </form>
+      <br>
+    </font>
+
+    <table width="100%" bgcolor="#F76B1F">
+      <tr>
+        <td align="center"><font size="-1" color="#FFFFFF">◆ au by KDDI ◆</font></td>
+      </tr>
+    </table>
+
+    <font size="-1">
+      <br>
+      <center>（開発中）</center>
+      <br
+    </font>
+
+    <table width="100%" bgcolor="#999999">
+      <tr>
+        <td align="center"><font size="-1" color="#FFFFFF">◆ SoftBank ◆</font></td>
+      </tr>
+    </table>
+
+    <font size="-1">
+      <br>
+      <center>（開発中）</center>
+      <br
+    </font>
+
+    <hr size="1">
+
     <font size="-1">
       例:
       <a href="/view/34.6901/135.1956">神戸市</a> |
