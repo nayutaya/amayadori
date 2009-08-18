@@ -213,10 +213,10 @@ class TestRadarNowCast(unittest.TestCase):
     self.assertEqual((153, 204, 255), target((153, 204, 255)))
 
     # ŠÏ‘ª“_
-    self.assertEqual(( 96,  57,  19), target(( 96,  57,  19)))
+    self.assertEqual(( 96, 128,  96), target(( 96,  57,  19)))
 
     # “s“¹•{Œ§‹«ŠE
-    self.assertEqual((230, 230, 230), target((230, 230, 230)))
+    self.assertEqual((255, 255, 255), target((230, 230, 230)))
 
     # ŠCŠÝ‹«ŠE/ƒOƒŠƒbƒh
     self.assertEqual((102, 102, 102), target((102, 102, 102)))
