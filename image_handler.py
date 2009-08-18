@@ -15,9 +15,9 @@ AreaManager = areamanager.AreaManager
 
 class IndexPage(webapp.RequestHandler):
   def get(self, area):
-    area  = int(area)
-    rtime = amayadori.get_radar_time()
-    ntime = amayadori.get_nowcast_time()
+    area         = int(area)
+    radar_time   = amayadori.get_radar_time()
+    nowcast_time = amayadori.get_nowcast_time()
 
     links = []
     for areainfo in AreaManager.areas:
@@ -28,8 +28,8 @@ class IndexPage(webapp.RequestHandler):
 
     values = {
       "area" : ("%03i" % area),
-      "rtime": rtime.strftime("%Y%m%d%H%M"),
-      "ntime": ntime.strftime("%Y%m%d%H%M"),
+      "radar_time": radar_time.strftime("%Y%m%d%H%M"),
+      "nowcast_time": nowcast_time.strftime("%Y%m%d%H%M"),
       "link" : "[ " + " | ".join(links) + " ]",
     }
 
