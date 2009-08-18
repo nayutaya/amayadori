@@ -93,17 +93,18 @@ class PartialReducedImage(webapp.RequestHandler):
 
     pngimg = png.Png8bitPalette.load(image)
 
-    image = giflib.Image(31, 31, 8)
-    image.allocate_color((192, 192, 192))
+    gifimg = giflib.Image(31, 31, 8)
+    gifimg.allocate_color((192, 192, 192))
 
     for yy in range(dy):
       for xx in range(dx):
-        rgb   = pngimg.get_color((sx + xx, sy + yy))
-        index = image.allocate_color(rgb)
-        image.set_pixel((xx, yy), index)
+        rgb1  = pngimg.get_color((sx + xx, sy + yy))
+        rgb2  = jmalib.RadarNowCast.color_reduction(rgb1)
+        index = gifimg.allocate_color(rgb2)
+        gifimg.set_pixel((xx, yy), index)
 
     self.response.headers["Content-Type"] = "image/gif"
-    image.write(self.response.out)
+    gifimg.write(self.response.out)
 
 
 if __name__ == "__main__":
