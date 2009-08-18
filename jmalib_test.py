@@ -200,7 +200,7 @@ class TestRadarNowCast(unittest.TestCase):
     target = self.klass.color_reduction
 
     # •s–¾
-    self.assertEqual((192,   0, 192), target((255, 255, 255)))
+    self.assertEqual((192,   0, 192), target((  0,   0,   0)))
 
     # ‰J‰_
     self.assertEqual((255,   0,   0), target((255,   0,   0)))
@@ -211,6 +211,20 @@ class TestRadarNowCast(unittest.TestCase):
     self.assertEqual((  0,   0, 255), target((  0,   0, 255)))
     self.assertEqual(( 51, 102, 255), target(( 51, 102, 255)))
     self.assertEqual((153, 204, 255), target((153, 204, 255)))
+
+    # ŠÏ‘ª“_
+    self.assertEqual(( 96,  57,  19), target(( 96,  57,  19)))
+
+    # “s“¹•{Œ§‹«ŠE
+    self.assertEqual((230, 230, 230), target((230, 230, 230)))
+
+    # ŠCŠÝ‹«ŠE/ƒOƒŠƒbƒh
+    self.assertEqual((102, 102, 102), target((102, 102, 102)))
+
+    # ŠCŠÝ‹«ŠE
+    self.assertEqual((255, 255, 255), target((255, 255, 255)))
+    self.assertEqual((116, 123, 114), target((116, 123, 114)))
+    self.assertEqual((160, 160, 160), target((160, 160, 160)))
 
 
 if __name__ == "__main__":
