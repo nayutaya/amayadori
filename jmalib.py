@@ -20,6 +20,18 @@ color_reduction_table = {
   (160, 160, 160): (160, 160, 160), # ŠCŠÝ‹«ŠE
 }
 
+railfall_table = {
+  (255,   0,   0): (80, 100),
+  (255,   0, 255): (50,  80),
+  (255, 153,   0): (30,  50),
+  (255, 255,   0): (20,  30),
+  (  0, 255,   0): (10,  20),
+  (  0,   0, 255): ( 5,  10),
+  ( 51, 102, 255): ( 1,   5),
+  (153, 204, 255): ( 0,   1),
+}
+
+
 def parse_radar_js(src):
   regexp = re.compile(r"(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})-(\d{2})\.png")
   result = []
@@ -111,27 +123,7 @@ def color_reduction(rgb):
     return ret
 
 def get_minimum_rainfall_from_rgb(rgb):
-  table = {
-    (153, 204, 255): 0,
-    ( 51, 102, 255): 1,
-    (  0,   0, 255): 5,
-    (  0, 255,   0): 10,
-    (255, 255,   0): 20,
-    (255, 153,   0): 30,
-    (255,   0, 255): 50,
-    (255,   0,   0): 80,
-  }
-  return table.get(rgb, 0)
+  return railfall_table.get(rgb, (0, 0))[0]
 
 def get_maximum_rainfall_from_rgb(rgb):
-  table = {
-    (153, 204, 255): 1,
-    ( 51, 102, 255): 5,
-    (  0,   0, 255): 10,
-    (  0, 255,   0): 20,
-    (255, 255,   0): 30,
-    (255, 153,   0): 50,
-    (255,   0, 255): 80,
-    (255,   0,   0): 100,
-  }
-  return table.get(rgb, 0)
+  return railfall_table.get(rgb, (0, 0))[1]
