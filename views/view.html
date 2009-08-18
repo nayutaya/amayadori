@@ -10,12 +10,14 @@
       </tr>
     </table>
 
-    <table border="1">
-      {% for section in sections %}
+    <table border="0">
+      {% for record in records %}
         <tr>
-          <td><img src="/image/{{area}}/{{section.image_time}}/{{section.image_ordinal}}.{{x}}.{{y}}.gif" width="41" height="41" border="0"></td>
-          <td>{{section.time}} {{section.type}}</td>
-          <td>{{section.minimum}}～{{section.maximum}}mm/h</td>
+          <td><img src="/image/{{area}}/{{record.image_time}}/{{record.image_ordinal}}.{{x}}.{{y}}.gif" width="41" height="41" border="0"></td>
+          <td>
+            {{record.time}}: {{record.type}}<br>
+            {{record.rainfall}} mm/h
+          </td>
         </tr>
       {% endfor %}
     </table>

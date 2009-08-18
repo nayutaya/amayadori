@@ -53,18 +53,22 @@ class ViewPage(webapp.RequestHandler):
     nowcast_time = amayadori.get_nowcast_time(current_time)
     time_table   = amayadori.get_time_table(current_time)
 
-    sections = []
-    for (time, ordinal), present_time in time_table:
-      image    = amayadori.get_image(area.code, time, ordinal)
+    records = []
+    for (image_time, image_ordinal), present_time in time_table:
+      image    = amayadori.get_image(area.code, image_time, image_ordinal)
       rainfall = amayadori.get_rainfall(image, xy)
 
-      sections.append({
-        "type": ("現在" if ordinal == 0 else "予想"),
+      if rainfall[0] == rainfall[1]:
+        rainfall_str = str(rainfall[0])
+      else:
+        rainfall_str = str(rainfall[0]) + "～" + str(rainfall[1])
+
+      records.append({
+        "type": ("現在" if image_ordinal == 0 else "予想"),
         "time": present_time.strftime("%H時%M分"),
-        "minimum": str(rainfall[0]),
-        "maximum": str(rainfall[1]),
-        "image_time": time.strftime("%Y%m%d%H%M"),
-        "image_ordinal": ("%02i" % ordinal),
+        "rainfall": rainfall_str,
+        "image_time": image_time.strftime("%Y%m%d%H%M"),
+        "image_ordinal": ("%02i" % image_ordinal),
       })
 
 
@@ -80,7 +84,7 @@ class ViewPage(webapp.RequestHandler):
       "mapkey": mapkey,
       "radar_time": radar_time.strftime("%Y%m%d%H%M"),
       "nowcast_time": nowcast_time.strftime("%Y%m%d%H%M"),
-      "sections": sections,
+      "records": records,
     }
 
     path = os.path.join(os.path.dirname(__file__), "views/view.html")
