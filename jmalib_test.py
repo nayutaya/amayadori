@@ -4,6 +4,7 @@ import unittest
 import datetime
 
 import jmalib
+import imglib
 
 
 class TestRadarNowCast(unittest.TestCase):
@@ -127,6 +128,33 @@ class TestRadarNowCast(unittest.TestCase):
     self.assertEqual(
       "binary",
       self.klass.get_image(0, datetime.datetime(2000, 1, 1, 0, 0), 1, fetcher))
+
+  def test_is_water_color(self):
+    def h(int):
+      return imglib.Color.int_to_rgb(int)
+
+    self.assertEqual(False, self.klass.is_water_color(h(0x000100)))
+    self.assertEqual(True,  self.klass.is_water_color(h(0xC0C0C0)))
+    self.assertEqual(True,  self.klass.is_water_color(h(0xC1C1C1)))
+
+    list = [
+      0x5B719B, 0x5B7298, 0x5C739F, 0x5D739F, 0x5E759E,
+      0x5F7597, 0x638099, 0x648191, 0x667D91, 0x687F8F,
+      0x6982B8, 0x6E85BC, 0x6F8EA9, 0x708AA2, 0x708EAA,
+      0x728D9F, 0x728DA3, 0x728EA9, 0x738DB7, 0x738DC2,
+      0x7393B7, 0x748DC0, 0x748FA9, 0x748FAD, 0x758DC9,
+      0x7692AF, 0x7A9FA5, 0x7B94C6, 0x7D9DC2, 0x7D9EC1,
+      0x7E97C7, 0x7E9CBB, 0x7F9EC0, 0x7F9EC2, 0x809CBE,
+      0x809EAC, 0x809EC0, 0x86A4CD, 0x86A6D1, 0x88A6CF,
+      0x89A7D1, 0x89AAD3, 0x8AA6D2, 0x8AA7D0, 0x8AA9D2,
+      0x8BABD1, 0x8DACD2, 0x8EAAD3, 0x8EADB4, 0x8FADD2,
+      0x90ADD3, 0x90AFB7, 0x91AED2, 0x91B0D2, 0x9AB6BA,
+      0xB8B8E4, 0xD9D9D9,
+    ]
+    for int in list:
+      self.assertEqual(
+        (h(int), True),
+        (h(int), self.klass.is_water_color(h(int))))
 
 
 if __name__ == "__main__":

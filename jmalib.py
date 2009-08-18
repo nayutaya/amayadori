@@ -80,3 +80,11 @@ class RadarNowCast:
     url    = cls.create_image_url(area, time, ordinal)
     binary = fetcher(url)
     return binary
+
+  @classmethod
+  def is_water_color(cls, rgb):
+    if   rgb == (192, 192, 192): return True
+    elif rgb == (193, 193, 193): return True
+    else:
+      r, g, b = rgb
+      return (b >= g)
