@@ -36,3 +36,15 @@ class IndexBitmap(BitmapBase):
 class RgbBitmap(BitmapBase):
   def __init__(self, width, height):
     BitmapBase.__init__(self, width, height, (0, 0, 0))
+
+
+# カラークラス
+class Color:
+  @classmethod
+  def rgb_to_int(cls, rgb):
+    r, g, b = rgb
+    int  = 0
+    int |= (r & 0xFF) << 16
+    int |= (g & 0xFF) << 8
+    int |= (b & 0xFF) << 0
+    return int

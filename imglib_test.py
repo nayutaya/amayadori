@@ -116,6 +116,17 @@ class TestRgbBitmap(unittest.TestCase):
     ]
     self.assertEqual(expected, obj.get_pixels())
 
+class TestColor(unittest.TestCase):
+  def setUp(self):
+    self.klass = imglib.Color
+
+  def test_rgb_to_int(self):
+    self.assertEqual(0x000000, self.klass.rgb_to_int((0, 0, 0)))
+    self.assertEqual(0xFF0000, self.klass.rgb_to_int((255, 0, 0)))
+    self.assertEqual(0x00FF00, self.klass.rgb_to_int((0, 255, 0)))
+    self.assertEqual(0x0000FF, self.klass.rgb_to_int((0, 0, 255)))
+    self.assertEqual(0xFFFFFF, self.klass.rgb_to_int((255, 255, 255)))
+
 
 if __name__ == "__main__":
   unittest.main()
