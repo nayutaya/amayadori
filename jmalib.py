@@ -112,4 +112,13 @@ class RadarNowCast:
       (116, 123, 114): (116, 123, 114), # ŠCŠÝ‹«ŠE
       (160, 160, 160): (160, 160, 160), # ŠCŠÝ‹«ŠE
     }
-    return table.get(rgb, (192, 0, 192))
+    ret = table.get(rgb)
+    if ret == None:
+      if cls.is_ground_color(rgb):
+        return ( 96, 128,  96)
+      elif cls.is_water_color(rgb):
+        return ( 64,  96, 128)
+      else:
+        return (192,   0, 192)
+    else:
+      return ret
