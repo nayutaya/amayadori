@@ -48,3 +48,10 @@ class Color:
     int |= (g & 0xFF) << 8
     int |= (b & 0xFF) << 0
     return int
+
+  @classmethod
+  def int_to_rgb(cls, int):
+    r = (int >> 16) & 0xFF
+    g = (int >>  8) & 0xFF
+    b = (int >>  0) & 0xFF
+    return (r, g, b)
