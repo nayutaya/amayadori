@@ -11,9 +11,10 @@ import areamanager
 import amayadori
 import png
 import radar
-import taskmanager
 
 
+# FIXME: モジュールとして切り出し
+# FIXME: テストを記述
 class LatLng:
   @staticmethod
   def dms_to_deg(dms):
@@ -36,7 +37,7 @@ class TopPage(webapp.RequestHandler):
     html = template.render(path, values)
     self.response.out.write(html)
 
-import time
+
 class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
     lnglat = (float(lng), float(lat))
@@ -51,21 +52,6 @@ class ViewPage(webapp.RequestHandler):
     nowcast_time = amayadori.get_nowcast_time()
     image_bin  = amayadori.get_image(area.code, radar_time, 0)
     image      = png.Png8bitPalette.load(image_bin)
-
-    # MEMO: タスクの実験用コード
-    #tracker0 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 0)
-    #logging.info("task0 is_completed: " + str(tracker0.is_completed()))
-    #tracker1 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 1)
-    #tracker2 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 2)
-    #tracker3 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 3)
-    #tracker4 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 4)
-    #tracker5 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 5)
-    #tracker6 = taskmanager.TaskManager.add_cache_fetch_task(area.code, observed_time, 6)
-    #logging.info("task0 is_completed: " + str(tracker0.is_completed()))
-    #time.sleep(0.5)
-    #logging.info("task0 is_completed: " + str(tracker0.is_completed()))
-    #time.sleep(0.5)
-    #logging.info("task0 is_completed: " + str(tracker0.is_completed()))
 
     rimage = radar.RadarImage(image)
 
@@ -89,7 +75,6 @@ class ViewPage(webapp.RequestHandler):
 
     path = os.path.join(os.path.dirname(__file__), "views/view.html")
     html = template.render(path, values)
-
     self.response.out.write(html)
 
   def error_message(self, message):
@@ -128,6 +113,7 @@ class DocomoGpsRedirector(webapp.RequestHandler):
 class TestPage(webapp.RequestHandler):
   def get(self):
     pass
+
 
 if __name__ == "__main__":
   application = webapp.WSGIApplication(
