@@ -256,6 +256,27 @@ class TestJmaLib(unittest.TestCase):
     self.assertEqual( 80, target((255,   0, 255)))
     self.assertEqual(100, target((255,   0,   0)))
 
+  def test_get_rainfall_from_bitmap(self):
+    target = jmalib.get_rainfall_from_bitmap
+
+    bitmap = imglib.RgbBitmap(1, 1)
+    bitmap.set_pixels([(0, 0, 0)])
+    self.assertEqual((0, 0), target(bitmap))
+
+    bitmap = imglib.RgbBitmap(2, 1)
+    bitmap.set_pixels([
+      (153, 204, 255),
+      (255,   0,   0),
+    ])
+    self.assertEqual((0, 100), target(bitmap))
+
+    bitmap = imglib.RgbBitmap(1, 2)
+    bitmap.set_pixels([
+      ( 51, 102, 255),
+      (255,   0, 255),
+    ])
+    self.assertEqual((1, 80), target(bitmap))
+
 
 if __name__ == "__main__":
   unittest.main()

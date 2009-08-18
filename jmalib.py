@@ -3,6 +3,9 @@
 import datetime
 import re
 
+import imglib
+
+
 color_reduction_table = {
   (255,   0,   0): (255,   0,   0), # âJâ_    80mm/h à»è„
   (255,   0, 255): (255,   0, 255), # âJâ_ 50-80mm/h
@@ -127,3 +130,12 @@ def get_minimum_rainfall_from_rgb(rgb):
 
 def get_maximum_rainfall_from_rgb(rgb):
   return railfall_table.get(rgb, (0, 0))[1]
+
+def get_rainfall_from_bitmap(bitmap):
+  minimums = []
+  maximums = []
+  for pixel in bitmap.get_pixels():
+    minimums.append(get_minimum_rainfall_from_rgb(pixel))
+    maximums.append(get_maximum_rainfall_from_rgb(pixel))
+
+  return (min(minimums), max(maximums))
