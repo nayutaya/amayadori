@@ -196,6 +196,22 @@ class TestRadarNowCast(unittest.TestCase):
         (h(int), True),
         (h(int), self.klass.is_ground_color(h(int))))
 
+  def test_color_reduction(self):
+    target = self.klass.color_reduction
+
+    # •s–¾
+    self.assertEqual((192,   0, 192), target((255, 255, 255)))
+
+    # ‰J‰_
+    self.assertEqual((255,   0,   0), target((255,   0,   0)))
+    self.assertEqual((255,   0, 255), target((255,   0, 255)))
+    self.assertEqual((255, 153,   0), target((255, 153,   0)))
+    self.assertEqual((255, 255,   0), target((255, 255,   0)))
+    self.assertEqual((  0, 255,   0), target((  0, 255,   0)))
+    self.assertEqual((  0,   0, 255), target((  0,   0, 255)))
+    self.assertEqual(( 51, 102, 255), target(( 51, 102, 255)))
+    self.assertEqual((153, 204, 255), target((153, 204, 255)))
+
 
 if __name__ == "__main__":
   unittest.main()
