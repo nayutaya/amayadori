@@ -71,6 +71,7 @@ class PartialReducedImage(webapp.RequestHandler):
     gifimg = giflib.Image(dx, dy, 8)
     gifimg.allocate_color((192, 192, 192))
 
+    # 色を単純化
     for yy in xrange(dy):
       for xx in xrange(dx):
         rgb1  = pngimg.get_color((sx + xx, sy + yy))
@@ -78,6 +79,7 @@ class PartialReducedImage(webapp.RequestHandler):
         index = gifimg.allocate_color(rgb2)
         gifimg.set_pixel((xx, yy), index)
 
+    # ボーダーライン
     border = gifimg.allocate_color((255, 255, 255))
     for xx in xrange(dx):
       gifimg.set_pixel((xx, 0     ), border)
@@ -86,7 +88,8 @@ class PartialReducedImage(webapp.RequestHandler):
       gifimg.set_pixel((0     , yy), border)
       gifimg.set_pixel((dx - 1, yy), border)
 
-    center = gifimg.allocate_color((255, 255, 255))
+    # センターマーク
+    center = gifimg.allocate_color((192, 192, 192))
     for i in xrange(10):
       gifimg.set_pixel((i + 1,      dy / 2), center)
       gifimg.set_pixel((dx - i - 2, dy / 2), center)
