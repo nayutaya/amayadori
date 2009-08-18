@@ -49,9 +49,9 @@ class ViewPage(webapp.RequestHandler):
     xy = area.lnglat_to_xy(lnglat)
 
     current_time = amayadori.get_current_time()
-    radar_time   = amayadori.get_radar_time()
-    nowcast_time = amayadori.get_nowcast_time()
-    time_table   = amayadori.get_time_table()
+    radar_time   = amayadori.get_radar_time(current_time)
+    nowcast_time = amayadori.get_nowcast_time(current_time)
+    time_table   = amayadori.get_time_table(current_time)
 
     sections = []
     for (time, ordinal), present_time in time_table:

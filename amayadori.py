@@ -24,9 +24,8 @@ def fetcher(url):
 def get_current_time():
   return timeutil.get_per_minute_time(timeutil.get_jst_now())
 
-def get_radar_time():
-  current_time = get_current_time()
-  cached_time  = CacheManager.get_radar_time(current_time)
+def get_radar_time(current_time = get_current_time()):
+  cached_time = CacheManager.get_radar_time(current_time)
 
   if cached_time == None:
     cached_time = CacheManager.create_radar_time(
@@ -35,9 +34,8 @@ def get_radar_time():
 
   return cached_time.radar_time
 
-def get_nowcast_time():
-  current_time = get_current_time()
-  cached_time  = CacheManager.get_nowcast_time(current_time)
+def get_nowcast_time(current_time = get_current_time()):
+  cached_time = CacheManager.get_nowcast_time(current_time)
 
   if cached_time == None:
     cached_time = CacheManager.create_nowcast_time(
@@ -74,9 +72,9 @@ def get_rainfall(image, cxy):
 
   return jmalib.get_rainfall_from_bitmap(bitmap)
 
-def get_time_table():
-  radar_time   = get_radar_time()
-  nowcast_time = get_nowcast_time()
+def get_time_table(current_time = get_current_time()):
+  radar_time   = get_radar_time(current_time)
+  nowcast_time = get_nowcast_time(current_time)
 
   table = [((radar_time, 0), radar_time)]
 
