@@ -10,6 +10,9 @@ import amayadori
 import timeutil
 import areamanager
 import cachemanager
+import png
+import giflib
+import jmalib
 
 AreaManager = areamanager.AreaManager
 
@@ -49,8 +52,33 @@ class WholeImage(webapp.RequestHandler):
     self.response.headers["Content-Type"] = "image/png"
     self.response.out.write(image)
 
+class WholeReducedImage(webapp.RequestHandler):
+  def get(self, area, time, ordinal):
+    area    = int(area)
+    time    = timeutil.yyyymmddhhnn_to_datetime(time)
+    ordinal = int(ordinal)
 
-class PartialImage(webapp.RequestHandler):
+    image = amayadori.get_image(area, time, ordinal)
+
+    pngimg = png.Png8bitPalette.load(image)
+    #gifimg = giflib.Image(pngimg.bitmap.width, pngimg.bitmap.height, 8)
+    gifimg = giflib.Image(150, pngimg.bitmap.height, 8)
+    gifimg.allocate_color((192, 192, 192))
+
+    for y in xrange(gifimg.height()):
+      for x in xrange(150):
+        rgb1  = pngimg.get_color((x + pngimg.bitmap.width - 150, y))
+        rgb2  = jmalib.RadarNowCast.color_reduction(rgb1)
+        index = gifimg.allocate_color(rgb2)
+        gifimg.set_pixel((x, y), index)
+
+    #self.response.headers["Content-Type"] = "image/png"
+    #self.response.out.write(image)
+    self.response.headers["Content-Type"] = "image/gif"
+    gifimg.write(self.response.out)
+
+
+class PartialReducedImage(webapp.RequestHandler):
   def get(self, area, time, ordinal, x, y):
     area    = int(area)
     time    = timeutil.yyyymmddhhnn_to_datetime(time)
@@ -64,10 +92,8 @@ class PartialImage(webapp.RequestHandler):
     dx = 31
     dy = 31
 
-    import png
     pngimg = png.Png8bitPalette.load(image)
 
-    import giflib
     image = giflib.Image(31, 31, 8)
     image.allocate_color((192, 192, 192))
 
@@ -86,7 +112,8 @@ if __name__ == "__main__":
     [
       (r"/image/(\d{3})\.html",                               IndexPage),
       (r"/image/(\d{3})/(\d{12})/(\d{2})\.png",               WholeImage),
-      (r"/image/(\d{3})/(\d{12})/(\d{2})\.(\d+)\.(\d+)\.gif", PartialImage),
+      (r"/image/(\d{3})/(\d{12})/(\d{2})\.gif",               WholeReducedImage),
+      (r"/image/(\d{3})/(\d{12})/(\d{2})\.(\d+)\.(\d+)\.gif", PartialReducedImage),
     ],
     debug = True)
   run_wsgi_app(application)
