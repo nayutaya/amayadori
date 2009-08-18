@@ -232,5 +232,30 @@ class TestJmaLib(unittest.TestCase):
     # êÖñ 
     self.assertEqual(( 64,  96, 128), target((  0,   0,   1)))
 
+  def test_get_minimum_rainfall_from_rgb(self):
+    target = jmalib.get_minimum_rainfall_from_rgb
+    self.assertEqual( 0, target((  0,   0,   0)))
+    self.assertEqual( 0, target((153, 204, 255)))
+    self.assertEqual( 1, target(( 51, 102, 255)))
+    self.assertEqual( 5, target((  0,   0, 255)))
+    self.assertEqual(10, target((  0, 255,   0)))
+    self.assertEqual(20, target((255, 255,   0)))
+    self.assertEqual(30, target((255, 153,   0)))
+    self.assertEqual(50, target((255,   0, 255)))
+    self.assertEqual(80, target((255,   0,   0)))
+
+  def test_get_maximum_rainfall_from_rgb(self):
+    target = jmalib.get_maximum_rainfall_from_rgb
+    self.assertEqual(  0, target((  0,   0,   0)))
+    self.assertEqual(  1, target((153, 204, 255)))
+    self.assertEqual(  5, target(( 51, 102, 255)))
+    self.assertEqual( 10, target((  0,   0, 255)))
+    self.assertEqual( 20, target((  0, 255,   0)))
+    self.assertEqual( 30, target((255, 255,   0)))
+    self.assertEqual( 50, target((255, 153,   0)))
+    self.assertEqual( 80, target((255,   0, 255)))
+    self.assertEqual(100, target((255,   0,   0)))
+
+
 if __name__ == "__main__":
   unittest.main()

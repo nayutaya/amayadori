@@ -109,3 +109,29 @@ def color_reduction(rgb):
       return (192,   0, 192)
   else:
     return ret
+
+def get_minimum_rainfall_from_rgb(rgb):
+  table = {
+    (153, 204, 255): 0,
+    ( 51, 102, 255): 1,
+    (  0,   0, 255): 5,
+    (  0, 255,   0): 10,
+    (255, 255,   0): 20,
+    (255, 153,   0): 30,
+    (255,   0, 255): 50,
+    (255,   0,   0): 80,
+  }
+  return table.get(rgb, 0)
+
+def get_maximum_rainfall_from_rgb(rgb):
+  table = {
+    (153, 204, 255): 1,
+    ( 51, 102, 255): 5,
+    (  0,   0, 255): 10,
+    (  0, 255,   0): 20,
+    (255, 255,   0): 30,
+    (255, 153,   0): 50,
+    (255,   0, 255): 80,
+    (255,   0,   0): 100,
+  }
+  return table.get(rgb, 0)
