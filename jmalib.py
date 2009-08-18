@@ -88,3 +88,8 @@ class RadarNowCast:
     else:
       r, g, b = rgb
       return (b >= g)
+
+  @classmethod
+  def is_ground_color(cls, rgb):
+    r, g, b = rgb
+    return (g > b)
