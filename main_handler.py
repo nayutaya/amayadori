@@ -48,15 +48,25 @@ class ViewPage(webapp.RequestHandler):
 
     xy = area.lnglat_to_xy(lnglat)
 
+    current_time = amayadori.get_current_time()
     radar_time   = amayadori.get_radar_time()
     nowcast_time = amayadori.get_nowcast_time()
-    image_bin  = amayadori.get_image(area.code, radar_time, 0)
-    image      = png.Png8bitPalette.load(image_bin)
+    time_table   = amayadori.get_time_table()
 
-    rimage = radar.RadarImage(image)
+    sections = []
+    for (time, ordinal), present_time in time_table:
+      image    = amayadori.get_image(area.code, time, ordinal)
+      rainfall = amayadori.get_rainfall(image, xy)
 
-    #xy = (370,85)
-    rainfall = rimage.get_ballpark_rainfall(xy)
+      sections.append({
+        "type": ("現在" if ordinal == 0 else "予想"),
+        "time": present_time.strftime("%H時%M分"),
+        "minimum": str(rainfall[0]),
+        "maximum": str(rainfall[1]),
+        "image_time": time.strftime("%Y%m%d%H%M"),
+        "image_ordinal": ("%02i" % ordinal),
+      })
+
 
     # http://amayadori-opt.appspot.com/ のためのGoogle Maps API Key
     mapkey = "ABQIAAAA-ys93Qu6HH7Py3ElrvrGIxQGMNRpk4DlDb3SBK780CawkJsqbhR6Q77-5by3FYPdmP6wscv2utyMUQ"
@@ -67,10 +77,10 @@ class ViewPage(webapp.RequestHandler):
       "lng": str(lnglat[0]),
       "x": str(xy[0]),
       "y": str(xy[1]),
-      "current_value": str(rainfall),
       "mapkey": mapkey,
       "radar_time": radar_time.strftime("%Y%m%d%H%M"),
       "nowcast_time": nowcast_time.strftime("%Y%m%d%H%M"),
+      "sections": sections,
     }
 
     path = os.path.join(os.path.dirname(__file__), "views/view.html")

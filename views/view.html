@@ -10,15 +10,17 @@
       </tr>
     </table>
 
+    <table border="1">
+      {% for section in sections %}
+        <tr>
+          <td><img src="/image/{{area}}/{{section.image_time}}/{{section.image_ordinal}}.{{x}}.{{y}}.gif" width="41" height="41" border="0"></td>
+          <td>{{section.time}} {{section.type}}</td>
+          <td>{{section.minimum}}～{{section.maximum}}mm/h</td>
+        </tr>
+      {% endfor %}
+    </table>
+
     <br>
-    現在の雨量: {{current_value}}<br>
-    <img src="/image/{{area}}/{{radar_time}}/00.{{x}}.{{y}}.gif"   width="41" height="41" border="0"><br>
-    <img src="/image/{{area}}/{{nowcast_time}}/01.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
-    <img src="/image/{{area}}/{{nowcast_time}}/02.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
-    <img src="/image/{{area}}/{{nowcast_time}}/03.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
-    <img src="/image/{{area}}/{{nowcast_time}}/04.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
-    <img src="/image/{{area}}/{{nowcast_time}}/05.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
-    <img src="/image/{{area}}/{{nowcast_time}}/06.{{x}}.{{y}}.gif" width="41" height="41" border="0"><br>
 
     <center>
       <font size="-1">[ <a href="/">ホーム</a> ]</font>
