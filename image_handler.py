@@ -53,30 +53,6 @@ class WholeImage(webapp.RequestHandler):
     self.response.out.write(image)
 
 
-class WholeReducedImage(webapp.RequestHandler):
-  def get(self, area, time, ordinal):
-    area    = int(area)
-    time    = timeutil.yyyymmddhhnn_to_datetime(time)
-    ordinal = int(ordinal)
-
-    image = amayadori.get_image(area, time, ordinal)
-
-    pngimg = png.Png8bitPalette.load(image)
-    gifimg = giflib.Image(150, pngimg.bitmap.height, 8)
-    gifimg.allocate_color((192, 192, 192))
-
-    width, height = (gifimg.width(), gifimg.height())
-    for y in xrange(height):
-      for x in xrange(width):
-        rgb1  = pngimg.get_color((x + 200, y))
-        rgb2  = jmalib.RadarNowCast.color_reduction(rgb1)
-        index = gifimg.allocate_color(rgb2)
-        gifimg.set_pixel((x, y), index)
-
-    self.response.headers["Content-Type"] = "image/gif"
-    gifimg.write(self.response.out)
-
-
 class PartialReducedImage(webapp.RequestHandler):
   def get(self, area, time, ordinal, x, y):
     area    = int(area)
@@ -112,7 +88,6 @@ if __name__ == "__main__":
     [
       (r"/image/(\d{3})\.html",                               IndexPage),
       (r"/image/(\d{3})/(\d{12})/(\d{2})\.png",               WholeImage),
-      (r"/image/(\d{3})/(\d{12})/(\d{2})\.gif",               WholeReducedImage),
       (r"/image/(\d{3})/(\d{12})/(\d{2})\.(\d+)\.(\d+)\.gif", PartialReducedImage),
     ],
     debug = True)
