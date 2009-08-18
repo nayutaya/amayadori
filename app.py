@@ -4,16 +4,13 @@ import datetime
 import logging
 
 import amayadori
-import png
 import areamanager
-import radar
 
 logging.getLogger().setLevel(logging.DEBUG)
 
 
 print "Content-Type: text/plain"
 print ""
-
 
 
 current_time = amayadori.get_current_time()
@@ -28,11 +25,12 @@ for x in table: print x
 
 
 #lnglat = (35.0, 135.0)
-xy = (200,300)
-area_code = 211
+xy = (182,200)
+area = 201
 
 for (time, ordinal), present_time in table:
-  image = amayadori.get_image(area_code, time, ordinal)
-  rimage = radar.RadarImage.from_binary(image)
-  rainfall = rimage.get_ballpark_rainfall(xy)
-  print present_time, rainfall
+  image    = amayadori.get_image(area, time, ordinal)
+  x, y = xy
+  rainfall = amayadori.get_rainfall(image, x, y)
+
+  print (time, ordinal, present_time, rainfall)

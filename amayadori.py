@@ -6,7 +6,9 @@ from google.appengine.api import urlfetch
 
 import cachemanager
 import jmalib
+import imglib
 import timeutil
+import png
 
 CacheManager = cachemanager.CacheManager
 
@@ -55,6 +57,21 @@ def get_image(area, time, ordinal):
       image   = jmalib.get_image(area, time, ordinal, fetcher))
 
   return cached_image.image
+
+def get_rainfall(image, x, y):
+  sx = max([0, x - 2])
+  sy = max([0, y - 2])
+  dx = 5
+  dy = 5
+
+  pngimg = png.Png8bitPalette.load(image)
+  bitmap = imglib.RgbBitmap(dx, dy)
+  for yy in xrange(dy):
+    for xx in xrange(dx):
+      rgb = pngimg.get_color((sx + xx, sy + yy))
+      bitmap.set_pixel(xx, yy, rgb)
+
+  return jmalib.get_rainfall_from_bitmap(bitmap)
 
 def get_time_table():
   radar_time   = get_radar_time()
