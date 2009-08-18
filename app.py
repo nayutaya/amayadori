@@ -31,6 +31,6 @@ area = 201
 for (time, ordinal), present_time in table:
   image    = amayadori.get_image(area, time, ordinal)
   x, y = xy
-  rainfall = amayadori.get_rainfall(image, x, y)
+  rainfall = amayadori.get_rainfall(image, xy)
 
   print (time, ordinal, present_time, rainfall)

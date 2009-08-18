@@ -58,18 +58,19 @@ def get_image(area, time, ordinal):
 
   return cached_image.image
 
-def get_rainfall(image, x, y):
-  sx = max([0, x - 2])
-  sy = max([0, y - 2])
+def get_rainfall(image, cxy):
+  cx, cy = cxy
+  sx = max([0, cx - 2])
+  sy = max([0, cy - 2])
   dx = 5
   dy = 5
 
   pngimg = png.Png8bitPalette.load(image)
   bitmap = imglib.RgbBitmap(dx, dy)
-  for yy in xrange(dy):
-    for xx in xrange(dx):
-      rgb = pngimg.get_color((sx + xx, sy + yy))
-      bitmap.set_pixel(xx, yy, rgb)
+  for y in xrange(dy):
+    for x in xrange(dx):
+      rgb = pngimg.get_color((sx + x, sy + y))
+      bitmap.set_pixel(x, y, rgb)
 
   return jmalib.get_rainfall_from_bitmap(bitmap)
 
