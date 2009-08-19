@@ -62,15 +62,18 @@ class ViewPage(webapp.RequestHandler):
     mapkey = "ABQIAAAA-ys93Qu6HH7Py3ElrvrGIxQGMNRpk4DlDb3SBK780CawkJsqbhR6Q77-5by3FYPdmP6wscv2utyMUQ"
 
     values = {
-      "area": str(area.code),
-      "lat": str(lnglat[1]),
-      "lng": str(lnglat[0]),
-      "x": str(xy[0]),
-      "y": str(xy[1]),
-      "mapkey": mapkey,
-      "radar_time": radar_time.strftime("%Y%m%d%H%M"),
-      "nowcast_time": nowcast_time.strftime("%Y%m%d%H%M"),
-      "records": records,
+      "area"           : str(area.code),
+      "lat"            : str(lnglat[1]),
+      "lng"            : str(lnglat[0]),
+      "x"              : str(xy[0]),
+      "y"              : str(xy[1]),
+      "mapkey"         : mapkey,
+      "current_time_ja": current_time.strftime("%H時%M分"),
+      "radar_time"     : radar_time.strftime("%Y%m%d%H%M"),
+      "radar_time_ja"  : radar_time.strftime("%Y-%m-%d %H:%M"),
+      "nowcast_time"   : nowcast_time.strftime("%Y%m%d%H%M"),
+      "nowcast_time_ja": nowcast_time.strftime("%Y-%m-%d %H:%M"),
+      "records"        : records,
     }
 
     path = os.path.join(os.path.dirname(__file__), "views/view.html")

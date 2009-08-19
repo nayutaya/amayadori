@@ -10,6 +10,10 @@
       </tr>
     </table>
 
+    <center>
+     <font size="-1" color="#666666">現在時刻 : {{current_time_ja}}</font>
+    </center>
+
     <table border="0">
       {% for record in records %}
         <tr>
@@ -54,6 +58,8 @@
     <font size="-1" color="#999999">
       緯度経度: {{lat}}, {{lng}}<br>
       直交座標: {{x}}, {{y}} @{{area}}<br>
+      観測日時: {{radar_time_ja}}<br>
+      予測日時: {{nowcast_time_ja}}<br>
     </font>
   </body>
 </html>
