@@ -22,3 +22,10 @@ def yyyymmddhhnn_to_datetime(str):
 
 def timedelta_to_second(delta):
   return (delta.days * 60 * 60 * 24) + delta.seconds
+
+def timedelta_to_word(delta):
+  second = timedelta_to_second(delta)
+  if second <= 0:
+    return str(-second / 60) + "分前"
+  else:
+    return str(second / 60) + "分後"

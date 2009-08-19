@@ -35,6 +35,18 @@ class TestTimeUtility(unittest.TestCase):
     self.assertEqual( 1, target(datetime.timedelta(seconds =  1)))
     self.assertEqual(-1, target(datetime.timedelta(seconds = -1)))
 
+  def test_timedelta_to_word(self):
+    target = timeutil.timedelta_to_word
+
+    self.assertEqual("0分前", target(datetime.timedelta(seconds = 0)))
+    self.assertEqual("0分前", target(datetime.timedelta(seconds = -59)))
+    self.assertEqual("1分前", target(datetime.timedelta(seconds = -60)))
+    self.assertEqual("2分前", target(datetime.timedelta(seconds = -120)))
+
+    self.assertEqual("0分後", target(datetime.timedelta(seconds = 1)))
+    self.assertEqual("0分後", target(datetime.timedelta(seconds = 59)))
+    self.assertEqual("1分後", target(datetime.timedelta(seconds = 60)))
+    self.assertEqual("2分後", target(datetime.timedelta(seconds = 120)))
 
 if __name__ == "__main__":
   unittest.main()
