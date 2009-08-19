@@ -11,6 +11,7 @@ import areamanager
 import amayadori
 import png
 import latlngutil
+import timeutil
 
 
 class TopPage(webapp.RequestHandler):
@@ -50,8 +51,9 @@ class ViewPage(webapp.RequestHandler):
         rainfall_str = str(rainfall[0]) + "～" + str(rainfall[1])
 
       records.append({
-        "type": ("現在" if image_ordinal == 0 else "予想"),
+        "type": ("現在値" if image_ordinal == 0 else "予測値"),
         "time": present_time.strftime("%H時%M分"),
+        "delta": timeutil.timedelta_to_word(present_time - current_time),
         "rainfall": rainfall_str,
         "image_time": image_time.strftime("%Y%m%d%H%M"),
         "image_ordinal": ("%02i" % image_ordinal),
