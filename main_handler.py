@@ -37,7 +37,7 @@ class ViewPage(webapp.RequestHandler):
     current_time = amayadori.get_current_time()
     radar_time   = amayadori.get_radar_time(current_time)
     nowcast_time = amayadori.get_nowcast_time(current_time)
-    time_table   = amayadori.get_time_table(current_time)
+    time_table   = amayadori.get_time_table(radar_time, nowcast_time)
 
     records = []
     for (image_time, image_ordinal), present_time in time_table:

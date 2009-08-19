@@ -73,19 +73,10 @@ def get_rainfall(image, cxy):
 
   return jmalib.get_rainfall_from_bitmap(bitmap)
 
-def get_time_table(current_time = None):
-  current_time = current_time or get_current_time()
-  radar_time   = get_radar_time(current_time)
-  nowcast_time = get_nowcast_time(current_time)
-
-  table = [((radar_time, 0), radar_time)]
-
-  for i in range(6):
-    present_time = nowcast_time + datetime.timedelta(minutes = i * 10)
-    if present_time > radar_time:
-      table.append(((nowcast_time, i + 1), present_time))
-
-  return table
+def get_time_table(radar_time = None, nowcast_time = None):
+  return jmalib.get_time_table(
+    radar_time   = radar_time   or get_radar_time(),
+    nowcast_time = nowcast_time or get_nowcast_time())
 
 def expire_cache():
   expire_time = get_current_time() - datetime.timedelta(minutes = 30)
