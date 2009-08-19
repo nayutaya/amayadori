@@ -19,3 +19,6 @@ def yyyymmddhhnn_to_datetime(str):
   return datetime.datetime(
       int(match.group(1)), int(match.group(2)), int(match.group(3)),
       int(match.group(4)), int(match.group(5)))
+
+def timedelta_to_second(delta):
+  return (delta.days * 60 * 60 * 24) + delta.seconds
