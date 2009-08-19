@@ -10,21 +10,7 @@ from google.appengine.ext.webapp import template
 import areamanager
 import amayadori
 import png
-import radar
-
-
-# FIXME: モジュールとして切り出し
-# FIXME: テストを記述
-class LatLng:
-  @staticmethod
-  def dms_to_deg(dms):
-    regexp = re.compile(r"^([\+\-])?(\d+)\.(\d+)\.(\d+\.\d+)$")
-    match  = regexp.match(dms)
-    sign   = (1 if match.group(1) != "-" else -1)
-    deg    = float(match.group(2))
-    min    = float(match.group(3))
-    sec    = float(match.group(4))
-    return sign * (deg + (min / 60) + (sec / 3600))
+import latlngutil
 
 
 class TopPage(webapp.RequestHandler):
@@ -104,8 +90,8 @@ class DocomoIAreaRedirector(webapp.RequestHandler):
     xacc = self.request.get("XACC")
     logging.info("docomo-iarea: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
 
-    lat_deg = "%.4f" % LatLng.dms_to_deg(lat)
-    lng_deg = "%.4f" % LatLng.dms_to_deg(lng)
+    lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
+    lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
 
   def get(self):
@@ -119,8 +105,8 @@ class DocomoGpsRedirector(webapp.RequestHandler):
     xacc = self.request.get("x-acc")
     logging.info("docomo-gps: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
 
-    lat_deg = "%.4f" % LatLng.dms_to_deg(lat)
-    lng_deg = "%.4f" % LatLng.dms_to_deg(lng)
+    lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
+    lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
 
 
