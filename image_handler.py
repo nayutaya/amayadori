@@ -59,8 +59,8 @@ class PartialReducedImage(webapp.RequestHandler):
     ordinal = int(ordinal)
     x, y    = int(x), int(y)
 
-    sx = x - 20 if x >= 20 else 0
-    sy = y - 20 if y >= 20 else 0
+    sx = max([0, x - 20])
+    sy = max([0, y - 20])
     dx = 41
     dy = 41
 
@@ -79,13 +79,13 @@ class PartialReducedImage(webapp.RequestHandler):
         gifimg.set_pixel((xx, yy), index)
 
     # ボーダーライン
-    border = gifimg.allocate_color((255, 255, 255))
-    for xx in xrange(dx):
-      gifimg.set_pixel((xx, 0     ), border)
-      gifimg.set_pixel((xx, dy - 1), border)
-    for yy in xrange(dy):
-      gifimg.set_pixel((0     , yy), border)
-      gifimg.set_pixel((dx - 1, yy), border)
+    #border = gifimg.allocate_color((255, 255, 255))
+    #for xx in xrange(dx):
+    #  gifimg.set_pixel((xx, 0     ), border)
+    #  gifimg.set_pixel((xx, dy - 1), border)
+    #for yy in xrange(dy):
+    #  gifimg.set_pixel((0     , yy), border)
+    #  gifimg.set_pixel((dx - 1, yy), border)
 
     # センターマーク
     center = gifimg.allocate_color((192, 192, 192))
