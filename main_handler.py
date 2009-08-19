@@ -27,7 +27,7 @@ class TopPage(webapp.RequestHandler):
 class ViewPage(webapp.RequestHandler):
   def get(self, lat, lng):
     lnglat = (float(lng), float(lat))
-    area = areamanager.AreaManager.get_nearest_area(lnglat)
+    area = areamanager.get_nearest_area(lnglat)
     if area == None:
       self.error_message("範囲外です。")
       return

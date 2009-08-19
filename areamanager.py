@@ -57,73 +57,59 @@ class AreaInfo:
     return self.include_xy(self.lnglat_to_xy(lnglat))
 
 
-class AreaManager:
-  areas = []
+def find_by_code(code):
+  for area in areas:
+    if area.code == code:
+      return area
+  return None
 
-  def __init__(self):
-    pass
-
-  @classmethod
-  def register(cls, area):
-    cls.areas.append(area)
-
-  @classmethod
-  def find_by_code(cls, code):
-    for area in cls.areas:
-      if area.code == code:
-        return area
+def get_nearest_area(lnglat):
+  all_areas        = areas
+  available_areas  = get_available_areas_from(all_areas, lnglat)
+  area_distances   = get_distances_from(available_areas, lnglat)
+  sorted_distances = sort_by_distance(area_distances)
+  if len(sorted_distances) > 0:
+    return sorted_distances[0][0]
+  else:
     return None
 
-  @classmethod
-  def get_nearest_area(cls, lnglat):
-    all_areas        = cls.areas
-    available_areas  = cls.get_available_areas_from(all_areas, lnglat)
-    area_distances   = cls.get_distances_from(available_areas, lnglat)
-    sorted_distances = cls.sort_by_distance(area_distances)
-    if len(sorted_distances) > 0:
-      return sorted_distances[0][0]
-    else:
-      return None
+def get_available_areas_from(areas, lnglat):
+  return [area for area in areas if area.include_lnglat(lnglat)]
 
-  @staticmethod
-  def get_available_areas_from(areas, lnglat):
-    return [area for area in areas if area.include_lnglat(lnglat)]
+def get_distances_from(areas, lnglat):
+  return [(area, area.distance_from_center(lnglat)) for area in areas]
 
-  @staticmethod
-  def get_distances_from(areas, lnglat):
-    return [(area, area.distance_from_center(lnglat)) for area in areas]
+def sort_by_distance(distances):
+  def compare(a, b):
+    (area1, distance1) = a
+    (area2, distance2) = b
+    return distance1 - distance2
+  a = [x for x in distances]
+  a.sort(compare)
+  return a
 
-  @staticmethod
-  def sort_by_distance(distances):
-    def compare(a, b):
-      (area1, distance1) = a
-      (area2, distance2) = b
-      return distance1 - distance2
-    a = [x for x in distances]
-    a.sort(compare)
-    return a
-
-#                             name                   code dxy         gxy1        gxy2        glnglat1    glnglat2
-AreaManager.register(AreaInfo(u"北海道地方(北西部)", 201, (550, 455), ( 32,  97), (474, 400), (139,  45), (145,  42)))
-AreaManager.register(AreaInfo(u"北海道地方(東部)",   202, (550, 455), ( 13,  75), (457, 379), (141,  45), (147,  42)))
-AreaManager.register(AreaInfo(u"北海道地方(南西部)", 203, (550, 455), ( 29,  84), (480, 387), (138,  44), (144,  41)))
-AreaManager.register(AreaInfo(u"東北地方(北部)",     204, (550, 455), ( 40,  17), (509, 421), (138,  42), (144,  38)))
-AreaManager.register(AreaInfo(u"東北地方(南部)",     205, (550, 455), ( 75,  25), (476, 430), (138,  40), (143,  36)))
-AreaManager.register(AreaInfo(u"関東地方",           206, (550, 455), ( 28,  58), (527, 362), (137,  37), (143,  34)))
-AreaManager.register(AreaInfo(u"甲信地方",           207, (550, 455), ( 29,   8), (524, 412), (136,  38), (142,  34)))
-AreaManager.register(AreaInfo(u"北陸地方(東部)",     208, (550, 455), ( 27,  84), (511, 388), (136,  39), (142,  36)))
-AreaManager.register(AreaInfo(u"北陸地方(西部)",     209, (550, 455), ( 17,  58), (510, 362), (134,  38), (140,  35)))
-AreaManager.register(AreaInfo(u"東海地方",           210, (550, 455), ( 74,  84), (494, 387), (136,  36), (141,  33)))
-AreaManager.register(AreaInfo(u"近畿地方",           211, (550, 455), ( 54,  93), (473, 396), (133,  36), (138,  33)))
-AreaManager.register(AreaInfo(u"中国地方",           212, (550, 455), ( 26,   8), (529, 413), (130,  37), (136,  33)))
-AreaManager.register(AreaInfo(u"四国地方",           213, (550, 455), ( 45, 101), (469, 404), (131,  35), (136,  32)))
-AreaManager.register(AreaInfo(u"九州地方(北部)",     214, (550, 455), ( 51,  67), (477, 371), (128,  35), (133,  32)))
-AreaManager.register(AreaInfo(u"九州地方(南部)",     215, (550, 455), ( 91,  50), (527, 354), (129,  33), (134,  30)))
-AreaManager.register(AreaInfo(u"奄美地方",           216, (550, 455), ( 12,  67), (459, 370), (127,  30), (132,  27)))
-AreaManager.register(AreaInfo(u"沖縄本島地方",       217, (550, 455), ( 53,  50), (511, 354), (126,  28), (131,  25)))
-AreaManager.register(AreaInfo(u"大東島地方",         218, (550, 455), (  8,  33), (465, 337), (127,  28), (132,  25)))
-AreaManager.register(AreaInfo(u"宮古・八重山地方",   219, (550, 455), ( 35,  84), (499, 387), (122,  26), (127,  23)))
-
+areas = [
+  #        name                   code dxy         gxy1        gxy2        glnglat1    glnglat2
+  AreaInfo(u"北海道地方(北西部)", 201, (550, 455), ( 32,  97), (474, 400), (139,  45), (145,  42)),
+  AreaInfo(u"北海道地方(東部)",   202, (550, 455), ( 13,  75), (457, 379), (141,  45), (147,  42)),
+  AreaInfo(u"北海道地方(南西部)", 203, (550, 455), ( 29,  84), (480, 387), (138,  44), (144,  41)),
+  AreaInfo(u"東北地方(北部)",     204, (550, 455), ( 40,  17), (509, 421), (138,  42), (144,  38)),
+  AreaInfo(u"東北地方(南部)",     205, (550, 455), ( 75,  25), (476, 430), (138,  40), (143,  36)),
+  AreaInfo(u"関東地方",           206, (550, 455), ( 28,  58), (527, 362), (137,  37), (143,  34)),
+  AreaInfo(u"甲信地方",           207, (550, 455), ( 29,   8), (524, 412), (136,  38), (142,  34)),
+  AreaInfo(u"北陸地方(東部)",     208, (550, 455), ( 27,  84), (511, 388), (136,  39), (142,  36)),
+  AreaInfo(u"北陸地方(西部)",     209, (550, 455), ( 17,  58), (510, 362), (134,  38), (140,  35)),
+  AreaInfo(u"東海地方",           210, (550, 455), ( 74,  84), (494, 387), (136,  36), (141,  33)),
+  AreaInfo(u"近畿地方",           211, (550, 455), ( 54,  93), (473, 396), (133,  36), (138,  33)),
+  AreaInfo(u"中国地方",           212, (550, 455), ( 26,   8), (529, 413), (130,  37), (136,  33)),
+  AreaInfo(u"四国地方",           213, (550, 455), ( 45, 101), (469, 404), (131,  35), (136,  32)),
+  AreaInfo(u"九州地方(北部)",     214, (550, 455), ( 51,  67), (477, 371), (128,  35), (133,  32)),
+  AreaInfo(u"九州地方(南部)",     215, (550, 455), ( 91,  50), (527, 354), (129,  33), (134,  30)),
+  AreaInfo(u"奄美地方",           216, (550, 455), ( 12,  67), (459, 370), (127,  30), (132,  27)),
+  AreaInfo(u"沖縄本島地方",       217, (550, 455), ( 53,  50), (511, 354), (126,  28), (131,  25)),
+  AreaInfo(u"大東島地方",         218, (550, 455), (  8,  33), (465, 337), (127,  28), (132,  25)),
+  AreaInfo(u"宮古・八重山地方",   219, (550, 455), ( 35,  84), (499, 387), (122,  26), (127,  23)),
+]
 
 if __name__ == "__main__":
   def dump_kml():
@@ -131,7 +117,7 @@ if __name__ == "__main__":
     print """<kml xmlns="http://www.opengis.net/kml/2.2">"""
     print "  <Folder>"
 
-    for area in AreaManager.areas:
+    for area in areas:
       if area.glng1() > 0:
         print "    <GroundOverlay>"
         print "      <name>" + str(area.code) + "</name>"
@@ -150,6 +136,3 @@ if __name__ == "__main__":
     print "  </Folder>"
     print """</kml>"""
   dump_kml()
-  #lnglat = (135.0, 35.0)
-  #area = AreaManager.get_nearest_area(lnglat)
-  #print area

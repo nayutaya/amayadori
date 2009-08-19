@@ -14,7 +14,6 @@ import png
 import giflib
 import jmalib
 
-AreaManager = areamanager.AreaManager
 
 class IndexPage(webapp.RequestHandler):
   def get(self, area):
@@ -23,7 +22,7 @@ class IndexPage(webapp.RequestHandler):
     nowcast_time = amayadori.get_nowcast_time()
 
     links = []
-    for areainfo in AreaManager.areas:
+    for areainfo in areamanager.areas:
       if areainfo.code == area:
         links.append("<b>" + areainfo.name + "</b>")
       else:
