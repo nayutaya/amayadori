@@ -132,15 +132,11 @@ def get_maximum_rainfall_from_rgb(rgb):
   return railfall_table.get(rgb, (None, None))[1]
 
 def get_rainfall_from_bitmap(bitmap):
-  minimums = []
-  maximums = []
-  for pixel in bitmap.get_pixels():
-    minimum = get_minimum_rainfall_from_rgb(pixel)
-    maximum = get_maximum_rainfall_from_rgb(pixel)
-    if minimum != None: minimums.append(minimum)
-    if maximum != None: maximums.append(maximum)
-
-  minimum2 = min(minimums) if len(minimums) > 0 else 0
-  maximum2 = max(maximums) if len(maximums) > 0 else 0
-
-  return (minimum2, maximum2)
+  pixels = bitmap.get_pixels()
+  minimums1 = [get_minimum_rainfall_from_rgb(pixel) for pixel in pixels]
+  maximums1 = [get_maximum_rainfall_from_rgb(pixel) for pixel in pixels]
+  minimums2 = [value for value in minimums1 if value != None]
+  maximums2 = [value for value in maximums1 if value != None]
+  minimum = min(minimums2) if len(minimums2) > 0 else 0
+  maximum = max(maximums2) if len(maximums2) > 0 else 0
+  return (minimum, maximum)
