@@ -150,3 +150,13 @@ def get_full_time_table(radar_time, nowcast_time):
     time_table.append(((nowcast_time, ordinal), present_time))
 
   return time_table
+
+def get_time_table(radar_time, nowcast_time):
+  full_table = get_full_time_table(radar_time, nowcast_time)
+  time_table = []
+
+  for (time, ordinal), present_time in full_table:
+    if ordinal > 0 and present_time <= radar_time: continue
+    time_table.append(((time, ordinal), present_time))
+
+  return time_table
