@@ -10,9 +10,12 @@
       </tr>
     </table>
 
-    <center>
-     <font size="-1" color="#666666">現在時刻 : {{current_time_ja}}</font>
-    </center>
+    <table width="100%" bgcolor="#CCCCCC">
+      <tr>
+        <td align="center"><font size="-1" color="#333333">ただいま、{{current_time_ja}}</font></td>
+      </tr>
+    </table>
+    <font size="-1"><br></font>
 
     <table border="0">
       {% for record in records %}
@@ -32,7 +35,14 @@
       <font size="-1">[ <a href="/">ホーム</a> ]</font>
     </center>
 
-    <font size="-1" color="#666666">凡例:</font>
+    <font size="-1"><br></font>
+    <table width="100%" bgcolor="#CCCCCC">
+      <tr>
+        <td align="center"><font size="-1" color="#333333">凡例</font></td>
+      </tr>
+    </table>
+    <font size="-1"><br></font>
+
     <table border="0">
       <tr>
         <td><font size="-1"><font color="#99CCFF">■</font> &nbsp;0 ～ &nbsp;1</font></td>
@@ -49,14 +59,22 @@
         <td><font size="-1"><font color="#FF0000">■</font> 80 以上</font></td>
       </tr>
     </table>
-    <font size="-1" color="#666666">(単位: mm/h = 1時間あたりの降雨量)</font>
+    <font size="-1" color="#666666">(単位: mm/h = 1時間あたりの降雨量)<br></font>
 
-    <hr size="1">
+    <font size="-1"><br></font>
+    <table width="100%" bgcolor="#CCCCCC">
+      <tr>
+        <td align="center"><font size="-1" color="#333333">現在位置</font></td>
+      </tr>
+    </table>
+    <font size="-1"><br></font>
+
     <center>
       <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=180x100&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange&key={{mapkey}}">
     </center>
-    <hr size="1">
+
     <font size="-1" color="#999999">
+      <br>
       緯度経度: {{lat}}, {{lng}}<br>
       直交座標: {{x}}, {{y}} @{{area}}<br>
       観測日時: {{radar_time_ja}}<br>
