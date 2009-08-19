@@ -88,7 +88,7 @@ class PartialReducedImage(webapp.RequestHandler):
     #  gifimg.set_pixel((dx - 1, yy), border)
 
     # センターマーク
-    center = gifimg.allocate_color((192, 192, 192))
+    center = gifimg.allocate_color((32, 32, 32))
     for i in xrange(10):
       gifimg.set_pixel((i + 1,      dy / 2), center)
       gifimg.set_pixel((dx - i - 2, dy / 2), center)
