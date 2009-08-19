@@ -234,7 +234,9 @@ class TestJmaLib(unittest.TestCase):
 
   def test_get_minimum_rainfall_from_rgb(self):
     target = jmalib.get_minimum_rainfall_from_rgb
-    self.assertEqual( 0, target((  0,   0,   0)))
+
+    self.assertEqual(None, target((  0,   0,   0)))
+
     self.assertEqual( 0, target((153, 204, 255)))
     self.assertEqual( 1, target(( 51, 102, 255)))
     self.assertEqual( 5, target((  0,   0, 255)))
@@ -246,7 +248,9 @@ class TestJmaLib(unittest.TestCase):
 
   def test_get_maximum_rainfall_from_rgb(self):
     target = jmalib.get_maximum_rainfall_from_rgb
-    self.assertEqual(  0, target((  0,   0,   0)))
+
+    self.assertEqual(None, target((  0,   0,   0)))
+
     self.assertEqual(  1, target((153, 204, 255)))
     self.assertEqual(  5, target(( 51, 102, 255)))
     self.assertEqual( 10, target((  0,   0, 255)))
@@ -263,15 +267,17 @@ class TestJmaLib(unittest.TestCase):
     bitmap.set_pixels([(0, 0, 0)])
     self.assertEqual((0, 0), target(bitmap))
 
-    bitmap = imglib.RgbBitmap(2, 1)
+    bitmap = imglib.RgbBitmap(3, 1)
     bitmap.set_pixels([
+      (  0,   0,   0),
       (153, 204, 255),
       (255,   0,   0),
     ])
     self.assertEqual((0, 100), target(bitmap))
 
-    bitmap = imglib.RgbBitmap(1, 2)
+    bitmap = imglib.RgbBitmap(1, 3)
     bitmap.set_pixels([
+      (  0,   0,   0),
       ( 51, 102, 255),
       (255,   0, 255),
     ])

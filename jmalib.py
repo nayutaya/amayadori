@@ -126,16 +126,21 @@ def color_reduction(rgb):
     return ret
 
 def get_minimum_rainfall_from_rgb(rgb):
-  return railfall_table.get(rgb, (0, 0))[0]
+  return railfall_table.get(rgb, (None, None))[0]
 
 def get_maximum_rainfall_from_rgb(rgb):
-  return railfall_table.get(rgb, (0, 0))[1]
+  return railfall_table.get(rgb, (None, None))[1]
 
 def get_rainfall_from_bitmap(bitmap):
   minimums = []
   maximums = []
   for pixel in bitmap.get_pixels():
-    minimums.append(get_minimum_rainfall_from_rgb(pixel))
-    maximums.append(get_maximum_rainfall_from_rgb(pixel))
+    minimum = get_minimum_rainfall_from_rgb(pixel)
+    maximum = get_maximum_rainfall_from_rgb(pixel)
+    if minimum != None: minimums.append(minimum)
+    if maximum != None: maximums.append(maximum)
 
-  return (min(minimums), max(maximums))
+  minimum2 = min(minimums) if len(minimums) > 0 else 0
+  maximum2 = max(maximums) if len(maximums) > 0 else 0
+
+  return (minimum2, maximum2)
