@@ -22,14 +22,33 @@
       {% endfor %}
     </table>
 
-    <br>
-
     <center>
       <font size="-1">[ <a href="/">ホーム</a> ]</font>
     </center>
+
+    <font size="-1" color="#666666">凡例:</font>
+    <table border="0">
+      <tr>
+        <td><font size="-1"><font color="#99CCFF">■</font>  0～ 1 mm/h</font></td>
+        <td><font size="-1"><font color="#3366FF">■</font>  1～ 5 mm/h</font></td>
+      </tr>
+      <tr>
+        <td><font size="-1"><font color="#0000FF">■</font>  5～10 mm/h</font></td>
+        <td><font size="-1"><font color="#00FF00">■</font> 10～20 mm/h</font></td>
+      </tr>
+      <tr>
+        <td><font size="-1"><font color="#FFFF00">■</font> 20～30 mm/h</font></td>
+        <td><font size="-1"><font color="#FF9900">■</font> 30～50 mm/h</font></td>
+      </tr>
+      <tr>
+        <td><font size="-1"><font color="#FF00FF">■</font> 50～80 mm/h</font></td>
+        <td><font size="-1"><font color="#FF0000">■</font> 80 mm/h 以上</font></td>
+      </tr>
+    </table>
+
     <hr size="1">
     <center>
-      <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=200x100&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange&key={{mapkey}}">
+      <img src="http://maps.google.com/staticmap?center={{lat}},{{lng}}&zoom=7&size=180x100&format=gif&maptype=mobile&markers={{lat}},{{lng}},smallorange&key={{mapkey}}">
     </center>
     <hr size="1">
     <font size="-1" color="#999999">
