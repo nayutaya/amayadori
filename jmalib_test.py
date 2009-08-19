@@ -283,6 +283,22 @@ class TestJmaLib(unittest.TestCase):
     ])
     self.assertEqual((1, 80), target(bitmap))
 
+  def test_get_full_time_table(self):
+    expected = [
+      ((datetime.datetime(2000, 1, 1, 12, 30), 0), datetime.datetime(2000, 1, 1, 12, 30)),
+      ((datetime.datetime(2000, 1, 1, 12, 20), 1), datetime.datetime(2000, 1, 1, 12, 30)),
+      ((datetime.datetime(2000, 1, 1, 12, 20), 2), datetime.datetime(2000, 1, 1, 12, 40)),
+      ((datetime.datetime(2000, 1, 1, 12, 20), 3), datetime.datetime(2000, 1, 1, 12, 50)),
+      ((datetime.datetime(2000, 1, 1, 12, 20), 4), datetime.datetime(2000, 1, 1, 13,  0)),
+      ((datetime.datetime(2000, 1, 1, 12, 20), 5), datetime.datetime(2000, 1, 1, 13, 10)),
+      ((datetime.datetime(2000, 1, 1, 12, 20), 6), datetime.datetime(2000, 1, 1, 13, 20)),
+    ]
+    self.assertEqual(
+      expected,
+      jmalib.get_full_time_table(
+        datetime.datetime(2000, 1, 1, 12, 30),
+        datetime.datetime(2000, 1, 1, 12, 20)))
+
 
 if __name__ == "__main__":
   unittest.main()

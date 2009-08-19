@@ -140,3 +140,13 @@ def get_rainfall_from_bitmap(bitmap):
   minimum = min(minimums2) if len(minimums2) > 0 else 0
   maximum = max(maximums2) if len(maximums2) > 0 else 0
   return (minimum, maximum)
+
+def get_full_time_table(radar_time, nowcast_time):
+  time_table = [((radar_time, 0), radar_time)]
+
+  for i in range(6):
+    ordinal      = i + 1
+    present_time = nowcast_time + datetime.timedelta(minutes = ordinal * 10)
+    time_table.append(((nowcast_time, ordinal), present_time))
+
+  return time_table
