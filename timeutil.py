@@ -4,7 +4,8 @@ import datetime
 import re
 
 
-def get_jst_now(utcnow = datetime.datetime.utcnow()):
+def get_jst_now(utcnow = None):
+  utcnow = utcnow or datetime.datetime.utcnow()
   return utcnow + datetime.timedelta(hours = 9)
 
 def get_per_minute_time(time):
