@@ -29,10 +29,10 @@ def get_radar_time(current_time = None):
 
   key   = "radar_time_" + current_time.strftime("%Y%m%d%H%M")
   value = memcache.get(key)
+  if value != None: return value
 
-  if value == None:
-    value = jmalib.get_current_radar_time(fetcher)
-    memcache.add(key, value, 120)
+  value = jmalib.get_current_radar_time(fetcher)
+  memcache.add(key, value, 120)
 
   return value
 
@@ -41,20 +41,20 @@ def get_nowcast_time(current_time = None):
 
   key   = "nowcast_time_" + current_time.strftime("%Y%m%d%H%M")
   value = memcache.get(key)
+  if value != None: return value
 
-  if value == None:
-    value = jmalib.get_current_nowcast_time(fetcher)
-    memcache.add(key, value, 120)
+  value = jmalib.get_current_nowcast_time(fetcher)
+  memcache.add(key, value, 120)
 
   return value
 
 def get_image(area, time, ordinal):
   key   = "image_%03i_%s_%02i" % (area, time.strftime("%Y%m%d%H%M"), ordinal)
   value = memcache.get(key)
+  if value != None: return value
 
-  if value == None:
-    value = jmalib.get_image(area, time, ordinal, fetcher)
-    memcache.add(key, value, 60 * 20)
+  value = jmalib.get_image(area, time, ordinal, fetcher)
+  memcache.add(key, value, 60 * 20)
 
   return value
 
