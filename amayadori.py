@@ -69,9 +69,7 @@ def get_time_table(radar_time = None, nowcast_time = None):
     radar_time   = radar_time   or get_radar_time(),
     nowcast_time = nowcast_time or get_nowcast_time())
 
+# FIXME: 削除予定
 def expire_cache():
-  expire_time = get_current_time() - datetime.timedelta(minutes = 30)
-  cachemanager.clear_radar_time(expire_time)
-  cachemanager.clear_nowcast_time(expire_time)
-  cachemanager.clear_image(expire_time)
+  # nop
   return None
