@@ -32,7 +32,7 @@ def get_radar_time(current_time = None):
 
   if value == None:
     value = jmalib.get_current_radar_time(fetcher)
-    memcache.add(key, value, 60)
+    memcache.add(key, value, 120)
 
   return value
 
@@ -44,21 +44,19 @@ def get_nowcast_time(current_time = None):
 
   if value == None:
     value = jmalib.get_current_nowcast_time(fetcher)
-    memcache.add(key, value, 60)
+    memcache.add(key, value, 120)
 
   return value
 
 def get_image(area, time, ordinal):
-  cached_image = cachemanager.get_image(area, time, ordinal)
+  key   = "image_%03i_%s_%02i" % (area, time.strftime("%Y%m%d%H%M"), ordinal)
+  value = memcache.get(key)
 
-  if cached_image == None:
-    cached_image = cachemanager.create_image(
-      area    = area,
-      time    = time,
-      ordinal = ordinal,
-      image   = jmalib.get_image(area, time, ordinal, fetcher))
+  if value == None:
+    value = jmalib.get_image(area, time, ordinal, fetcher)
+    memcache.add(key, value, 60 * 20)
 
-  return cached_image.image
+  return value
 
 def get_rainfall(image, cxy):
   cx, cy = cxy

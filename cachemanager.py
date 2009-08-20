@@ -15,6 +15,7 @@ class NowcastTime(db.Model):
   nowcast_time = db.DateTimeProperty(required=True)
 
 
+# FIXME: 削除予定
 class Image(db.Model):
   area    = db.IntegerProperty(required=True)
   time    = db.DateTimeProperty(required=True)
@@ -38,6 +39,7 @@ def create_nowcast_time(current_time, nowcast_time):
   record.put()
   return record
 
+# FIXME: 削除予定
 def create_image(area, time, ordinal, image):
   record = Image(
     area    = area,
@@ -63,6 +65,7 @@ def get_nowcast_time(current_time):
   else:
     return None
 
+# FIXME: 削除予定
 def get_image(area, time, ordinal):
   records = db.GqlQuery("SELECT * FROM Image WHERE area = :1 AND time = :2 AND ordinal = :3", area, time, ordinal)
   if records.count() > 0:
@@ -82,6 +85,7 @@ def clear_nowcast_time(current_time):
   db.delete(records)
   return None
 
+# FIXME: 削除予定
 def clear_image(time):
   records = db.GqlQuery("SELECT * FROM Image WHERE time <= :1", time)
   db.delete(records)
