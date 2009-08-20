@@ -27,7 +27,8 @@ class RainfallTask(webapp.RequestHandler):
 
     amayadori.get_rainfall(area, time, ordinal, cxy)
 
-    taskmanager.TaskTracker(path = self.request.path).clear()
+    tracker = taskmanager.TaskTracker(self.request.path)
+    tracker.pop()
 
 
 if __name__ == "__main__":
