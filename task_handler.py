@@ -16,6 +16,7 @@ class CacheClearTask(webapp.RequestHandler):
   def get(self):
     amayadori.expire_cache()
 
+# FIXME: 削除予定
 # for task-queue
 class CacheFetchTask(webapp.RequestHandler):
   def post(self, area, time, ordinal):
@@ -28,11 +29,25 @@ class CacheFetchTask(webapp.RequestHandler):
     taskmanager.TaskTracker(path = self.request.path).clear()
 
 
+# for task-queue
+class RainfallTask(webapp.RequestHandler):
+  def get(self, area, time, ordinal, x, y):
+    area    = int(area)
+    time    = timeutil.yyyymmddhhnn_to_datetime(time)
+    ordinal = int(ordinal)
+    cxy     = (int(x), int(y))
+
+    amayadori.get_rainfall(area, time, ordinal, cxy)
+
+    taskmanager.TaskTracker(path = self.request.path).clear()
+
+
 if __name__ == "__main__":
   application = webapp.WSGIApplication(
     [
       (r"/task/cache/clear",                          CacheClearTask),
-      (r"/task/cache/fetch/(\d{3})/(\d{12})/(\d{2})", CacheFetchTask),
+      (r"/task/cache/fetch/(\d{3})/(\d{12})/(\d{2})", CacheFetchTask), # FIXME: 削除予定
+      (r"/task/rainfall/(\d{3})/(\d{12})/(\d{2})/(\d+)/(\d+)", RainfallTask),
     ],
     debug = True)
   run_wsgi_app(application)
