@@ -77,8 +77,3 @@ def get_time_table(radar_time = None, nowcast_time = None):
   return jmalib.get_time_table(
     radar_time   = radar_time   or get_radar_time(),
     nowcast_time = nowcast_time or get_nowcast_time())
-
-# FIXME: 削除予定
-def expire_cache():
-  # nop
-  return None

@@ -27,24 +27,6 @@ class TaskTracker:
     db.delete(records)
 
 
-def create_cache_fetch_task_path(area, time, ordinal):
-  url  = "/task/cache/fetch"
-  url += "/" + ("%03i" % area)
-  url += "/" + time.strftime("%Y%m%d%H%M")
-  url += "/" + ("%02i" % ordinal)
-  return url
-
-def add_cache_fetch_task(area, time, ordinal):
-  path = create_cache_fetch_task_path(area, time, ordinal)
-  logging.info("add task " + path)
-
-  task = Task(path = path, time = datetime.datetime.now())
-  task.put()
-
-  taskqueue.add(url=path, params={})
-
-  return TaskTracker(path = path)
-
 def add_task(path):
   logging.info("add task " + path)
   task = Task(path = path, time = datetime.datetime.now())
