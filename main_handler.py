@@ -47,8 +47,7 @@ class ViewPage(webapp.RequestHandler):
 
     records = []
     for (image_time, image_ordinal), present_time in time_table:
-      image    = amayadori.get_image(area.code, image_time, image_ordinal)
-      rainfall = amayadori.get_rainfall(image, xy)
+      rainfall = amayadori.get_rainfall(area.code, image_time, image_ordinal, xy)
 
       if rainfall[0] == rainfall[1]:
         rainfall_str = str(rainfall[0])

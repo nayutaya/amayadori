@@ -47,7 +47,7 @@ def get_image(area, time, ordinal):
   proc = lambda: jmalib.get_image(area, time, ordinal, fetcher)
   return cache(key, proc, 60 * 20)
 
-def get_rainfall(image, cxy):
+def get_rainfall_from_png(image, cxy):
   cx, cy = cxy
   sx = max([0, cx - 2])
   sy = max([0, cy - 2])
@@ -62,6 +62,11 @@ def get_rainfall(image, cxy):
       bitmap.set_pixel(x, y, rgb)
 
   return jmalib.get_rainfall_from_bitmap(bitmap)
+
+def get_rainfall(area, time, ordinal, cxy):
+  image    = get_image(area, time, ordinal)
+  rainfall = get_rainfall_from_png(image, cxy)
+  return rainfall
 
 def get_time_table(radar_time = None, nowcast_time = None):
   return jmalib.get_time_table(
