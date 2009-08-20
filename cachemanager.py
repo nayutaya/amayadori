@@ -3,6 +3,7 @@
 from google.appengine.ext import db
 
 
+# FIXME: 削除予定
 class RadarTime(db.Model):
   current_time = db.DateTimeProperty(required=True)
   radar_time   = db.DateTimeProperty(required=True)
@@ -20,6 +21,7 @@ class Image(db.Model):
   image   = db.BlobProperty(required=True)
 
 
+# FIXME: 削除予定
 def create_radar_time(current_time, radar_time):
   record = RadarTime(
     current_time = current_time,
@@ -43,6 +45,7 @@ def create_image(area, time, ordinal, image):
   record.put()
   return record
 
+# FIXME: 削除予定
 def get_radar_time(current_time):
   records = db.GqlQuery("SELECT * FROM RadarTime WHERE current_time = :1", current_time)
   if records.count() > 0:
@@ -64,6 +67,7 @@ def get_image(area, time, ordinal):
   else:
     return None
 
+# FIXME: 削除予定
 def clear_radar_time(current_time):
   records = db.GqlQuery("SELECT * FROM RadarTime WHERE current_time <= :1", current_time)
   db.delete(records)

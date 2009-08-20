@@ -3,6 +3,7 @@
 import logging
 import datetime
 from google.appengine.api import urlfetch
+from google.appengine.api import memcache
 
 import cachemanager
 import jmalib
@@ -25,14 +26,15 @@ def get_current_time():
 
 def get_radar_time(current_time = None):
   current_time = current_time or get_current_time()
-  cached_time  = cachemanager.get_radar_time(current_time)
 
-  if cached_time == None:
-    cached_time = cachemanager.create_radar_time(
-      current_time = current_time,
-      radar_time   = jmalib.get_current_radar_time(fetcher))
+  cache_key  = "radar_time_" + current_time.strftime("%Y%m%d%H%M")
+  radar_time = memcache.get(cache_key)
 
-  return cached_time.radar_time
+  if radar_time == None:
+    radar_time = jmalib.get_current_radar_time(fetcher)
+    memcache.add(cache_key, radar_time, 60)
+
+  return radar_time
 
 def get_nowcast_time(current_time = None):
   current_time = current_time or get_current_time()
