@@ -3,6 +3,7 @@
 import os
 import logging
 import re
+import time
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
@@ -48,6 +49,9 @@ class ViewPage(webapp.RequestHandler):
     # 雨量解析を投機的に実行
     for (image_time, image_ordinal), present_time in time_table:
       taskmanager.add_rainfall_task(area.code, image_time, image_ordinal, xy)
+
+    # 投機的タスクの進行を少しだけ待つ
+    time.sleep(1)
 
     records = []
     for (image_time, image_ordinal), present_time in time_table:

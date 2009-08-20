@@ -65,12 +65,13 @@ def get_rainfall_from_png(image, cxy):
 
 def get_rainfall(area, time, ordinal, cxy):
   def creator():
+    logging.info("calc rainfall")
     image    = get_image(area, time, ordinal)
     rainfall = get_rainfall_from_png(image, cxy)
     return rainfall
   cx, cy = cxy
   key = "rainfall_%03i_%s_%02i_%i_%i" % (area, time.strftime("%Y%m%d%H%M"), ordinal, cx, cy)
-  return cache(key, creator, 10) # FIXME: キャッシュ時間を延ばす
+  return cache(key, creator, 60)
 
 def get_time_table(radar_time = None, nowcast_time = None):
   return jmalib.get_time_table(
