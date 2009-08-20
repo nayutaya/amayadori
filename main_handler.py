@@ -43,11 +43,16 @@ class ViewPage(webapp.RequestHandler):
     time_table   = amayadori.get_time_table(radar_time, nowcast_time)
 
     # 雨量解析を投機的に実行
+    trackers = []
     for (image_time, image_ordinal), present_time in time_table:
-      taskmanager.add_rainfall_task(area.code, image_time, image_ordinal, xy)
+      tracker = taskmanager.add_rainfall_task(area.code, image_time, image_ordinal, xy)
+      trackers.append(tracker)
 
-    # 投機的タスクの進行を少しだけ待つ
-    time.sleep(1)
+    # すべての投機的タスクの実行が完了するか、4秒経過するまで待つ
+    for i in range(20):
+      rest = len([0 for tracker in trackers if not tracker.is_completed()])
+      if rest == 0: break
+      time.sleep(0.2)
 
     records = []
     for (image_time, image_ordinal), present_time in time_table:

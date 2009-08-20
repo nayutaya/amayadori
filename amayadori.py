@@ -71,7 +71,7 @@ def get_rainfall(area, time, ordinal, cxy):
     return rainfall
   cx, cy = cxy
   key = "rainfall_%03i_%s_%02i_%i_%i" % (area, time.strftime("%Y%m%d%H%M"), ordinal, cx, cy)
-  return cache(key, creator, 60)
+  return cache(key, creator, 60 * 20)
 
 def get_time_table(radar_time = None, nowcast_time = None):
   return jmalib.get_time_table(
