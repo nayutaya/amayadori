@@ -42,8 +42,12 @@ class ViewPage(webapp.RequestHandler):
     time_table   = amayadori.get_time_table(radar_time, nowcast_time)
 
     # 雨量解析中にタスクが完了することを期待して、タスクを追加する
+    #for (image_time, image_ordinal), present_time in time_table:
+    #  taskmanager.add_cache_fetch_task(area.code, image_time, image_ordinal)
+
+    # 雨量解析を投機的に実行
     for (image_time, image_ordinal), present_time in time_table:
-      taskmanager.add_cache_fetch_task(area.code, image_time, image_ordinal)
+      taskmanager.add_rainfall_task(area.code, image_time, image_ordinal, xy)
 
     records = []
     for (image_time, image_ordinal), present_time in time_table:
