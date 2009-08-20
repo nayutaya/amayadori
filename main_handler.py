@@ -120,6 +120,26 @@ class DocomoGpsRedirector(webapp.RequestHandler):
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
 
 
+class KddiCellRedirector(webapp.RequestHandler):
+  def get(self):
+    pass
+
+
+class KddiGpsRedirector(webapp.RequestHandler):
+  def get(self):
+    pass
+
+
+class SoftbankCellRedirector(webapp.RequestHandler):
+  def get(self):
+    pass
+
+
+class SoftbankGpsRedirector(webapp.RequestHandler):
+  def get(self):
+    pass
+
+
 class TestPage(webapp.RequestHandler):
   def get(self):
     pass
@@ -130,9 +150,13 @@ if __name__ == "__main__":
     [
       (r"/", TopPage),
       (r"/view/(\-?\d+(?:\.\d+)?)/(\-?\d+(?:\.\d+)?)", ViewPage),
-      (r"/docomo/iarea", DocomoIAreaRedirector),
-      (r"/docomo/gps",   DocomoGpsRedirector),
-      (r"/test",         TestPage),
+      (r"/docomo/iarea",  DocomoIAreaRedirector),
+      (r"/docomo/gps",    DocomoGpsRedirector),
+      (r"/kddi/cell",     KddiCellRedirector),
+      (r"/kddi/gps" ,     KddiGpsRedirector),
+      (r"/softbank/cell", SoftbankCellRedirector),
+      (r"/softbank/gps" , SoftbankGpsRedirector),
+      (r"/test",          TestPage),
     ],
     debug = True)
   run_wsgi_app(application)
