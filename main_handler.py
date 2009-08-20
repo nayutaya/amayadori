@@ -98,7 +98,7 @@ class DocomoIAreaRedirector(webapp.RequestHandler):
     lat  = self.request.get("LAT")
     lng  = self.request.get("LON")
     xacc = self.request.get("XACC")
-    logging.info("docomo-iarea: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
+    logging.info("docomo-cell: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
 
     lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
     lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
@@ -122,22 +122,42 @@ class DocomoGpsRedirector(webapp.RequestHandler):
 
 class KddiCellRedirector(webapp.RequestHandler):
   def get(self):
-    pass
+    lat = self.request.get("lat")
+    lng = self.request.get("lon")
+    logging.info("kddi-cell: lat=" + str(lat) + " lng=" + str(lng))
+
+    # 未試験
+    lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
+    lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
+    self.redirect("/view/" + lat_deg + "/" + lng_deg)
 
 
 class KddiGpsRedirector(webapp.RequestHandler):
   def get(self):
-    pass
+    lat  = self.request.get("lat")
+    lng  = self.request.get("lon")
+    smaj = self.request.get("smaj")
+    smin = self.request.get("smin")
+    logging.info("kddi-gps: lat=" + str(lat) + " lng=" + str(lng) + " smaj=" + str(smaj) + " smin=" + str(smin))
+
+    # 未試験
+    lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
+    lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
+    self.redirect("/view/" + lat_deg + "/" + lng_deg)
 
 
 class SoftbankCellRedirector(webapp.RequestHandler):
   def get(self):
-    pass
+    pos  = self.request.get("pos")
+    xacr = self.request.get("x-acr")
+    logging.info("softbank-cell: pos=" + str(pos) + " xacr=" + str(xacr))
 
 
 class SoftbankGpsRedirector(webapp.RequestHandler):
   def get(self):
-    pass
+    pos  = self.request.get("pos")
+    xacr = self.request.get("x-acr")
+    logging.info("softbank-gps: pos=" + str(pos) + " xacr=" + str(xacr))
 
 
 class TestPage(webapp.RequestHandler):
