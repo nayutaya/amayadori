@@ -2,14 +2,8 @@
 
 import datetime
 import logging
-#from google.appengine.ext import db
 from google.appengine.api import memcache
 from google.appengine.api.labs import taskqueue
-
-
-#class Task(db.Model):
-#  path = db.StringProperty(required=True)
-#  time = db.DateTimeProperty(required=True)
 
 
 class TaskTracker:
@@ -20,8 +14,6 @@ class TaskTracker:
 
   def is_completed(self):
     if not self.completed:
-      #records = db.GqlQuery("SELECT * FROM Task WHERE path = :1", self.path)
-      #self.completed = (records.count() == 0)
       self.completed = not (memcache.get(self.key) == 1)
     return self.completed
 
@@ -33,16 +25,11 @@ class TaskTracker:
   def pop(self):
     logging.info("pop task " + self.path)
     memcache.delete(self.key)
-    #records = db.GqlQuery("SELECT * FROM Task WHERE path = :1", self.path)
-    #db.delete(records)
 
 
 def add_task(path):
-  #task = Task(path = path, time = datetime.datetime.now())
-  #task.put()
   tracker = TaskTracker(path)
   tracker.push()
-  #taskqueue.add(url = path, method="GET", params = {})
   return tracker
 
 def create_rainfall_task_path(area, time, ordinal, xy):
