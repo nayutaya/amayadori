@@ -64,9 +64,13 @@ def get_rainfall_from_png(image, cxy):
   return jmalib.get_rainfall_from_bitmap(bitmap)
 
 def get_rainfall(area, time, ordinal, cxy):
-  image    = get_image(area, time, ordinal)
-  rainfall = get_rainfall_from_png(image, cxy)
-  return rainfall
+  def creator():
+    image    = get_image(area, time, ordinal)
+    rainfall = get_rainfall_from_png(image, cxy)
+    return rainfall
+  cx, cy = cxy
+  key = "rainfall_%03i_%s_%02i_%i_%i" % (area, time.strftime("%Y%m%d%H%M"), ordinal, cx, cy)
+  return cache(key, creator, 60)
 
 def get_time_table(radar_time = None, nowcast_time = None):
   return jmalib.get_time_table(
