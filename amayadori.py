@@ -27,25 +27,26 @@ def get_current_time():
 def get_radar_time(current_time = None):
   current_time = current_time or get_current_time()
 
-  cache_key  = "radar_time_" + current_time.strftime("%Y%m%d%H%M")
-  radar_time = memcache.get(cache_key)
+  key   = "radar_time_" + current_time.strftime("%Y%m%d%H%M")
+  value = memcache.get(key)
 
-  if radar_time == None:
-    radar_time = jmalib.get_current_radar_time(fetcher)
-    memcache.add(cache_key, radar_time, 60)
+  if value == None:
+    value = jmalib.get_current_radar_time(fetcher)
+    memcache.add(key, value, 60)
 
-  return radar_time
+  return value
 
 def get_nowcast_time(current_time = None):
   current_time = current_time or get_current_time()
-  cached_time  = cachemanager.get_nowcast_time(current_time)
 
-  if cached_time == None:
-    cached_time = cachemanager.create_nowcast_time(
-      current_time = current_time,
-      nowcast_time = jmalib.get_current_nowcast_time(fetcher))
+  key   = "nowcast_time_" + current_time.strftime("%Y%m%d%H%M")
+  value = memcache.get(key)
 
-  return cached_time.nowcast_time
+  if value == None:
+    value = jmalib.get_current_nowcast_time(fetcher)
+    memcache.add(key, value, 60)
+
+  return value
 
 def get_image(area, time, ordinal):
   cached_image = cachemanager.get_image(area, time, ordinal)

@@ -9,6 +9,7 @@ class RadarTime(db.Model):
   radar_time   = db.DateTimeProperty(required=True)
 
 
+# FIXME: 削除予定
 class NowcastTime(db.Model):
   current_time = db.DateTimeProperty(required=True)
   nowcast_time = db.DateTimeProperty(required=True)
@@ -29,6 +30,7 @@ def create_radar_time(current_time, radar_time):
   record.put()
   return record
 
+# FIXME: 削除予定
 def create_nowcast_time(current_time, nowcast_time):
   record = NowcastTime(
     current_time = current_time,
@@ -53,6 +55,7 @@ def get_radar_time(current_time):
   else:
     return None
 
+# FIXME: 削除予定
 def get_nowcast_time(current_time):
   records = db.GqlQuery("SELECT * FROM NowcastTime WHERE current_time = :1", current_time)
   if records.count() > 0:
@@ -73,6 +76,7 @@ def clear_radar_time(current_time):
   db.delete(records)
   return None
 
+# FIXME: 削除予定
 def clear_nowcast_time(current_time):
   records = db.GqlQuery("SELECT * FROM NowcastTime WHERE current_time <= :1", current_time)
   db.delete(records)
