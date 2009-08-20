@@ -100,7 +100,9 @@ class DocomoCellRedirector(webapp.RequestHandler):
     xacc = self.request.get("XACC")
     logging.info("docomo-cell: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
 
-    # FIXME: エラーチェック
+    if lat == "": return
+    if lng == "": return
+
     lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
     lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
@@ -116,7 +118,9 @@ class DocomoGpsRedirector(webapp.RequestHandler):
     xacc = self.request.get("x-acc")
     logging.info("docomo-gps: lat=" + str(lat) + " lng=" + str(lng) + " xacc=" + str(xacc))
 
-    # FIXME: エラーチェック
+    if lat == "": return
+    if lng == "": return
+
     lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
     lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
@@ -128,7 +132,9 @@ class KddiCellRedirector(webapp.RequestHandler):
     lng = self.request.get("lon")
     logging.info("kddi-cell: lat=" + str(lat) + " lng=" + str(lng))
 
-    # FIXME: エラーチェック
+    if lat == "": return
+    if lng == "": return
+
     lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
     lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
@@ -142,7 +148,9 @@ class KddiGpsRedirector(webapp.RequestHandler):
     smin = self.request.get("smin")
     logging.info("kddi-gps: lat=" + str(lat) + " lng=" + str(lng) + " smaj=" + str(smaj) + " smin=" + str(smin))
 
-    # FIXME: エラーチェック
+    if lat == "": return
+    if lng == "": return
+
     lat_deg = "%.4f" % latlngutil.dms_to_deg(lat)
     lng_deg = "%.4f" % latlngutil.dms_to_deg(lng)
     self.redirect("/view/" + lat_deg + "/" + lng_deg)
@@ -154,7 +162,8 @@ class SoftbankCellRedirector(webapp.RequestHandler):
     xacr = self.request.get("x-acr")
     logging.info("softbank-cell: pos=" + str(pos) + " xacr=" + str(xacr))
 
-    # FIXME: エラーチェック
+    if pos == "": return
+
     lat_dms, lng_dms = latlngutil.softbank_pos_to_dms_dms(pos)
     lat_deg = "%.4f" % latlngutil.dms_to_deg(lat_dms)
     lng_deg = "%.4f" % latlngutil.dms_to_deg(lng_dms)
@@ -167,7 +176,8 @@ class SoftbankGpsRedirector(webapp.RequestHandler):
     xacr = self.request.get("x-acr")
     logging.info("softbank-gps: pos=" + str(pos) + " xacr=" + str(xacr))
 
-    # FIXME: エラーチェック
+    if pos == "": return
+
     lat_dms, lng_dms = latlngutil.softbank_pos_to_dms_dms(pos)
     lat_deg = "%.4f" % latlngutil.dms_to_deg(lat_dms)
     lng_deg = "%.4f" % latlngutil.dms_to_deg(lng_dms)
