@@ -5,7 +5,6 @@ import datetime
 from google.appengine.api import urlfetch
 from google.appengine.api import memcache
 
-import cachemanager
 import jmalib
 import imglib
 import timeutil

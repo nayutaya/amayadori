@@ -9,7 +9,6 @@ from google.appengine.ext.webapp import template
 import amayadori
 import timeutil
 import areamanager
-import cachemanager
 import png
 import giflib
 import jmalib
