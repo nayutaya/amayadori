@@ -18,7 +18,7 @@ import taskmanager
 class TopPage(webapp.RequestHandler):
   def get(self):
     values = {
-      "redirect_url": "http://amayadori-opt.appspot.com/docomo/iarea",
+      "redirect_url": "http://amayadori-opt.appspot.com/docomo/cell",
     }
 
     path = os.path.join(os.path.dirname(__file__), "views/top.html")
@@ -93,7 +93,7 @@ class ViewPage(webapp.RequestHandler):
     self.response.out.write(html)
 
 
-class DocomoIAreaRedirector(webapp.RequestHandler):
+class DocomoCellRedirector(webapp.RequestHandler):
   def post(self):
     lat  = self.request.get("LAT")
     lng  = self.request.get("LON")
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     [
       (r"/", TopPage),
       (r"/view/(\-?\d+(?:\.\d+)?)/(\-?\d+(?:\.\d+)?)", ViewPage),
-      (r"/docomo/iarea",  DocomoIAreaRedirector),
+      (r"/docomo/cell",   DocomoCellRedirector),
       (r"/docomo/gps",    DocomoGpsRedirector),
       (r"/kddi/cell",     KddiCellRedirector),
       (r"/kddi/gps" ,     KddiGpsRedirector),
