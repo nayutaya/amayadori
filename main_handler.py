@@ -48,11 +48,11 @@ class ViewPage(webapp.RequestHandler):
       tracker = taskmanager.add_rainfall_task(area.code, image_time, image_ordinal, xy)
       trackers.append(tracker)
 
-    # すべての投機的タスクの実行が完了するか、3秒経過するまで待つ
-    for i in range(10):
+    # すべての投機的タスクの実行が完了するか、4秒経過するまで待つ
+    for i in range(20):
       rest = len([0 for tracker in trackers if not tracker.is_completed()])
       if rest == 0: break
-      time.sleep(0.3)
+      time.sleep(0.2)
 
     records = []
     for (image_time, image_ordinal), present_time in time_table:
