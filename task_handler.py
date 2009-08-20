@@ -8,18 +8,23 @@ from google.appengine.ext.webapp import template
 
 import amayadori
 import taskmanager
+import timeutil
 
 
 # for cron
 class CacheClearTask(webapp.RequestHandler):
   def get(self):
-    logging.info("CacheClearTask")
     amayadori.expire_cache()
 
 # for task-queue
 class CacheFetchTask(webapp.RequestHandler):
   def post(self, area, time, ordinal):
-    logging.info("CacheFetchTask")
+    area    = int(area)
+    time    = timeutil.yyyymmddhhnn_to_datetime(time)
+    ordinal = int(ordinal)
+
+    amayadori.get_image(area, time, ordinal)
+
     taskmanager.TaskTracker(path = self.request.path).clear()
 
 

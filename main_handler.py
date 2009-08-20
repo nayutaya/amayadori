@@ -12,6 +12,7 @@ import amayadori
 import png
 import latlngutil
 import timeutil
+import taskmanager
 
 
 class TopPage(webapp.RequestHandler):
@@ -39,6 +40,10 @@ class ViewPage(webapp.RequestHandler):
     radar_time   = amayadori.get_radar_time(current_time)
     nowcast_time = amayadori.get_nowcast_time(current_time)
     time_table   = amayadori.get_time_table(radar_time, nowcast_time)
+
+    # 雨量解析中にタスクが完了することを期待して、タスクを追加する
+    for (image_time, image_ordinal), present_time in time_table:
+      taskmanager.add_cache_fetch_task(area.code, image_time, image_ordinal)
 
     records = []
     for (image_time, image_ordinal), present_time in time_table:
