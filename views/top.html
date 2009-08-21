@@ -24,16 +24,10 @@
 
     <font size="-1">
       <br>
-      <form action="http://w1m.docomo.ne.jp/cp/iarea" method="get">
-       <input type="hidden" name="ecode" value="OPENAREACODE">
-       <input type="hidden" name="msn" value="OPENAREAKEY">
-       <input type="hidden" name="posinfo" value="2">
-       <input type="hidden" name="nl" value="{{redirect_url}}">
-       <center><input type="submit" value="iエリアで測位"></center>
-      </form>
-      <form action="/docomo/gps" method="get" lcs>
-       <center><input type="submit" value="GPSで測位"></center>
-      </form>
+      <center>
+        <a href="http://w1m.docomo.ne.jp/cp/iarea?ecode=OPENAREACODE&msn=OPENAREAKEY&posinfo=2&nl=http://{{host}}/docomo/cell">簡易位置情報から調べる！</a><br>
+        <a href="/docomo/gps" lcs>GPS位置情報から調べる！</a><br>
+      </center>
       <br>
     </font>
 

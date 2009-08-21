@@ -19,7 +19,7 @@ import taskmanager
 class TopPage(webapp.RequestHandler):
   def get(self):
     values = {
-      "redirect_url": "http://amayadori-opt.appspot.com/docomo/cell",
+      "host": self.request.host,
     }
 
     path = os.path.join(os.path.dirname(__file__), "views/top.html")
