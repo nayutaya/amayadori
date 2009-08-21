@@ -7,10 +7,9 @@ api_version: 1
 handlers:
 - url: /app
   script: app.py
-#- url: /(.*\.html)
-#  static_files: public/\1
-#  upload: public/(.*\.html)
-
+- url: /favicon.ico
+  static_files: public/favicon.ico
+  upload: public/favicon.ico
 - url: /image/.*
   script: image_handler.py
 - url: /task/.*
