@@ -12,6 +12,7 @@ class TestLatLngUtility(unittest.TestCase):
   def test_dms_to_deg(self):
     target = latlngutil.dms_to_deg
     self.assertEqual(0.0,  target("0.0.0.0"))
+    self.assertEqual(1.0,  target(" 1.0.0.0"))
     self.assertEqual(1.0,  target("+1.0.0.0"))
     self.assertEqual(-1.0, target("-1.0.0.0"))
 

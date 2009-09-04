@@ -4,7 +4,7 @@ import re
 
 
 def dms_to_deg(dms):
-  regexp = re.compile(r"^([\+\-])?(\d+)\.(\d+)\.(\d+\.\d+)$")
+  regexp = re.compile(r"^([ \+\-])?(\d+)\.(\d+)\.(\d+\.\d+)$")
   match  = regexp.match(dms)
   sign   = (1 if match.group(1) != "-" else -1)
   deg    = float(match.group(2))
