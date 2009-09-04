@@ -5,8 +5,6 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /app
-  script: app.py
 - url: /favicon.ico
   static_files: public/favicon.ico
   upload: public/favicon.ico
